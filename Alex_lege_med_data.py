@@ -1,3 +1,4 @@
+#%%
 # coding=utf-8
 # Brug cmd + i for at kører - ellers så virker pandas ikke
 
@@ -11,6 +12,8 @@ import numpy as np
 #dir = '/Users/Alex/Library/Mobile Documents/com~apple~CloudDocs/DTU/4. Semeter/Bachelor_project/Data/Cases_by_age.csv'
 
 # dir for iMac
+data_age = pd.read_csv('Data/Cases_by_age.csv',sep = ';')
+data_time_pos = pd.read_csv('Data/Test_pos_over_time.csv',sep = ';')
 
 # figure over new positive
 plt.figure(1)
