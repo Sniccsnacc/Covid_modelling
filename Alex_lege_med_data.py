@@ -7,8 +7,6 @@ import matplotlib.dates as mdates
 import numpy as np
 import os
 import sys
-import casadi
-#import casadi
 
 #Get the current working directory
 # dir for MacBook
