@@ -5,8 +5,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import numpy as np
-import os
-import sys
 
 #Get the current working directory
 # dir for MacBook
