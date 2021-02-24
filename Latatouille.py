@@ -4,6 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
+Cases_sex = pd.read_csv('Data/Cases_by_sex.csv', sep = ';')
 
 
 plt.figure(1)
