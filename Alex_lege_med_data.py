@@ -8,15 +8,13 @@ import numpy as np
 import os
 import sys
 import casadi
+#import casadi
 
 #Get the current working directory
 # dir for MacBook
 #dir = '/Users/Alex/Library/Mobile Documents/com~apple~CloudDocs/DTU/4. Semeter/Bachelor_project/Data/Cases_by_age.csv'
 
 # dir for iMac
-dir = '/Users/Alexander/Library/Mobile Documents/com~apple~CloudDocs/DTU/4. Semeter/Bachelor_project/Data/'
-data_age = pd.read_csv(dir+'Cases_by_age.csv',sep = ';')
-data_time_pos = pd.read_csv(dir+'Test_pos_over_time.csv',sep = ';')
 
 # figure over new positive
 plt.figure(1)
