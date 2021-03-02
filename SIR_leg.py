@@ -1,4 +1,4 @@
-# How to solve ODE
+#%% How to solve ODE
 
 import numpy as np
 import matplotlib.pyplot as plt
