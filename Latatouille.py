@@ -6,11 +6,12 @@ import matplotlib.dates as mdates
 from scipy.integrate import odeint
 import numpy as np
 from ipywidgets import interactive
+from SIR_leg import sick
 
 D_O_T = pd.read_csv('Data/Deaths_over_time.csv',sep = ';')
 Cases_sex = pd.read_csv('Data/Cases_by_sex.csv', sep = ';')
-sick = pd.read_csv('Data/Test_pos_over_time.csv', sep = ';')
-new_pos = sick.NewPositive
+lsick = pd.read_csv('Data/Test_pos_over_time.csv', sep = ';')
+new_pos = lsick.NewPositive
 
 plt.figure(1)
 plt.plot(D_O_T.Dato[0:-1], D_O_T.Antal_døde[0:-1])
@@ -23,22 +24,22 @@ plt.show()
 
 #%% Solve equations
 
-p = {"beta": 0.000055,
+p = {"beta": 0.55,
     "gamma": 1/14,
-    "N": 5000}
-t = np.linspace(0, len(new_pos)-1, len(new_pos)-1)
-I0 = 2
+    "N": 5806000}
+t = np.linspace(0, len(new_pos)-1, len(sick[200:-1]))
+I0 = 1717
 S0 = p["N"] - I0
-R0 = 0
+R0 = 13858
 z0 = [S0, I0, R0]
-gamma = p["gamma"]
+#gamma = p["gamma"]
 
-def sliderplot(beta):
+def sliderplot(beta, gamma):
 
     def SIR(x, t):
-        S = -p["beta"]/beta * x[1]*x[0]
-        I = -S -gamma*x[1]
-        R = gamma*x[1]
+        S = -p["beta"]/(beta*p["N"]) * x[1]*x[0]
+        I = -S -1/gamma*x[1]
+        R = 1/gamma*x[1]
 
         return S, I, R
     
@@ -47,11 +48,13 @@ def sliderplot(beta):
 
     plt.figure()
     plt.plot(t, z)
-    plt.plot(range(len(new_pos)-2), new_pos[0:-2])
+    plt.plot(range(len(sick[200:-1])), sick[200:-1])
     plt.legend(['S', 'I', 'R', 'DK'])
+    plt.xlim(50, 200)
+    plt.ylim(0, 500000)
     plt.show()
 
-interactive_plot = interactive(sliderplot, beta = (0.001, 15, 0.001))
+interactive_plot = interactive(sliderplot, beta = (0.001, 10, 0.001), gamma = (1, 29, 1))
 output = interactive_plot.children[-1]
 output.layout.height = '350px'
 interactive_plot
