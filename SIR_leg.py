@@ -22,8 +22,6 @@ for i in range(cases.size):
     else:
         sick[i] = sick[i-1] + cases[i] - cases[i-14]
 
-    if sick[i] < 0:
-        sick[i] = 0
 
 # end region
 
