@@ -39,8 +39,9 @@ def SIR(z, t):
     dzdt = [dSdt, dIdt, dRdt]
     return dzdt
 
+
 # time span
-t = np.linspace(0, 500, 1000)
+t = np.linspace(0, 80, 1000)
 
 # initial conditions
 I0 = 1
@@ -58,6 +59,7 @@ plt.plot(t, z[:, 1], 'g-', label='I')
 plt.plot(t, z[:, 2], 'r-', label='R')
 plt.xlabel('time')
 plt.ylabel('SIR-values')
+plt.title('SIR')
 plt.legend(loc='best')
 
 
@@ -67,16 +69,18 @@ plt.legend(loc='best')
 # region SIRS model
 
 # new parameter
-alpha = 0.005
+alpha = 0.05
 
 # SIS model
-def SIRS(z, t):
+def SIS(z, t):
     dSdt = -beta * z[0] * z[1] + alpha * z[2]
     dIdt = beta*z[0]*z[1] - gamma * z[1]
     dRdt = gamma * z[1] - alpha * z[2]
     return [dSdt, dIdt, dRdt]
 
-z = odeint(SIRS, z0, t)
+z = odeint(SIS, z0, t)
+
+print(z[:, 1])
 
 plt.figure(5)
 plt.plot(t, z[:, 0], 'b--', label='S')
@@ -86,6 +90,6 @@ plt.xlabel('time')
 plt.ylabel('SIR-values')
 plt.legend(loc='best')
 plt.title('SIS')
-plt.show(block=False)
+plt.show()
 
 # endregion
