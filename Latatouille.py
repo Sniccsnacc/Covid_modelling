@@ -54,7 +54,7 @@ def sliderplot(beta, gamma):
     plt.ylim(0, 500000)
     plt.show()
 
-interactive_plot = interactive(sliderplot, beta = (0.001, 10, 0.001), gamma = (1, 29, 1))
+interactive_plot = interactive(sliderplot, beta = (0.001, 25, 0.001), gamma = (1, 29, 1))
 output = interactive_plot.children[-1]
 output.layout.height = '350px'
 interactive_plot
