@@ -6,9 +6,37 @@ from scipy.integrate import odeint
 import pandas as pd
 
 # region loading data
-sick = pd.read_csv('/Data/Municipality_cases_time_series.csv', sep=';')
+mat = pd.read_csv('Data/Test_pos_over_time.csv', sep=';')
+cases = np.array([mat.NewPositive[0:-2]]).squeeze().astype(int)
+time = np.linspace(0, cases.size, cases.size)
+sick = np.zeros(cases.size)
+
+plt.figure()
+plt.plot(time, cases, 'b', label='cases pr. day')
+plt.title('NOT modified')
+
+# finding the total number of sick people
+for i in range(cases.size):
+    if i < 14:
+        sick[i] = cases[i] + cases[i - 1]
+    else:
+        sick[i] = sick[i-1] + cases[i] - cases[i-14]
+
+    if sick[i] < 0:
+        sick[i] = 0
+
 # end region
 
+sum = 0
+for i in range(1, cases.size):
+    sum += 1/2*(cases[i] + cases[i -1])
+
+print(sum)
+
+plt.plot(time, sick, 'r', label='total cases')
+plt.title('modified')
+plt.legend()
+plt.show()
 #region SIR model
 
 # Parameteres
@@ -73,6 +101,6 @@ plt.xlabel('time')
 plt.ylabel('SIR-values')
 plt.legend(loc='best')
 plt.title('SIS')
-#plt.show()
+plt.show(block=False)
 
 # endregion
