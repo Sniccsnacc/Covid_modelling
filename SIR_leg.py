@@ -5,15 +5,12 @@ import matplotlib.pyplot as plt
 from scipy.integrate import odeint
 import pandas as pd
 
-# region loading data
+# region loading data and modifing
 mat = pd.read_csv('Data/Test_pos_over_time.csv', sep=';')
 cases = np.array([mat.NewPositive[0:-2]]).squeeze().astype(int)
 time = np.linspace(0, cases.size, cases.size)
 sick = np.zeros(cases.size)
 
-plt.figure()
-plt.plot(time, cases, 'b', label='cases pr. day')
-plt.title('NOT modified')
 
 # finding the total number of sick people
 for i in range(cases.size):
@@ -23,18 +20,8 @@ for i in range(cases.size):
         sick[i] = sick[i-1] + cases[i] - cases[i-14]
 
 
-# end region
+# endregion
 
-sum = 0
-for i in range(1, cases.size):
-    sum += 1/2*(cases[i] + cases[i -1])
-
-print(sum)
-
-plt.plot(time, sick, 'r', label='total cases')
-plt.title('modified')
-plt.legend()
-plt.show()
 #region SIR model
 
 # Parameteres
