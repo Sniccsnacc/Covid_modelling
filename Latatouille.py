@@ -89,3 +89,6 @@ plt.plot(range(len(sick[200:-1])), sick[200:-1])
 #plt.ylim(0, 500000)
 plt.show()
 
+#%% 
+
+#Bastian sutter stor penis
