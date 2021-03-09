@@ -26,7 +26,7 @@ plt.show()
 
 p = {"beta": 0.55,
     "gamma": 1/14,
-    "mu": 0.11,
+    "mu": 0.55,
     "N": 5806000}
 t = np.linspace(0, len(new_pos)-1, len(sick[200:-1]))
 
@@ -60,7 +60,7 @@ def sliderplot(beta, gamma):
 
     return z
 
-interactive_plot = interactive(sliderplot, beta = (0.001, 25, 0.001), gamma = (1, 29, 1))
+interactive_plot = interactive(sliderplot, beta = (0.001, 3, 0.0001), gamma = (1, 29, 1))
 output = interactive_plot.children[-1]
 output.layout.height = '350px'
 interactive_plot
