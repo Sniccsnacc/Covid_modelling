@@ -5,6 +5,23 @@ import matplotlib.pyplot as plt
 from scipy.integrate import odeint
 import pandas as pd
 
+
+# region Explixit euler just for fun
+
+def ExplicitEuler(fun, x0, tspan):
+    nx = len(x0)
+    X = np.zeros((nx, tspan.size), dtype='float')
+    T = np.zeros(tspan.size, dtype='float')
+
+    X[:, 0] = x0
+    for k in range(tspan.size - 1):
+        f = np.array(fun(X[:, k], tspan), dtype=float)
+        dt = tspan[k+1] - tspan[k]
+        X[:, k+1] = X[:, k] + f * dt
+
+    return X.T
+# endregion
+
 # region loading data and modifying
 mat = pd.read_csv('Data/Test_pos_over_time.csv', sep=';')
 cases = np.array([mat.NewPositive[0:-2]]).squeeze().astype(int)
@@ -29,12 +46,12 @@ N = 16000
 
 # new parameter, for how quickly you can become susceptible again
 # used in SIRS model
-alpha = 0.04
+alpha = 0.07
 
 
 # new parameter, for how many infected go to quarantine
 # used in SIQRS model
-eps = 0.02
+eps = 0.11
 
 # new parameter, for how many quarantined and removed individuals get vaccinated / become immune
 zeta = 0.02
@@ -164,7 +181,40 @@ plt.xlabel('time')
 plt.ylabel('SIQRSV-values')
 plt.legend(loc='best')
 plt.title('SIQRSV')
+
+
+# endregion
+
+# region SIRS with quarantine after a given number of infected
+
+def Quar(z, t):
+    dSdt = -beta * z[0] * z[1] + alpha * z[3]
+    dIdt = beta * z[0] * z[1] - gamma * z[1]
+    dQdt = 0
+    dRdt = gamma * z[1] - alpha * z[3]
+
+    if dIdt >= 2000:
+        dIdt = beta * z[0] * z[1] - gamma * z[1] - eps * z[2]
+        dQdt = eps * z[1] - gamma * z[2]
+        dRdt = gamma * z[1] - alpha * z[3]
+
+    return [dSdt, dIdt, dQdt, dRdt]
+
+
+z0 = [S0, I0, Q0, R0]
+
+z = ExplicitEuler(Quar, z0, t)
+
+plt.figure(2)
+plt.plot(t, z[:, 0], 'b--', label='S')
+plt.plot(t, z[:, 1], 'g--', label='I')
+plt.plot(t, z[:, 2], 'r--', label='Q')
+plt.plot(t, z[:, 3], '--', label='R')
+plt.ylabel('SIQRS-values')
+plt.legend(loc='best')
+plt.title('SIQRS')
 plt.show()
+
 
 
 # endregion
