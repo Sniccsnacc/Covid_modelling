@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from scipy.integrate import odeint
 import pandas as pd
 
-# region loading data and modifing
+# region loading data and modifying
 mat = pd.read_csv('Data/Test_pos_over_time.csv', sep=';')
 cases = np.array([mat.NewPositive[0:-2]]).squeeze().astype(int)
 time = np.linspace(0, cases.size, cases.size)
@@ -19,10 +19,9 @@ for i in range(cases.size):
     else:
         sick[i] = sick[i-1] + cases[i] - cases[i-14]
 
-
 # endregion
 
-#region Parameters
+#region Parameters and number of plots
 beta = 0.000055
 gamma = 0.25
 N = 16000
@@ -38,8 +37,10 @@ alpha = 0.04
 eps = 0.02
 
 # new parameter, for how many quarantined and removed individuals get vaccinated / become immune
+zeta = 0.02
 
-
+#number of plots
+numplot = 4
 # endregion
 
 # region SIR model
@@ -71,7 +72,7 @@ z = odeint(SIR, z0, t)
 # plotting the SIR model
 fig, ax = plt.subplots(nrows = 3, ncols = 1)
 plt.tight_layout()
-plt.subplot(3, 1, 1)
+plt.subplot(numplot, 1, 1)
 plt.plot(t, z[:, 0], 'b-', label='S')
 plt.plot(t, z[:, 1], 'g-', label='I')
 plt.plot(t, z[:, 2], 'r-', label='R')
@@ -98,7 +99,7 @@ def SIS(z, t):
 z = odeint(SIS, z0, t)
 
 
-plt.subplot(3, 1, 2)
+plt.subplot(numplot, 1, 2)
 plt.plot(t, z[:, 0], 'b--', label='S')
 plt.plot(t, z[:, 1], 'g--', label='I')
 plt.plot(t, z[:, 2], 'r--', label='R')
@@ -128,19 +129,42 @@ z0 = [S0, I0, Q0, R0]
 
 z = odeint(SIQRS, z0, t)
 
-plt.subplot(3, 1, 3)
+plt.subplot(numplot, 1, 3)
 plt.plot(t, z[:, 0], 'b--', label='S')
 plt.plot(t, z[:, 1], 'g--', label='I')
 plt.plot(t, z[:, 2], 'r--', label='Q')
 plt.plot(t, z[:, 3], '--', label='R')
-plt.xlabel('time')
 plt.ylabel('SIQRS-values')
 plt.legend(loc='best')
 plt.title('SIQRS')
-plt.show()
 
 # endregion
 
 # region SIQRSV
+def SIQRSV(z, t):
+    dSdt = -beta * z[0] * z[1] + alpha * (z[2] + z[3])
+    dIdt = beta * z[0] * z[1] - gamma * z[1] - eps * z[2]
+    dQdt = eps * z[1] - gamma * z[2] - zeta * z[2]
+    dRdt = gamma * z[1] - alpha * z[3] - zeta * z[3]
+    dVdt = zeta * (z[2] + z[3])
+    return [dSdt, dIdt, dQdt, dRdt, dVdt]
+
+V0 = 0
+z0 = [S0, I0, Q0, R0, V0]
+
+z = odeint(SIQRSV, z0, t)
+
+plt.subplot(numplot, 1, 4)
+plt.plot(t, z[:, 0], 'b--', label='S')
+plt.plot(t, z[:, 1], 'g--', label='I')
+plt.plot(t, z[:, 2], 'r--', label='Q')
+plt.plot(t, z[:, 3], '--', label='R')
+plt.plot(t, z[:, 4], '--', label='V', color='pink')
+plt.xlabel('time')
+plt.ylabel('SIQRSV-values')
+plt.legend(loc='best')
+plt.title('SIQRSV')
+plt.show()
+
 
 # endregion
