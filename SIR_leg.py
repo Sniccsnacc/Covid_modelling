@@ -69,7 +69,8 @@ z0 = [S0, I0, R0]
 z = odeint(SIR, z0, t)
 
 # plotting the SIR model
-plt.figure()
+fig, ax = plt.subplots(nrows = 3, ncols = 1)
+plt.tight_layout()
 plt.subplot(3, 1, 1)
 plt.plot(t, z[:, 0], 'b-', label='S')
 plt.plot(t, z[:, 1], 'g-', label='I')
