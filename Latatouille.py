@@ -26,7 +26,8 @@ plt.show()
 
 p = {"beta": 0.55,
     "gamma": 1/14,
-    "mu": 0.55,
+    "mu": 0.3,
+    "alpha": 0.0005,
     "N": 5806000}
 t = np.linspace(0, len(new_pos)-1, len(sick[200:-1]))
 
@@ -40,22 +41,24 @@ z0 = [S0, I0, Iso0, R0]
 def sliderplot(beta, gamma):
 
     def SIR(x, t):
-        S = -p["beta"]/(beta*p["N"]) * x[1]*x[0]
+        S = -p["beta"]/(beta*p["N"]) * x[1]*x[0] #+ p["alpha"] * x[3]
         I = -S -1/gamma*x[1] - p["mu"]*x[1]
         Iso = p["mu"]*x[1] - 1/gamma*x[2]
-        R = 1/gamma*x[1] + 1/gamma * x[2]
+        R = 1/gamma*x[1] + 1/gamma * x[2] #- p["alpha"] * x[3]
 
         return S, I, Iso, R
     
     # solving the SIR ODE
     z = odeint(SIR, z0, t)
+    Itot = z[:,1] + z[:,2]
 
     plt.figure()
-    plt.plot(t, z)
-    plt.plot(range(len(sick[200:-1])), sick[200:-1])
-    plt.legend(['S', 'I', 'Iso', 'R', 'DK'])
-    plt.xlim(50, 200)
-    plt.ylim(0, 500000)
+    plt.plot(t, z[:,1:3:], t, Itot)
+    #plt.plot(range(len(sick[230:-1])), sick[230:-1])
+    plt.plot(range(len(sick[50:-1])), sick[50:-1])
+    plt.legend(['I', 'Iso', 'Itot', 'DK'])
+    #plt.xlim(50, 200)
+    #plt.ylim(0, 200000)
     plt.show()
 
     return z
