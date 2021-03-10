@@ -45,8 +45,8 @@ N = 16000
 
 
 # new parameter, for how quickly you can become susceptible again
-# used in SIRS model
-alpha = 0.07
+# used in SIS model
+alpha = 0.01
 
 
 # new parameter, for how many infected go to quarantine
@@ -55,6 +55,9 @@ eps = 0.11
 
 # new parameter, for how many quarantined and removed individuals get vaccinated / become immune
 zeta = 0.02
+
+# time span
+t = np.linspace(0, 100, 1000)
 
 #number of plots
 numplot = 4
@@ -73,9 +76,6 @@ def SIR(z, t):
     dzdt = [dSdt, dIdt, dRdt]
     return dzdt
 
-
-# time span
-t = np.linspace(0, 100, 1000)
 
 # initial conditions
 I0 = 1
@@ -185,7 +185,7 @@ plt.title('SIQRSV')
 
 # endregion
 
-# region SIRS with quarantine after a given number of infected
+# region Quar, SIRS with quarantine after a given number of infected
 
 def Quar(z, t):
     dSdt = -beta * z[0] * z[1] + alpha * z[3]
@@ -193,23 +193,31 @@ def Quar(z, t):
     dQdt = 0
     dRdt = gamma * z[1] - alpha * z[3]
 
-    if dIdt >= 2000:
+    if z[1] >= 1600:
         dIdt = beta * z[0] * z[1] - gamma * z[1] - eps * z[2]
         dQdt = eps * z[1] - gamma * z[2]
         dRdt = gamma * z[1] - alpha * z[3]
+    elif z[2] > 0:
+        dQdt = - gamma * z[2]
+
 
     return [dSdt, dIdt, dQdt, dRdt]
 
 
 z0 = [S0, I0, Q0, R0]
-
+x0 = [S0, I0, R0]
 z = ExplicitEuler(Quar, z0, t)
+x = ExplicitEuler(SIS, x0, t)
+
 
 plt.figure(2)
 plt.plot(t, z[:, 0], 'b--', label='S')
 plt.plot(t, z[:, 1], 'g--', label='I')
 plt.plot(t, z[:, 2], 'r--', label='Q')
-plt.plot(t, z[:, 3], '--', label='R')
+plt.plot(t, z[:, 3], '--', label='R', color='pink')
+plt.plot(t, x[:, 0], 'b-', label='S')
+plt.plot(t, x[:, 1], 'g-', label='I')
+plt.plot(t, x[:, 2], '-', label='R', color='pink')
 plt.ylabel('SIQRS-values')
 plt.legend(loc='best')
 plt.title('SIQRS')
