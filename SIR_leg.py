@@ -22,14 +22,30 @@ for i in range(cases.size):
 
 # endregion
 
-#region SIR model
-
-# Parameteres
+#region Parameters
 beta = 0.000055
 gamma = 0.25
 N = 16000
 
 
+# new parameter, for how quickly you can become susceptible again
+# used in SIRS model
+alpha = 0.04
+
+
+# new parameter, for how many infected go to quarantine
+# used in SIQRS model
+eps = 0.02
+
+# new parameter, for how many quarantined and removed individuals get vaccinated / become immune
+
+
+# endregion
+
+# region SIR model
+'''
+The regular SIR model
+'''
 
 # SIR as an ODE
 def SIR(z, t):
@@ -41,7 +57,7 @@ def SIR(z, t):
 
 
 # time span
-t = np.linspace(0, 80, 1000)
+t = np.linspace(0, 100, 1000)
 
 # initial conditions
 I0 = 1
@@ -53,11 +69,11 @@ z0 = [S0, I0, R0]
 z = odeint(SIR, z0, t)
 
 # plotting the SIR model
-plt.figure(4)
+plt.figure()
+plt.subplot(3, 1, 1)
 plt.plot(t, z[:, 0], 'b-', label='S')
 plt.plot(t, z[:, 1], 'g-', label='I')
 plt.plot(t, z[:, 2], 'r-', label='R')
-plt.xlabel('time')
 plt.ylabel('SIR-values')
 plt.title('SIR')
 plt.legend(loc='best')
@@ -67,9 +83,9 @@ plt.legend(loc='best')
 #endregion
 
 # region SIRS model
-
-# new parameter
-alpha = 0.05
+'''
+Here the SIR model has been modified such that some removed individuals can be susceptible again
+'''
 
 # SIS model
 def SIS(z, t):
@@ -80,16 +96,50 @@ def SIS(z, t):
 
 z = odeint(SIS, z0, t)
 
-print(z[:, 1])
 
-plt.figure(5)
+plt.subplot(3, 1, 2)
 plt.plot(t, z[:, 0], 'b--', label='S')
 plt.plot(t, z[:, 1], 'g--', label='I')
 plt.plot(t, z[:, 2], 'r--', label='R')
-plt.xlabel('time')
-plt.ylabel('SIR-values')
+plt.ylabel('SIS-values')
 plt.legend(loc='best')
 plt.title('SIS')
+
+
+# endregion
+
+# region SIQRS
+'''
+Here the SIRS model has been extended, such that some infected individuals go to quarantine and dose not come out before 
+the are susceptible again
+'''
+
+def SIQRS(z, t):
+    dSdt = -beta * z[0] * z[1] + alpha * (z[2] + z[3])
+    dIdt = beta * z[0] * z[1] - gamma * z[1] - eps * z[2]
+    dQdt = eps * z[1] - gamma * z[2]
+    dRdt = gamma * z[1] - alpha * z[3]
+    return [dSdt, dIdt, dQdt, dRdt]
+
+
+Q0 = 0
+z0 = [S0, I0, Q0, R0]
+
+z = odeint(SIQRS, z0, t)
+
+plt.subplot(3, 1, 3)
+plt.plot(t, z[:, 0], 'b--', label='S')
+plt.plot(t, z[:, 1], 'g--', label='I')
+plt.plot(t, z[:, 2], 'r--', label='Q')
+plt.plot(t, z[:, 3], '--', label='R')
+plt.xlabel('time')
+plt.ylabel('SIQRS-values')
+plt.legend(loc='best')
+plt.title('SIQRS')
 plt.show()
+
+# endregion
+
+# region SIQRSV
 
 # endregion
