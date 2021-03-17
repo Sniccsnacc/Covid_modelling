@@ -63,61 +63,42 @@ for i in range(len(beta)):
     top_as_beta_SIQRSV[i] = np.max(z_tot)
 #%%
 ######## Thresholded quarantine #########
-z0 = [S0, I0, Q0, R0]
-def Quar(x, t, beta, k = None):
-    dSdt = -beta/N * x[0] * x[1] + alpha * x[3]
-    dIdt = beta/N * x[0] * x[1] - gamma * x[1]
-    dQdt = 0
-    dRdt = gamma * x[1] - alpha * x[3]
+# z0 = [S0, I0, Q0, R0]
+# def Quar(x, t, beta, k = None):
+#     dSdt = -beta/N * x[0] * x[1] + alpha * x[3]
+#     dIdt = beta/N * x[0] * x[1] - gamma * x[1]
+#     dQdt = 0
+#     dRdt = gamma * x[1] - alpha * x[3]
 
-    if x[1] >= 1600:
-        dIdt = beta * x[0] * x[1] - gamma * x[1] - mu * x[1]
-        dQdt = mu * x[1] - gamma * x[2]
-        dRdt = gamma * (x[1]+x[2]) - alpha * x[3]
-    elif x[2] > 0:
-        dQdt = - gamma * x[2]
+#     if x[1] >= 1600:
+#         dIdt = beta * x[0] * x[1] - gamma * x[1] - mu * x[1]
+#         dQdt = mu * x[1] - gamma * x[2]
+#         dRdt = gamma * (x[1]+x[2]) - alpha * x[3]
+#     elif x[2] > 0:
+#         dQdt = - gamma * x[2]
 
 
-    return dSdt, dIdt, dQdt, dRdt
+#     return dSdt, dIdt, dQdt, dRdt
 
-top_as_beta_QUAR = np.empty(len(beta))
+# top_as_beta_QUAR = np.empty(len(beta))
 
-for i in range(len(beta)):
-    args = (beta[i], None)
-    z = odeint(Quar, z0, t, args)
-    z_tot = z[:,1] + z[:,2]
+# for i in range(len(beta)):
+#     args = (beta[i], None)
+#     z = odeint(Quar, z0, t, args)
+#     z_tot = z[:,1] + z[:,2]
 
-    top_as_beta_QUAR[i] = np.max(z_tot)
+#     top_as_beta_QUAR[i] = np.max(z_tot)
 
 #%% Plotting
 
 plt.figure()
 plt.semilogy(beta, top_as_beta_SIQR)
 plt.semilogy(beta, top_as_beta_SIQRSV)
-plt.semilogy(beta, top_as_beta_QUAR)
+#plt.semilogy(beta, top_as_beta_QUAR)
 plt.xlabel('Beta values')
 plt.ylabel('Max number of infected at one day')
 plt.title('Top of infection curve as function of beta')
 plt.legend(('SIQR', 'SIQRSV', 'Thresholded Quarantine'))
 plt.show()
 
-
-#%% 
-
-z0 = [S0, I0, Q0, R0]
-def Quar(x, t, beta, k = None):
-    dSdt = -beta/N * x[0] * x[1] + alpha * x[3]
-    dIdt = beta/N * x[0] * x[1] - gamma * x[1]
-    dQdt = 0
-    dRdt = gamma * x[1] - alpha * x[3]
-
-    if x[1] >= 1600:
-        dIdt = beta * x[0] * x[1] - gamma * x[1] - mu * x[1]
-        dQdt = mu * x[1] - gamma * x[2]
-        dRdt = gamma * (x[1]+x[2]) - alpha * x[3]
-    elif x[2] > 0:
-        dQdt = - gamma * x[2]
-
-
-    return dSdt, dIdt, dQdt, dRdt
 
