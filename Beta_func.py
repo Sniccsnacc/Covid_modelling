@@ -41,7 +41,6 @@ for i in range(len(beta)):
 
     top_as_beta_SIQR[i] = np.max(z_tot)
 
-#%%
 ######### SIQRSV MODEL ##############
 V0 = 0
 z0 = [S0, I0, Q0, R0, V0]
@@ -62,6 +61,7 @@ for i in range(len(beta)):
 
     top_as_beta_SIQRSV[i] = np.max(z_tot)
 
+######## Thresholded quarantine #########
 
 #%% Plotting
 
