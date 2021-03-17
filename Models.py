@@ -60,19 +60,19 @@ def ExplicitEuler(fun, xa, Tspan):
 
     nx = len(xa)
     N = len(Tspan)
-    X = np.zeros((nx, N))
+    X = np.zeros((N, nx))
     T = np.zeros(N)
 
     #Explicit euler method
     T[0] = Tspan[0]
-    X[:,0] = xa
+    X[0, :] = xa
 
     for k in range(N-1):
-        f = feval(fun, X[:, k], T[k]) ##### HER!!!!!
+        f = np.array([feval(fun, X[k, :], T[k])])
         T[k+1] = Tspan[k+1]
         dt = T[k+1] - T[k]
-        X[:, k+1] = X[:, k] + f*dt
+        X[k+1, :] = X[k, :] + f*dt
 
-    return X.T
+    return X
 # endregion
 

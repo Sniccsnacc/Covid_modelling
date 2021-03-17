@@ -22,7 +22,7 @@ for i in range(cases.size):
 
 # Parameters
 N = 5806000
-beta = 0.0000045
+beta = 0.1 / N
 gamma = 0.147059
 
 # new parameter, for how quickly you can become susceptible again
@@ -38,6 +38,6 @@ mu = 0.11
 zeta = 0.02
 
 # time span
-t = np.linspace(0, 100, 1000)
+t = np.linspace(0, 0.1, 1000)
 
 # endregion
