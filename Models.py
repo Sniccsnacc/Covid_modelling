@@ -9,6 +9,14 @@ def SIR(z, t):
     return dzdt
 # endregion
 
+# region SIS model
+def SIS(z, t):
+    dSdt = -beta * z[0] * z[1] + alpha * z[2]
+    dIdt = beta*z[0]*z[1] - gamma * z[1]
+    dRdt = gamma * z[1] - alpha * z[2]
+    return [dSdt, dIdt, dRdt]
+# endregion
+
 # region SIQRS model
 def SIQRS(z, t):
     dSdt = -beta * z[0] * z[1] + alpha * (z[2] + z[3])
@@ -45,21 +53,4 @@ def Quar(z, t):
 # endregion
 
 
-
-
-# region Explixit euler just for fun
-
-def ExplicitEuler(fun, x0, tspan):
-    nx = len(x0)
-    X = np.zeros((nx, tspan.size), dtype='float')
-    T = np.zeros(tspan.size, dtype='float')
-
-    X[:, 0] = x0
-    for k in range(tspan.size - 1):
-        f = np.array(fun(X[:, k], tspan), dtype=float)
-        dt = tspan[k+1] - tspan[k]
-        X[:, k+1] = X[:, k] + f * dt
-
-    return X.T
-# endregion
 
