@@ -96,19 +96,13 @@ plt.title('SIQRSV')
 
 # region Quar, SIRS with quarantine after a given number of infected
 z0 = [S0, I0, Q0, R0]
-x0 = [S0, I0, R0]
-z = odeint(Quar, z0, t)
-x = odeint(SIS, x0, t)
-
+z = ExplicitEuler("Quar", z0, t)
 
 plt.figure(2)
 plt.plot(t, z[:, 0], 'b--', label='S')
 plt.plot(t, z[:, 1], 'g--', label='I')
 plt.plot(t, z[:, 2], 'r--', label='Q')
 plt.plot(t, z[:, 3], '--', label='R', color='pink')
-plt.plot(t, x[:, 0], 'b-', label='S')
-plt.plot(t, x[:, 1], 'g-', label='I')
-plt.plot(t, x[:, 2], '-', label='R', color='pink')
 plt.ylabel('SIQRS-values')
 plt.legend(loc='best')
 plt.title('Quar')

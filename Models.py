@@ -1,5 +1,6 @@
 from Parameters import*
 
+
 # region SIR model
 def SIR(z, t):
     dSdt = -beta *z[0]*z[1]
@@ -52,5 +53,26 @@ def Quar(z, t):
     return [dSdt, dIdt, dQdt, dRdt]
 # endregion
 
+# region Explicit Euler
+def ExplicitEuler(fun, xa, Tspan):
+    def feval(funcName, *args):
+        return eval(funcName)(*args)
 
+    nx = len(xa)
+    N = len(Tspan)
+    X = np.zeros((nx, N))
+    T = np.zeros(N)
+
+    #Explicit euler method
+    T[0] = Tspan[0]
+    X[:,0] = xa
+
+    for k in range(N-1):
+        f = feval(fun, X[:, k], T[k]) ##### HER!!!!!
+        T[k+1] = Tspan[k+1]
+        dt = T[k+1] - T[k]
+        X[:, k+1] = X[:, k] + f*dt
+
+    return X.T
+# endregion
 
