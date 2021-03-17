@@ -6,6 +6,7 @@ mat = pd.read_csv('Data/Test_pos_over_time.csv', sep=';')
 cases = np.array([mat.NewPositive[0:-2]]).squeeze().astype(int)
 time = np.linspace(0, cases.size, cases.size)
 sick = np.zeros(cases.size)
+new_pos = mat.NewPositive
 
 
 # finding the total number of sick people

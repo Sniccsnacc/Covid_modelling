@@ -4,7 +4,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from scipy.integrate import odeint
-from Latatouille import new_pos
 from Parameters import *
 
 beta = np.linspace(0, 1, 1500)
@@ -85,8 +84,8 @@ for i in range(len(beta)):
 #%% Plotting
 
 plt.figure()
-plt.semilogy(beta, top_as_beta_SIQR)
-plt.semilogy(beta, top_as_beta_SIQRSV)
+plt.plot(beta, top_as_beta_SIQR)
+plt.plot(beta, top_as_beta_SIQRSV)
 #plt.semilogy(beta, top_as_beta_QUAR)
 plt.xlabel('Beta values')
 plt.ylabel('Max number of infected at one day')
