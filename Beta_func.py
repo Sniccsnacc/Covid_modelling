@@ -6,16 +6,10 @@ import matplotlib.dates as mdates
 from scipy.integrate import odeint
 from Latatouille import new_pos
 import SIR_leg as sir
+from Parameters import *
 
 beta = np.linspace(0, 1, 1500)
 t = np.linspace(0, len(new_pos)-1, len(sir.sick[200:-1]))
-
-gamma = 1/14
-mu = 0.3
-alpha = 0.0005
-N = 5806000
-# new parameter, for how many quarantined and removed individuals get vaccinated / become immune
-zeta = 0.02
 
 Q0 = 0
 I0 = 100 - Q0

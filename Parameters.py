@@ -20,7 +20,7 @@ for i in range(cases.size):
 # region The parameters used in the different models:
 
 # Parameters
-N = 6e6
+N = 5806000
 beta = 0.0000045
 gamma = 0.147059
 
@@ -31,7 +31,7 @@ alpha = 0.01
 
 # new parameter, for how many infected go to quarantine
 # used in SIQRS model
-mu = 0.0011
+mu = 0.11
 
 # new parameter, for how many quarantined and removed individuals get vaccinated / become immune
 zeta = 0.02
