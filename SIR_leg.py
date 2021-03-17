@@ -186,8 +186,6 @@ plt.title('SIQRSV')
 
 # endregion
 
-'''
-
 # region Quar, SIRS with quarantine after a given number of infected
 
 def Quar(z, t):
@@ -224,7 +222,6 @@ plt.plot(t, x[:, 2], '-', label='R', color='pink')
 plt.ylabel('SIQRS-values')
 plt.legend(loc='best')
 plt.title('Quar')
-'''
 plt.show()
 
 
