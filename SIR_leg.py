@@ -39,9 +39,10 @@ for i in range(cases.size):
 # endregion
 
 #region Parameters and number of plots
-beta = 0.000055
-gamma = 0.25
-N = 16000
+N = 6e6
+beta = 0.0000045
+gamma = 0.147059
+
 
 
 # new parameter, for how quickly you can become susceptible again
@@ -51,7 +52,7 @@ alpha = 0.01
 
 # new parameter, for how many infected go to quarantine
 # used in SIQRS model
-eps = 0.11
+mu = 0.0011
 
 # new parameter, for how many quarantined and removed individuals get vaccinated / become immune
 zeta = 0.02
@@ -70,7 +71,7 @@ The regular SIR model
 
 # SIR as an ODE
 def SIR(z, t):
-    dSdt = -beta*z[0]*z[1]
+    dSdt = -beta *z[0]*z[1]
     dIdt = beta*z[0]*z[1] - gamma * z[1]
     dRdt = gamma * z[1]
     dzdt = [dSdt, dIdt, dRdt]
@@ -135,8 +136,8 @@ the are susceptible again
 
 def SIQRS(z, t):
     dSdt = -beta * z[0] * z[1] + alpha * (z[2] + z[3])
-    dIdt = beta * z[0] * z[1] - gamma * z[1] - eps * z[2]
-    dQdt = eps * z[1] - gamma * z[2]
+    dIdt = beta * z[0] * z[1] - gamma * z[1] - mu * z[2]
+    dQdt = mu * z[1] - gamma * z[2]
     dRdt = gamma * z[1] - alpha * z[3]
     return [dSdt, dIdt, dQdt, dRdt]
 
@@ -159,10 +160,10 @@ plt.title('SIQRS')
 
 # region SIQRSV
 def SIQRSV(z, t):
-    dSdt = -beta * z[0] * z[1] + alpha * (z[2] + z[3])
-    dIdt = beta * z[0] * z[1] - gamma * z[1] - eps * z[2]
-    dQdt = eps * z[1] - gamma * z[2] - zeta * z[2]
-    dRdt = gamma * z[1] - alpha * z[3] - zeta * z[3]
+    dSdt = -beta * z[0] * z[1] + alpha * z[3]
+    dIdt = beta * z[0] * z[1] - gamma * z[1] - mu * z[1]
+    dQdt = mu * z[1] - gamma * z[2] - zeta * z[2]
+    dRdt = gamma * (z[1] + z[2]) - alpha * z[3] - zeta * z[3]
     dVdt = zeta * (z[2] + z[3])
     return [dSdt, dIdt, dQdt, dRdt, dVdt]
 
@@ -185,6 +186,8 @@ plt.title('SIQRSV')
 
 # endregion
 
+'''
+
 # region Quar, SIRS with quarantine after a given number of infected
 
 def Quar(z, t):
@@ -194,8 +197,8 @@ def Quar(z, t):
     dRdt = gamma * z[1] - alpha * z[3]
 
     if z[1] >= 1600:
-        dIdt = beta * z[0] * z[1] - gamma * z[1] - eps * z[2]
-        dQdt = eps * z[1] - gamma * z[2]
+        dIdt = beta * z[0] * z[1] - gamma * z[1] - mu * z[2]
+        dQdt = mu * z[1] - gamma * z[2]
         dRdt = gamma * z[1] - alpha * z[3]
     elif z[2] > 0:
         dQdt = - gamma * z[2]
@@ -220,7 +223,8 @@ plt.plot(t, x[:, 1], 'g-', label='I')
 plt.plot(t, x[:, 2], '-', label='R', color='pink')
 plt.ylabel('SIQRS-values')
 plt.legend(loc='best')
-plt.title('SIQRS')
+plt.title('Quar')
+'''
 plt.show()
 
 
