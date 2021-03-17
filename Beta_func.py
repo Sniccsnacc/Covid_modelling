@@ -5,11 +5,10 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from scipy.integrate import odeint
 from Latatouille import new_pos
-import SIR_leg as sir
 from Parameters import *
 
 beta = np.linspace(0, 1, 1500)
-t = np.linspace(0, len(new_pos)-1, len(sir.sick[200:-1]))
+t = np.linspace(0, len(new_pos)-1, len(sick[200:-1]))
 
 Q0 = 0
 I0 = 100 - Q0
