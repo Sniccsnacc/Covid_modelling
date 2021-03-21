@@ -20,34 +20,34 @@ def SIS(z, t):
 
 # region SIQRS model
 def SIQRS(z, t):
-    dSdt = -beta * z[0] * z[1] + alpha * (z[2] + z[3])
-    dIdt = beta * z[0] * z[1] - gamma * z[1] - mu * z[2]
+    dSdt = -beta * z[0] * z[1] + alpha * z[3]
+    dIdt = beta * z[0] * z[1] - (gamma + mu) * z[1]
     dQdt = mu * z[1] - gamma * z[2]
-    dRdt = gamma * z[1] - alpha * z[3]
+    dRdt = gamma * (z[1] + z[2]) - alpha * z[3]
     return [dSdt, dIdt, dQdt, dRdt]
 # endregion
 
 # region SIQRSV model
 def SIQRSV(z, t):
-    dSdt = -beta * z[0] * z[1] + alpha * z[3]
-    dIdt = beta * z[0] * z[1] - gamma * z[1] - mu * z[1]
-    dQdt = mu * z[1] - gamma * z[2] - zeta * z[2]
+    dSdt = -beta * z[0] * z[1] - zeta * z[0] + alpha * z[3]
+    dIdt = beta * z[0] * z[1] - (gamma + mu) * z[1]
+    dQdt = mu * z[1] - gamma * z[2]
     dRdt = gamma * (z[1] + z[2]) - alpha * z[3] - zeta * z[3]
-    dVdt = zeta * (z[2] + z[3])
+    dVdt = zeta * (z[0] + z[3])
     return [dSdt, dIdt, dQdt, dRdt, dVdt]
 # endregion
 
 # region Quar, SIRS with quarantine after a given number of infected
 def Quar(z, t):
-    dSdt = -beta * z[0] * z[1] + alpha * z[3]
+    dSdt = -beta * z[0] * z[1] + alpha * z[2]
     dIdt = beta * z[0] * z[1] - gamma * z[1]
     dQdt = 0
-    dRdt = gamma * z[1] - alpha * z[3]
+    dRdt = gamma * z[1] - alpha * z[2]
 
-    if z[1] >= 1600:
-        dIdt = beta * z[0] * z[1] - gamma * z[1] - mu * z[2]
+    if z[1] >= quar_thresshold:
+        dIdt = beta * z[0] * z[1] - (gamma + mu) * z[1]
         dQdt = mu * z[1] - gamma * z[2]
-        dRdt = gamma * z[1] - alpha * z[3]
+        dRdt = gamma * (z[1] + z[2]) - alpha * z[3]
     elif z[2] > 0:
         dQdt = - gamma * z[2]
     return [dSdt, dIdt, dQdt, dRdt]
