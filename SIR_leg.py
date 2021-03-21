@@ -1,6 +1,3 @@
-#%% How to solve ODE
-
-
 import matplotlib.pyplot as plt
 from scipy.integrate import odeint
 from Models import*
@@ -97,7 +94,7 @@ plt.tight_layout()
 
 # region Quar, SIRS with quarantine after a given number of infected
 z0 = [S0, I0, Q0, R0]
-z = ExplicitEuler("Quar", z0, t)
+z = odeint(Quar, z0, t)
 
 plt.figure(3)
 plt.plot(t, z[:, 0], 'b-', label='S')

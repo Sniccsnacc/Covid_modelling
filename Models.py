@@ -19,7 +19,7 @@ def SIS(z, t):
 # endregion
 
 # region SIQRS model
-def SIQRS(z, t):
+def SIQRS(z, t, mu=mu):
     dSdt = -beta * z[0] * z[1] + alpha * z[3]
     dIdt = beta * z[0] * z[1] - (gamma + mu) * z[1]
     dQdt = mu * z[1] - gamma * z[2]
@@ -53,6 +53,8 @@ def Quar(z, t):
     return [dSdt, dIdt, dQdt, dRdt]
 # endregion
 
+# region Extra functions
+
 # region Explicit Euler
 def ExplicitEuler(fun, xa, Tspan):
     def feval(funcName, *args):
@@ -76,3 +78,10 @@ def ExplicitEuler(fun, xa, Tspan):
     return X
 # endregion
 
+# Trapazoid
+def trapezoid(fx, dt):
+    sum = 0
+    for i in range(len(fx) - 1):
+        sum += 1/2 * dt * (fx[i] + fx[i+1])
+    return sum
+# endregion

@@ -22,7 +22,7 @@ for i in range(cases.size):
 
 # Parameters
 N = 5.806e6
-quar_thresshold_procentage = 0.50
+quar_thresshold_procentage = 0.25
 quar_thresshold = N * (1 - quar_thresshold_procentage)
 beta = 5 / N
 gamma = 1/14
@@ -34,7 +34,7 @@ alpha = 0.01
 
 # new parameter, for how many infected go to quarantine
 # used in SIQRS model
-mu = 0.11
+mu = 1/7
 
 # new parameter, for how many quarantined and removed individuals get vaccinated / become immune
 zeta = 0.02
