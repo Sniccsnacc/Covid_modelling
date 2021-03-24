@@ -55,38 +55,31 @@ for i in range(len(beta)):
     top_as_beta_SIQRSV[i] = np.max(z_tot)
 
 ######## Thresholded quarantine #########
-# z0 = [S0, I0, Q0, R0]
-# def Quar(z, t, beta):
-#     dSdt = -beta * z[0] * z[1] + alpha * z[2]
-#     dIdt = beta * z[0] * z[1] - gamma * z[1]
-#     dQdt = 0
-#     dRdt = gamma * z[1] - alpha * z[2]
-
-#     if z[1] >= quar_thresshold:
-#         dIdt = beta * z[0] * z[1] - (gamma + mu) * z[1]
-#         dQdt = mu * z[1] - gamma * z[2]
-#         dRdt = gamma * (z[1] + z[2]) - alpha * z[3]
-#     elif z[2] > 0:
-#         dQdt = - gamma * z[2]
-#     return [dSdt, dIdt, dQdt, dRdt]
+z0 = [S0, I0, R0]
+def SIR(z, t, beta):
+    dSdt = -beta *z[0]*z[1]
+    dIdt = beta*z[0]*z[1] - gamma * z[1]
+    dRdt = gamma * z[1]
+    dzdt = [dSdt, dIdt, dRdt]
+    return dzdt
 
 
 
-# top_as_beta_QUAR = np.empty(len(beta))
+top_as_beta_SIR = np.empty(len(beta))
 
-# for i in range(len(beta)):
-#     args = (beta[i],)
-#     z = odeint(Quar, z0, t, args)
-#     z_tot = z[:,1] + z[:,2]
+for i in range(len(beta)):
+    args = (beta[i],)
+    z = odeint(SIR, z0, t, args)
+    z_tot = z[:,1] + z[:,2]
 
-#     top_as_beta_QUAR[i] = np.max(z_tot)
+    top_as_beta_SIR[i] = np.max(z_tot)
 
 #%% Plotting
 
 plt.figure()
 plt.plot(beta*N, top_as_beta_SIQR)
 plt.plot(beta*N, top_as_beta_SIQRSV)
-#plt.plot(beta, top_as_beta_QUAR)
+plt.plot(beta, top_as_beta_SIR)
 plt.xlabel('Beta values')
 plt.ylabel('Max number of infected at one day')
 plt.title('Top of infection curve as function of beta')
@@ -94,3 +87,33 @@ plt.legend(('SIQR', 'SIQRSV', 'Thresholded Quarantine'))
 plt.show()
 
 
+#%% Interpolation
+
+from scipy.optimize import curve_fit
+
+def f(x, a, b):
+    return a*x+b
+
+fr = 594
+
+p1 = curve_fit(f, beta[fr:]*N, top_as_beta_SIQR[fr:])
+p2 = curve_fit(f, beta[fr:]*N, top_as_beta_SIQRSV[fr:])
+
+
+fig, ax = plt.subplots(nrows = 2, ncols = 1)
+plt.tight_layout(h_pad=3.0)
+plt.subplot(2,1,1)
+plt.plot(beta[fr:]*N, top_as_beta_SIQR[fr:])
+plt.plot(beta[fr:]*N, f(beta[fr:]*N, p1[0][0], p1[0][1]))
+plt.xlabel('Beta values')
+plt.title('Top of infection curve as function of beta')
+plt.legend(('SIQR', str(round(p1[0][0],2)) + 'x + ' + str(round(p1[0][1],2))))
+
+plt.subplot(2,1,2)
+plt.plot(beta[fr:]*N, top_as_beta_SIQRSV[fr:])
+plt.plot(beta[fr:]*N, f(beta[fr:]*N, p2[0][0], p2[0][1]))
+plt.xlabel('Beta values')
+plt.ylabel('Max number of infected at one day')
+plt.title('Top of infection curve as function of beta')
+plt.legend(('SIQRSV', str(round(p2[0][0],2)) + 'x + ' + str(round(p2[0][1],2))))
+plt.show()
