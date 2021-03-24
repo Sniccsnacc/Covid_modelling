@@ -33,7 +33,7 @@ plt.grid()
 
 #endregion
 
-# region SIRS model
+# region SIS model
 
 z = odeint(SIS, z0, t)
 

@@ -24,12 +24,12 @@ for i in range(cases.size):
 N = 5.806e6
 quar_thresshold_procentage = 0.25
 quar_thresshold = N * (1 - quar_thresshold_procentage)
-beta = 5 / N
+beta = 1 / N
 gamma = 1/14
 
 # new parameter, for how quickly you can become susceptible again
 # used in SIS model
-alpha = 0.01
+alpha = 1/14
 
 
 # new parameter, for how many infected go to quarantine
@@ -40,6 +40,7 @@ mu = 1/7
 zeta = 0.02
 
 # time span
-t = np.linspace(0, 60, 600)
+num_days = 200
+t = np.linspace(0, num_days, num_days)
 
 # endregion

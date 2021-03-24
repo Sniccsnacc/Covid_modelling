@@ -11,7 +11,7 @@ def SIR(z, t):
 # endregion
 
 # region SIS model
-def SIS(z, t):
+def SIS(z, t, alpha=alpha):
     dSdt = -beta * z[0] * z[1] + alpha * z[2]
     dIdt = beta*z[0]*z[1] - gamma * z[1]
     dRdt = gamma * z[1] - alpha * z[2]
