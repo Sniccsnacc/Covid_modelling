@@ -21,11 +21,15 @@ for i in range(cases.size):
 # region The parameters used in the different models:
 
 # Parameters
-N = 5.806e6
+N = 5840045 #(2021) 1. kvartal
 quar_thresshold_procentage = 0.25
 quar_thresshold = N * (1 - quar_thresshold_procentage)
 beta = 1 / N
 gamma = 1/7
+
+#Birth and death rates
+tau = 60937/365;  #Births per day (Division by n_timestamps per year)
+xi = 54645/365    #Deaths per day (Division by n_timestamps per year)
 
 # new parameter, for how quickly you can become susceptible again
 # used in SIS model
