@@ -6,12 +6,10 @@ import matplotlib.dates as mdates
 from scipy.integrate import odeint
 import numpy as np
 from ipywidgets import interactive
-from SIR_leg import sick
+from Parameters import *
 
 D_O_T = pd.read_csv('Data/Deaths_over_time.csv',sep = ';')
 Cases_sex = pd.read_csv('Data/Cases_by_sex.csv', sep = ';')
-lsick = pd.read_csv('Data/Test_pos_over_time.csv', sep = ';')
-new_pos = lsick.NewPositive
 
 plt.figure(1)
 plt.plot(D_O_T.Dato[0:-1], D_O_T.Antal_døde[0:-1])
