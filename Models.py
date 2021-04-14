@@ -19,7 +19,7 @@ def SIS(z, t, alpha=alpha):
 # endregion
 
 # region SIQRS model
-def SIQRS(z, t, mu=mu):
+def SIQRS(z, t, alpha=alpha, mu=mu):
     dSdt = -beta * z[0] * z[1] + alpha * z[3]
     dIdt = beta * z[0] * z[1] - (gamma + mu) * z[1]
     dQdt = mu * z[1] - gamma * z[2]

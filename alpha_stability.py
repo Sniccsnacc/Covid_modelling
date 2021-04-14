@@ -6,15 +6,25 @@ from matplotlib.widgets import Slider, Button
 
 I0 = 1
 S0 = N - I0
+Q0 = 0
 R0 = 0
-z0 = [S0, I0, R0]
+z0SIS = [S0, I0, R0]
+z0SIQRS = [S0, I0, Q0, R0]
 alpha = np.linspace(0, 1, 100)
-Tspan = np.linspace(0, 200, 200)
-
+steady = np.zeros((len(alpha), 4))
 
 for i in range(len(alpha)):
-    z = odeint(SIS, z0, Tspan, args=(alpha[i], ))
-    plt.figure(1)
-    plt.plot(Tspan, z[:, 1])
+    z = odeint(SIQRS, z0SIQRS, t, args=(alpha[i],))
+    steady[i, :] = z[-1, :]
 
+plt.figure()
+plt.plot(alpha, steady[:, 0], 'b-', label='S')
+plt.plot(alpha, steady[:, 1], 'g-', label='I')
+plt.plot(alpha, steady[:, 2], '-', label='Q')
+plt.plot(alpha, steady[:, 3], 'r-', label='R')
+plt.xlabel(r'$\alpha$')
+plt.ylabel('SIQRS-stable')
+plt.legend(loc='best')
+plt.title(r'stability for SIQRS when varing $\alpha$')
+plt.grid()
 plt.show()
