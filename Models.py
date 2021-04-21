@@ -10,6 +10,17 @@ def SIR(z, t):
     return dzdt
 # endregion
 
+# region SIR model birth and death rate
+def SIRBD(z, t):
+    dSdt = tau * z[0] - xi * z[0] - beta * z[0] *z[1]
+    dIdt = beta*z[0]*z[1] - gamma * z[1]
+    dRdt = gamma * z[1] - xi * z[2]
+    dzdt = [dSdt, dIdt, dRdt]
+    return dzdt
+# endregion
+
+
+
 # region SIS model
 def SIS(z, t, alpha=alpha):
     dSdt = -beta * z[0] * z[1] + alpha * z[2]

@@ -39,6 +39,10 @@ mu = 1/7
 # new parameter, for how many quarantined and removed individuals get vaccinated / become immune
 zeta = 0.02
 
+# new parameter, for birth rate (tau) and death rate (xi)
+tau = (60937 / 365) / N
+xi = (54645 / 365) / N
+
 # time span
 num_days = 200
 t = np.linspace(0, num_days, num_days)

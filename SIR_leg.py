@@ -3,7 +3,49 @@ import matplotlib.pyplot as plt
 from scipy.integrate import odeint
 from Models import*
 
+# region printing parameters
+print('\n','figure(1)')
 
+print('SIR - parameters')
+print('   beta = ', beta, '\n',
+      '  gamma = ', gamma, '\n')
+
+print('\nSIR with birth and death rate - parameters')
+print('   beta = ', beta, '\n',
+      '  gamma = ', gamma, '\n',
+      '  birth rate = ', tau, '\n',
+      '  death rate = ', xi, '\n')
+
+print('\nSIRS - parameters')
+print('   beta = ', beta, '\n',
+      '  gamma = ', gamma, '\n',
+      '  reinfection rate = ', alpha, '\n')
+
+print('--------------------------------------------')
+print('\n','figure(2)',)
+
+print('\nSIQRS - parameters')
+print('   beta = ', beta, '\n',
+      '  gamma = ', gamma, '\n',
+      '  reinfection rate = ', alpha, '\n',
+      '  quarantine rate = ', mu, '\n')
+
+print('\nSIQRSV - parameters')
+print('   beta = ', beta, '\n',
+      '  gamma = ', gamma, '\n',
+      '  reinfection rate = ', alpha, '\n',
+      '  quarantine rate = ', mu, '\n',
+      '  Vaccination rate = ', zeta, '\n')
+
+print('--------------------------------------------')
+print('\n','figure(3)',)
+
+print('\nQuar - parameters')
+print('   beta = ', beta, '\n',
+      '  gamma = ', gamma, '\n',
+      '  reinfection rate = ', alpha, '\n',
+      '  quarantine rate = ', mu, '\n')
+# endregion
 
 #number of plots
 numplot = 2
@@ -21,7 +63,7 @@ z = odeint(SIR, z0, t)
 
 # plotting the SIR model
 fig1 = plt.figure(1)
-fig1.add_subplot(2, 1, 1)
+fig1.add_subplot(3, 1, 1)
 plt.plot(t, z[:, 0], 'b-', label='S')
 plt.plot(t, z[:, 1], 'g-', label='I')
 plt.plot(t, z[:, 2], 'r-', label='R')
@@ -34,12 +76,30 @@ plt.grid()
 
 #endregion
 
+
+# region SIR model with birth and death rate
+z = odeint(SIRBD, z0, t)
+
+
+fig1.add_subplot(3, 1, 2)
+plt.plot(t, z[:, 0], 'b-', label='S')
+plt.plot(t, z[:, 1], 'g-', label='I')
+plt.plot(t, z[:, 2], 'r-', label='R')
+plt.ylabel('SIR-values')
+plt.legend(loc='best')
+plt.title('SIR with birth and death rate')
+plt.grid()
+plt.tight_layout()
+
+# endregion
+
+
 # region SIS model
 
 z = odeint(SIS, z0, t)
 
 
-fig1.add_subplot(2, 1, 2)
+fig1.add_subplot(3, 1, 3)
 plt.plot(t, z[:, 0], 'b-', label='S')
 plt.plot(t, z[:, 1], 'g-', label='I')
 plt.plot(t, z[:, 2], 'r-', label='R')
@@ -111,3 +171,4 @@ plt.show()
 
 
 # endregion
+
