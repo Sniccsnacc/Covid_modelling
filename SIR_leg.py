@@ -14,7 +14,7 @@ print('\nSIR with birth and death rate - parameters')
 print('   beta = ', beta, '\n',
       '  gamma = ', gamma, '\n',
       '  birth rate = ', tau, '\n',
-      '  death rate = ', xi, '\n')
+      '  death rate = ', psi, '\n')
 
 print('\nSIRS - parameters')
 print('   beta = ', beta, '\n',
