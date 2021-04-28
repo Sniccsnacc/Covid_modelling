@@ -23,8 +23,24 @@ plt.plot(alpha, steady[:, 1], 'g-', label='I')
 plt.plot(alpha, steady[:, 2], '-', label='Q')
 plt.plot(alpha, steady[:, 3], 'r-', label='R')
 plt.xlabel(r'$\alpha$')
-plt.ylabel('SIQRS-stable')
+plt.ylabel('SIQRS-stabil')
 plt.legend(loc='best')
-plt.title(r'stability for SIQRS when varing $\alpha$')
+plt.title(r'Stabilitet for SIQRS når $\alpha$ variere')
+plt.grid()
+
+
+steady = np.zeros((len(alpha), 3))
+for i in range(len(alpha)):
+    z = odeint(SIS, z0SIS, t, args=(alpha[i],))
+    steady[i, :] = z[-1, :]
+
+plt.figure()
+plt.plot(alpha, steady[:, 0], 'b-', label='S')
+plt.plot(alpha, steady[:, 1], 'g-', label='I')
+plt.plot(alpha, steady[:, 2], 'r-', label='R')
+plt.xlabel(r'$\alpha$')
+plt.ylabel('SIRS-stabil')
+plt.legend(loc='best')
+plt.title(r'Stabilitet for SIRS når $\alpha$ variere')
 plt.grid()
 plt.show()

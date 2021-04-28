@@ -19,7 +19,7 @@ print('   beta = ', beta, '\n',
 print('\nSIRS - parameters')
 print('   beta = ', beta, '\n',
       '  gamma = ', gamma, '\n',
-      '  reinfection rate = ', alpha, '\n')
+      '  resusceptible rate = ', alpha, '\n')
 
 print('--------------------------------------------')
 print('\n','figure(2)',)
@@ -27,13 +27,13 @@ print('\n','figure(2)',)
 print('\nSIQRS - parameters')
 print('   beta = ', beta, '\n',
       '  gamma = ', gamma, '\n',
-      '  reinfection rate = ', alpha, '\n',
+      '  resusceptible rate = ', alpha, '\n',
       '  quarantine rate = ', mu, '\n')
 
 print('\nSIQRSV - parameters')
 print('   beta = ', beta, '\n',
       '  gamma = ', gamma, '\n',
-      '  reinfection rate = ', alpha, '\n',
+      '  resusceptible rate = ', alpha, '\n',
       '  quarantine rate = ', mu, '\n',
       '  Vaccination rate = ', zeta, '\n')
 
@@ -43,7 +43,7 @@ print('\n','figure(3)',)
 print('\nQuar - parameters')
 print('   beta = ', beta, '\n',
       '  gamma = ', gamma, '\n',
-      '  reinfection rate = ', alpha, '\n',
+      '  resusceptible rate = ', alpha, '\n',
       '  quarantine rate = ', mu, '\n')
 # endregion
 
@@ -76,7 +76,6 @@ plt.grid()
 
 #endregion
 
-
 # region SIR model with birth and death rate
 z = odeint(SIRBD, z0, t)
 
@@ -92,7 +91,6 @@ plt.grid()
 plt.tight_layout()
 
 # endregion
-
 
 # region SIS model
 

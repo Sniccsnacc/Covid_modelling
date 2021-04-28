@@ -29,7 +29,7 @@ gamma = 1/14
 
 # new parameter, for how quickly you can become susceptible again
 # used in SIS model
-alpha = 1/14
+alpha = 1/50
 
 
 # new parameter, for how many infected go to quarantine
@@ -44,7 +44,7 @@ tau = (60937 / 365) / N
 psi = (54645 / 365) / N
 
 # time span
-num_days = 200
+num_days = 100
 t = np.linspace(0, num_days, num_days)
 
 # endregion
