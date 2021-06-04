@@ -1,3 +1,4 @@
+#%%
 from Models import *
 from scipy.integrate import odeint
 import matplotlib.pyplot as plt
@@ -17,14 +18,14 @@ for i in range(len(alpha)):
     steady[i, :] = z[-1, :]
 
 plt.figure()
-plt.plot(alpha, steady[:, 0], 'b-', label='S')
-plt.plot(alpha, steady[:, 1], 'g-', label='I')
-plt.plot(alpha, steady[:, 2], '-', label='Q')
-plt.plot(alpha, steady[:, 3], 'r-', label='R')
+plt.plot(alpha, steady[:, 0], color = '#00BFFF', label='S')
+plt.plot(alpha, steady[:, 1], color = '#228B22', label='I')
+plt.plot(alpha, steady[:, 2], color = '#FF8C00', label='Q')
+plt.plot(alpha, steady[:, 3], color = '#B22222', label='R')
 plt.xlabel(r'$\alpha$')
 plt.ylabel('SIQRS-stabil')
 plt.legend(loc='best')
-plt.title(r'Stabilitet for SIQRS når $\alpha$ variere')
+plt.title(r'Stabilitet for SIQRS når $\alpha$ varierer')
 plt.grid()
 
 
@@ -34,12 +35,12 @@ for i in range(len(alpha)):
     steady[i, :] = z[-1, :]
 
 plt.figure()
-plt.plot(alpha, steady[:, 0], 'b-', label='S')
-plt.plot(alpha, steady[:, 1], 'g-', label='I')
-plt.plot(alpha, steady[:, 2], 'r-', label='R')
+plt.plot(alpha, steady[:, 0], color = '#00BFFF', label='S')
+plt.plot(alpha, steady[:, 1], color = '#228B22', label='I')
+plt.plot(alpha, steady[:, 2], color = '#B22222', label='R')
 plt.xlabel(r'$\alpha$')
 plt.ylabel('SIRS-stabil')
 plt.legend(loc='best')
-plt.title(r'Stabilitet for SIRS når $\alpha$ variere')
+plt.title(r'Stabilitet for SIRS når $\alpha$ varierer')
 plt.grid()
 plt.show()

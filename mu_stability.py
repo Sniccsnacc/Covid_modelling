@@ -1,3 +1,4 @@
+#%%
 from Models import *
 from scipy.integrate import odeint
 import matplotlib.pyplot as plt
@@ -16,15 +17,14 @@ for i in range(len(mu)):
     steady[i, :] = z[-1, :]
 
 
-
 plt.figure()
-plt.plot(mu, steady[:, 0], 'b-', label='S')
-plt.plot(mu, steady[:, 1], 'g-', label='I')
-plt.plot(mu, steady[:, 2], '-', label='Q')
-plt.plot(mu, steady[:, 3], 'r-', label='R')
+plt.plot(mu, steady[:, 0], color = '#00BFFF', label='S')
+plt.plot(mu, steady[:, 1], color = '#228B22', label='I')
+plt.plot(mu, steady[:, 2], color = '#FF8C00', label='Q')
+plt.plot(mu, steady[:, 3], color = '#B22222', label='R')
 plt.xlabel(r'$\mu$')
 plt.ylabel('SIQRS-stabil')
 plt.legend(loc='best')
-plt.title(r'Stabilitet for SIQRS når $\mu$ variere')
+plt.title(r'Stabilitet for SIQRS når $\mu$ varierer')
 plt.grid()
 plt.show()
