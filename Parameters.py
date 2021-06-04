@@ -24,8 +24,8 @@ for i in range(cases.size):
 N = 5.806e6
 quar_thresshold_procentage = 0.25
 quar_thresshold = N * (1 - quar_thresshold_procentage)
-beta = 1
-gamma = 1/14
+beta = 1/7
+gamma = 1/5
 
 # new parameter, for how quickly you can become susceptible again
 # used in SIS model
