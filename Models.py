@@ -3,8 +3,8 @@ from Parameters import*
 
 # region SIR model
 def SIR(z, t):
-    dSdt = -beta *z[0]*z[1]
-    dIdt = beta*z[0]*z[1] - gamma * z[1]
+    dSdt = -beta * z[0] * z[1] / N
+    dIdt = beta * z[0] * z[1] / N - gamma * z[1]
     dRdt = gamma * z[1]
     dzdt = [dSdt, dIdt, dRdt]
     return dzdt
@@ -12,9 +12,9 @@ def SIR(z, t):
 
 # region SIR model birth and death rate
 def SIRBD(z, t):
-    dSdt = tau * z[0] - psi * z[0] - beta * z[0] *z[1]
-    dIdt = beta*z[0]*z[1] - gamma * z[1]
-    dRdt = gamma * z[1] - psi * z[2]
+    dSdt = tau - psi * z[0] / N - beta * z[0] * z[1] / N
+    dIdt = beta * z[0] * z[1] / N - gamma * z[1]
+    dRdt = gamma * z[1] - psi * z[2] / N
     dzdt = [dSdt, dIdt, dRdt]
     return dzdt
 # endregion
@@ -23,16 +23,16 @@ def SIRBD(z, t):
 
 # region SIS model
 def SIS(z, t, alpha=alpha):
-    dSdt = -beta * z[0] * z[1] + alpha * z[2]
-    dIdt = beta*z[0]*z[1] - gamma * z[1]
+    dSdt = -beta * z[0] * z[1] / N + alpha * z[2]
+    dIdt = beta*z[0]*z[1] / N - gamma * z[1]
     dRdt = gamma * z[1] - alpha * z[2]
     return [dSdt, dIdt, dRdt]
 # endregion
 
 # region SIQRS model
 def SIQRS(z, t, alpha=alpha, mu=mu):
-    dSdt = -beta * z[0] * z[1] + alpha * z[3]
-    dIdt = beta * z[0] * z[1] - (gamma + mu) * z[1]
+    dSdt = -beta * z[0] * z[1] / N + alpha * z[3]
+    dIdt = beta * z[0] * z[1] / N - (gamma + mu) * z[1]
     dQdt = mu * z[1] - gamma * z[2]
     dRdt = gamma * (z[1] + z[2]) - alpha * z[3]
     return [dSdt, dIdt, dQdt, dRdt]

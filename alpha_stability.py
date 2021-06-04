@@ -1,7 +1,6 @@
 from Models import *
 from scipy.integrate import odeint
 import matplotlib.pyplot as plt
-from matplotlib.widgets import Slider, Button
 
 
 I0 = 1
