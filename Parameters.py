@@ -24,8 +24,8 @@ for i in range(cases.size):
 N = 5.806e6
 quar_thresshold_procentage = 0.25
 quar_thresshold = N * (1 - quar_thresshold_procentage)
-beta = 1/7
-gamma = 1/5
+beta = 1
+gamma = 1/7
 
 # new parameter, for how quickly you can become susceptible again
 # used in SIS model
@@ -35,13 +35,14 @@ alpha = 1/50
 # new parameter, for how many infected go to quarantine
 # used in SIQRS model
 mu = 1/7
+r = 1/7
 
 # new parameter, for how many quarantined and removed individuals get vaccinated / become immune
 zeta = 0.02
 
 # new parameter, for birth rate (tau) and death rate (xi)
-tau = (60937 / 365) / N
-psi = (54645 / 365) / N
+tau = (60937 / 365)
+psi = (54645 / 365)
 
 # time span
 num_days = 200

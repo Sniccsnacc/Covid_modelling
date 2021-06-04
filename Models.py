@@ -64,6 +64,22 @@ def Quar(z, t):
     return [dSdt, dIdt, dQdt, dRdt]
 # endregion
 
+
+# region Mads function
+def mads(z, t):
+    dSdt = -beta * z[0] * z[1] / N + alpha * z[3]
+    dIdt = beta * z[0] * z[1] / N - (1-r) * gamma * z[1] - r * gamma * z[1]
+    dQdt = r * gamma * z[1] - gamma * z[2]
+    dRdt = (1 - r) * gamma * z[1] - alpha * z[3] + gamma * z[2]
+    return [dSdt, dIdt, dQdt, dRdt]
+
+def co(z,t, alpha=alpha):
+    dSdt = - (beta * z[0] * z[2] / N) + alpha * z[3]
+    dIqdt = beta * z[0] * z[2] * r / N - gamma * z[1]
+    dIidt = beta * z[0] * z[2] * (1-r) / N - gamma * z[2]
+    dRdt = gamma * z[1] + gamma * z[2] - alpha * z[3]
+    return [dSdt, dIqdt, dIidt, dRdt]
+
 # region Extra functions
 
 # region Explicit Euler
