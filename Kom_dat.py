@@ -1,0 +1,88 @@
+#%%
+
+import pandas as pd
+
+all_dat = pd.read_csv('Kommune_data/dat.csv', sep=';')
+
+temp = []
+temp2 = []
+mat_num_people = []
+travel_in = []
+ib = all_dat.Bopæl[0]
+
+k = 0
+for i in all_dat.index:
+    bo = all_dat.Bopæl[i]
+
+    if bo != ib:
+        mat_num_people.append(temp)
+
+        temp = []
+        ib = bo
+        k += 1
+    
+    temp.append(all_dat.Mænd[i] + all_dat.Kvinder[i])
+
+
+mat_num_people.append(temp)
+
+
+
+
+
+#%% Remove 
+mat_num_people.pop(0)
+mat_num_people.pop(1-1)
+mat_num_people.pop(6-2)
+mat_num_people.pop(20-3)
+mat_num_people.pop(32-4)
+mat_num_people.pop(33-5)
+mat_num_people.pop(35-6)
+mat_num_people.pop(36-7)
+mat_num_people.pop(42-8)
+mat_num_people.pop(55-9)
+mat_num_people.pop(56-10)
+mat_num_people.pop(67-11)
+mat_num_people.pop(80-12)
+mat_num_people.pop(81-13)
+mat_num_people.pop(93-14)
+mat_num_people.pop(102-15)
+mat_num_people.pop(103-16)
+
+for elem in mat_num_people:
+    elem.pop(0)
+    elem.pop(1-1)
+    elem.pop(6-2)
+    elem.pop(20-3)
+    elem.pop(32-4)
+    elem.pop(33-5)
+    elem.pop(35-6)
+    elem.pop(36-7)
+    elem.pop(42-8)
+    elem.pop(55-9)
+    elem.pop(56-10)
+    elem.pop(67-11)
+    elem.pop(80-12)
+    elem.pop(81-13)
+    elem.pop(93-14)
+    elem.pop(102-15)
+    elem.pop(103-16)
+
+#%% Percentage conversion
+
+travel_out = []
+
+for row in mat_num_people:
+    travel_in.append(row.copy())
+    travel_out.append(sum(row))
+
+for i in range(len(travel_in)):
+    travel_in[i][i] = 0.0
+    s = sum(travel_in[i])
+    travel_out[i] = s/travel_out[i]
+    for j in range(len(travel_in[i])):
+        travel_in[i][j] /= s
+
+
+
+# %%
