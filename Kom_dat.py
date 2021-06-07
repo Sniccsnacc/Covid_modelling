@@ -8,7 +8,7 @@ temp = []
 temp2 = []
 mat_num_people = []
 travel_in = []
-people = []
+population = []
 ib = all_dat.Bopæl[0]
 
 
@@ -18,7 +18,7 @@ for i in all_dat.index:
 
     if bo != ib:
         mat_num_people.append(temp)
-        people.append(sum(temp))
+        population.append(sum(temp))
 
         temp = []
         ib = bo
@@ -28,7 +28,7 @@ for i in all_dat.index:
 
 
 mat_num_people.append(temp)
-people.append(sum(temp))
+population.append(sum(temp))
 
 
 
@@ -89,4 +89,6 @@ for i in range(len(travel_in)):
 
 
 
-# %%
+# %% Delete non-usable variables
+
+del all_dat, bo, elem, i, ib, j, k, mat_num_people, row, s, temp, temp2
