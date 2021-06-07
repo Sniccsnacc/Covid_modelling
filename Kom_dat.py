@@ -18,7 +18,6 @@ for i in all_dat.index:
 
     if bo != ib:
         mat_num_people.append(temp)
-        population.append(sum(temp))
 
         temp = []
         ib = bo
@@ -28,7 +27,6 @@ for i in all_dat.index:
 
 
 mat_num_people.append(temp)
-population.append(sum(temp))
 
 
 
@@ -74,11 +72,11 @@ for elem in mat_num_people:
 
 #%% Percentage conversion
 
-travel_out = []
-
 for row in mat_num_people:
     travel_in.append(row.copy())
-    travel_out.append(sum(row))
+    population.append(sum(row))
+
+travel_out = population.copy()
 
 for i in range(len(travel_in)):
     travel_in[i][i] = 0.0
