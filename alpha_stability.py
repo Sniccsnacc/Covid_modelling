@@ -13,12 +13,12 @@ S0 = N - Ii0
 Iq0 = 0
 R0 = 0
 z0SIS = [S0, Ii0, R0]
-z0SIQRS = [S0, Iq0, Ii0, R0]
+z0Co = [S0, Iq0, Ii0, R0]
 alpha = np.linspace(0, 1/300, 100)
 steady = np.zeros((len(alpha), 4))
 
 for i in range(len(alpha)):
-    z = odeint(co, z0SIQRS, t, args=(alpha[i],))
+    z = odeint(co, z0Co, t, args=(alpha[i],))
     steady[i, :] = z[-1, :]
 
 plt.figure()
@@ -29,7 +29,7 @@ plt.plot(alpha, steady[:, 3], color = '#B22222', label='R')
 plt.xlabel(r'$\alpha$, [$1/dage$]')
 plt.ylabel('co-stabil')
 plt.legend(loc='best')
-plt.title(r'Stabilitet for SIQRS når $\alpha$ varierer')
+plt.title(r'Stabilitet for Co når $\alpha$ varierer')
 plt.grid()
 
 

@@ -63,11 +63,11 @@ z = odeint(SIR, z0, t)
 
 # plotting the SIR model
 fig1 = plt.figure(1)
-fig1.add_subplot(3, 1, 1)
+ax1 = fig1.add_subplot(4, 1, 1)
 plt.plot(t, z[:, 0], color = '#00BFFF', label='S')
 plt.plot(t, z[:, 1], color = '#228B22', label='I')
 plt.plot(t, z[:, 2], color = '#B22222', label='R')
-plt.ylabel('SIR-values')
+plt.ylabel('# mennesker')
 plt.title('SIR')
 plt.legend(loc='best')
 plt.grid()
@@ -80,15 +80,15 @@ plt.grid()
 z = odeint(SIRBD, z0, t)
 
 
-fig1.add_subplot(3, 1, 2)
+fig1.add_subplot(4, 1, 2)
 plt.plot(t, z[:, 0], color = '#00BFFF', label='S')
 plt.plot(t, z[:, 1], color = '#228B22', label='I')
 plt.plot(t, z[:, 2], color = '#B22222', label='R')
-plt.ylabel('SIR-values')
+plt.ylabel('# mennesker')
 plt.legend(loc='best')
-plt.title('SIR with birth and death rate')
+plt.title('SIR med fødsels- og dødsrate')
 plt.grid()
-plt.tight_layout()
+plt.tight_layout(h_pad=0.02)
 
 # endregion
 
@@ -97,15 +97,15 @@ plt.tight_layout()
 z = odeint(SIS, z0, t)
 
 
-fig1.add_subplot(3, 1, 3)
+fig1.add_subplot(4, 1, 3)
 plt.plot(t, z[:, 0], color = '#00BFFF', label='S')
 plt.plot(t, z[:, 1], color = '#228B22', label='I')
 plt.plot(t, z[:, 2], color = '#B22222', label='R')
-plt.ylabel('SIS-values')
+plt.ylabel('# mennesker')
 plt.legend(loc='best')
 plt.title('SIRS')
 plt.grid()
-plt.tight_layout()
+plt.tight_layout(h_pad=0.02)
 
 
 
@@ -117,16 +117,18 @@ z0 = [S0, I0, Q0, R0]
 
 z = odeint(SIQRS, z0, t)
 
-fig2 = plt.figure(2)
-fig2.add_subplot(2, 1, 1)
+
+fig1.add_subplot(4, 1, 4)
 plt.plot(t, z[:, 0], color = '#00BFFF', label='S')
 plt.plot(t, z[:, 1], color = '#228B22', label='I')
 plt.plot(t, z[:, 2], color = '#FF8C00', label='Q')
 plt.plot(t, z[:, 3], color = '#B22222', label='R')
-plt.ylabel('SIQRS-values')
+plt.ylabel('# mennesker')
+plt.xlabel('t [dage]')
 plt.legend(loc='best')
 plt.title('SIQRS')
 plt.grid()
+plt.tight_layout(h_pad=-1)
 
 # endregion
 
@@ -134,15 +136,15 @@ plt.grid()
 V0 = 0
 z0 = [S0, I0, Q0, R0, V0]
 z = odeint(SIQRSV, z0, t)
-
-fig2.add_subplot(2, 1, 2)
+fig2 = plt.figure(2)
+fig2.add_subplot(1, 1, 1)
 plt.plot(t, z[:, 0], color = '#00BFFF', label='S')
 plt.plot(t, z[:, 1], color = '#228B22', label='I')
 plt.plot(t, z[:, 2], color = '#FF8C00', label='Q')
 plt.plot(t, z[:, 3], color = '#B22222', label='R')
 plt.plot(t, z[:, 4], '-', label='V', color='pink')
 plt.xlabel('time')
-plt.ylabel('SIQRSV-values')
+plt.ylabel('SIQRSV-værdier')
 plt.legend(loc='best')
 plt.title('SIQRSV')
 plt.grid()
@@ -160,7 +162,7 @@ plt.plot(t, z[:, 0], color = '#00BFFF', label='S')
 plt.plot(t, z[:, 1], color = '#228B22', label='I')
 plt.plot(t, z[:, 2], color = '#FF8C00', label='Q')
 plt.plot(t, z[:, 3], color = '#B22222', label='R')
-plt.ylabel('SIQRS-values')
+plt.ylabel('SIQRS-værdier')
 plt.legend(loc='best')
 plt.title('Quar')
 plt.grid()
