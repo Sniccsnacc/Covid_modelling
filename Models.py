@@ -21,7 +21,7 @@ def SIRBD(z, t):
 
 
 
-# region SIS model
+# region SIRS model
 def SIS(z, t, alpha=alpha):
     dSdt = -beta * z[0] * z[1] / N + alpha * z[2]
     dIdt = beta*z[0]*z[1] / N - gamma * z[1]

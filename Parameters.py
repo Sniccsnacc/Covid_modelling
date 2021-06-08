@@ -24,7 +24,7 @@ for i in range(cases.size):
 N = 5.806e6
 quar_thresshold_procentage = 0.25
 quar_thresshold = N * (1 - quar_thresshold_procentage)
-beta = 1000
+beta = 2
 gamma = 1/7
 
 # new parameter, for how quickly you can become susceptible again
