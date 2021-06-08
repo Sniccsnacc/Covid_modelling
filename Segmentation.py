@@ -1,28 +1,30 @@
+#%%
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.integrate import odeint
 from Models import*
 from Kom_dat import *
 
+beta = 0.000090
+# num_regions = 3
+# population = np.array([N, N, N])
+# gammas = np.array([1/7, 1/7, 1/7])
+# travel_out = np.array([0.1, 0.2, 0.3])
+# travel_in = np.array([[0, 0.8, 0.2],
+#                       [0.3, 0, 0.7],
+#                       [0.5, 0.5, 0]])
 
-num_regions = 3
-population = np.array([N, N, N])
-gammas = np.array([1/7, 1/7, 1/7])
-travel_out = np.array([0.5, 0, 0])
-travel_in = np.array([[0, 0.2, 0.8],
-                      [0.2, 0, 0.8],
-                      [0.2, 0.8, 0]])
-
-#num_regions = len(travel_out)
-#population = np.array(population)
-#gammas = np.ones(num_regions)
-#travel_out = np.array(travel_out)
-#travel_in = np.array(travel_in)
+num_regions = len(travel_out)
+population = np.array(population) * 2
+gammas = np.ones(num_regions)
+travel_out = np.array(travel_out)
+travel_in = np.array(travel_in)
 
 
 def SIR_SEG(z, t):
     r, c = z.shape
     l = t.size
+    k = 1
     S = np.zeros((r, l+1))
     I = np.zeros((r, l+1))
     R = np.zeros((r, l+1))
@@ -32,9 +34,15 @@ def SIR_SEG(z, t):
     R[:, 0] = z[:, 2]
     P[:, 0 ] = S[:, 0] + I[: , 0] + R[:, 0]
     for i in range(1, t.size):
-        dSdt = -beta * S[:, i - 1] * I[:, i - 1] / population - travel_out * S[:, i - 1] + travel_out * (travel_in.dot(S[:, i - 1]))
-        dIdt = beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 1] - travel_out * I[:, i - 1] + travel_out * (travel_in.dot(I[:, i - 1]))
-        dRdt = gammas * I[:, i - 1] - travel_out * R[:, i - 1] + travel_out * (travel_in.dot(R[:, i - 1]))
+        if k%2:
+            dSdt = -beta * S[:, i - 1] * I[:, i - 1] / population - travel_out * S[:, i - 1] + (travel_out * travel_in.T).dot(S[:, i - 1])
+            dIdt = beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 1] - travel_out * I[:, i - 1] + (travel_out * travel_in.T).dot(I[:, i - 1])
+            dRdt = gammas * I[:, i - 1] - travel_out * R[:, i - 1] + (travel_out * travel_in.T).dot(R[:, i - 1])
+        else:
+            dSdt = -beta * S[:, i - 1] * I[:, i - 1] / population + travel_out * S[:, i - 1] - (travel_out * travel_in.T).dot(S[:, i - 1])
+            dIdt = beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 1] + travel_out * I[:, i - 1] - (travel_out * travel_in.T).dot(I[:, i - 1])
+            dRdt = gammas * I[:, i - 1] + travel_out * R[:, i - 1] - (travel_out * travel_in.T).dot(R[:, i - 1])
+
 
         S[:, i] = S[:, i-1] + dSdt
         I[:, i] = I[:, i-1] + dIdt
@@ -57,7 +65,7 @@ plt.plot(t, I[0, 0:ts], color = '#228B22', label='I')
 plt.plot(t, R[0, 0:ts], color = '#B22222', label='R')
 plt.plot(t, P[0, 0:ts], label='P')
 plt.ylabel('# Mennesker')
-plt.legend(loc='best')
+#plt.legend(loc='best')
 plt.grid()
 
 fig1.add_subplot(3, 1, 2)
@@ -66,7 +74,7 @@ plt.plot(t, I[1, 0:ts], color = '#228B22', label='I')
 plt.plot(t, R[1, 0:ts], color = '#B22222', label='R')
 plt.plot(t, P[1, 0:ts], label='P')
 plt.ylabel('# Mennesker')
-plt.legend(loc='best')
+#plt.legend(loc='best')
 plt.grid()
 
 fig1.add_subplot(3, 1, 3)
@@ -75,7 +83,7 @@ plt.plot(t, I[2, 0:ts], color = '#228B22', label='I')
 plt.plot(t, R[2, 0:ts], color = '#B22222', label='R')
 plt.plot(t, P[2, 0:ts], label='P')
 plt.ylabel('# Mennesker')
-plt.legend(loc='best')
+#plt.legend(loc='best')
 plt.grid()
 plt.tight_layout()
 
