@@ -5,21 +5,20 @@ from scipy.integrate import odeint
 from Models import*
 from Kom_dat import *
 
-beta = 0.000090
 # num_regions = 3
 # population = np.array([N, N, N])
 # gammas = np.array([1/7, 1/7, 1/7])
-# travel_out = np.array([0.1, 0.2, 0.3])
+# travel_out = np.array([0.1, 0.3, 0.0])
 # travel_in = np.array([[0, 0.8, 0.2],
 #                       [0.3, 0, 0.7],
 #                       [0.5, 0.5, 0]])
 
-num_regions = len(travel_out)
-population = np.array(population) * 2
+num_regions = len(travel_out_2)
+population = np.array(population_2)
 gammas = np.ones(num_regions)
-travel_out = np.array(travel_out)
-travel_in = np.array(travel_in)
-
+travel_out = np.array(travel_out_2)
+travel_in = np.array(travel_in_2)
+beta = population/N
 
 def SIR_SEG(z, t):
     r, c = z.shape
@@ -34,26 +33,36 @@ def SIR_SEG(z, t):
     R[:, 0] = z[:, 2]
     P[:, 0 ] = S[:, 0] + I[: , 0] + R[:, 0]
     for i in range(1, t.size):
-        if k%2:
-            dSdt = -beta * S[:, i - 1] * I[:, i - 1] / population - travel_out * S[:, i - 1] + (travel_out * travel_in.T).dot(S[:, i - 1])
-            dIdt = beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 1] - travel_out * I[:, i - 1] + (travel_out * travel_in.T).dot(I[:, i - 1])
-            dRdt = gammas * I[:, i - 1] - travel_out * R[:, i - 1] + (travel_out * travel_in.T).dot(R[:, i - 1])
-        else:
-            dSdt = -beta * S[:, i - 1] * I[:, i - 1] / population + travel_out * S[:, i - 1] - (travel_out * travel_in.T).dot(S[:, i - 1])
-            dIdt = beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 1] + travel_out * I[:, i - 1] - (travel_out * travel_in.T).dot(I[:, i - 1])
-            dRdt = gammas * I[:, i - 1] + travel_out * R[:, i - 1] - (travel_out * travel_in.T).dot(R[:, i - 1])
+        #Standard form:
+        dSdt = -beta * S[:, i - 1] * I[:, i - 1] / population - travel_out * S[:, i - 1] + (travel_out * travel_in.T).dot(S[:, i - 1])
+        dIdt = beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 1] - travel_out * I[:, i - 1] + (travel_out * travel_in.T).dot(I[:, i - 1])
+        dRdt = gammas * I[:, i - 1] - travel_out * R[:, i - 1] + (travel_out * travel_in.T).dot(R[:, i - 1])
 
+        #Homecoming form:
+        # if k%2:
+        #     dSdt = -beta * S[:, i - 1] * I[:, i - 1] / population - travel_out * S[:, i - 1] + (travel_out * travel_in.T).dot(S[:, i - 1])
+        #     dIdt = beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 1] - travel_out * I[:, i - 1] + (travel_out * travel_in.T).dot(I[:, i - 1])
+        #     dRdt = gammas * I[:, i - 1] - travel_out * R[:, i - 1] + (travel_out * travel_in.T).dot(R[:, i - 1])
+        # else:
+        #     dSdt = -beta * S[:, i - 1] * I[:, i - 1] / population + travel_out * S[:, i - 2] - (travel_out * travel_in.T).dot(S[:, i - 2])
+        #     dIdt = beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 2] + travel_out * I[:, i - 1] - (travel_out * travel_in.T).dot(I[:, i - 2])
+        #     dRdt = gammas * I[:, i - 1] + travel_out * R[:, i - 2] - (travel_out * travel_in.T).dot(R[:, i - 2])
+
+        k += 1
 
         S[:, i] = S[:, i-1] + dSdt
         I[:, i] = I[:, i-1] + dIdt
         R[:, i] = R[:, i-1] + dRdt
         P[:, i] += S[:, i] + I[: , i] + R[:, i]
+
+        
+
     return S, I, R, P
 
 
 I0 = np.ones(num_regions)
 R0 = np.zeros(num_regions)
-S0 = np.ones(num_regions) * (N - 1)
+S0 = population - I0 #np.ones(num_regions) * (N - 1)
 Z0 = np.transpose(np.array([S0, I0, R0]))
 ts = t.size
 
