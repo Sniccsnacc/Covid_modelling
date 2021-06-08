@@ -16,7 +16,7 @@ population = np.array(population) * 2
 gammas = np.ones(num_regions) / 6
 travel_out = np.array(travel_out)
 travel_in = np.array(travel_in)
-beta = 0.185
+beta = 0.188
 
 def SIR_SEG(z, t):
     r, c = z.shape
@@ -38,19 +38,19 @@ def SIR_SEG(z, t):
 
         #Homecoming form:
         if k%2:
-            dSdt = -beta * S[:, i - 1] * I[:, i - 1] / population - travel_out * S[:, i - 1] + (travel_out * travel_in.T).dot(S[:, i - 1])
+            dSdt = -beta * S[:, i - 1] * I[:, i - 1] / population - travel_out * S[:, i - 1] + (travel_out * travel_in.T).dot(S[:, i - 1]) + alpha * R[:,i-1]
             dIdt = beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 1] - travel_out * I[:, i - 1] + (travel_out * travel_in.T).dot(I[:, i - 1])
-            dRdt = gammas * I[:, i - 1] - travel_out * R[:, i - 1] + (travel_out * travel_in.T).dot(R[:, i - 1])
+            dRdt = gammas * I[:, i - 1] - travel_out * R[:, i - 1] + (travel_out * travel_in.T).dot(R[:, i - 1]) - alpha * R[:, i-1]
         else:
-            dSdt = -beta * S[:, i - 1] * I[:, i - 1] / population + travel_out * S[:, i - 2] - (travel_out * travel_in.T).dot(S[:, i - 2])
+            dSdt = -beta * S[:, i - 1] * I[:, i - 1] / population + travel_out * S[:, i - 2] - (travel_out * travel_in.T).dot(S[:, i - 2]) + alpha *R[:,i-1]
             dIdt = beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 2] + travel_out * I[:, i - 1] - (travel_out * travel_in.T).dot(I[:, i - 2])
-            dRdt = gammas * I[:, i - 1] + travel_out * R[:, i - 2] - (travel_out * travel_in.T).dot(R[:, i - 2])
+            dRdt = gammas * I[:, i - 1] + travel_out * R[:, i - 2] - (travel_out * travel_in.T).dot(R[:, i - 2]) - alpha *R[:,i-1]
 
         k += 1
 
-        S[:, i] = S[:, i-1] + dSdt
-        I[:, i] = I[:, i-1] + dIdt
-        R[:, i] = R[:, i-1] + dRdt
+        S[:, i] = S[:, i-1] + 1/2 * dSdt
+        I[:, i] = I[:, i-1] + 1/2 * dIdt
+        R[:, i] = R[:, i-1] + 1/2 * dRdt
         P[:, i] += S[:, i] + I[: , i] + R[:, i]
 
         
@@ -96,18 +96,18 @@ S, I, R, P = SIR_SEG(Z0, t)
 
 # plt.tight_layout()
 
-for i in range(num_regions):
-    plt.figure()
-    plt.plot(t[0:ts:2], S[i, 0:ts:2], color = '#00BFFF', label='S')
-    plt.plot(t, I[i, 0:ts], color = '#228B22', label='I')
-    plt.plot(t, R[i, 0:ts], color = '#B22222', label='R')
-    plt.plot(t[0:ts:2], P[i, 0:ts:2], label='P')
-    plt.ylabel(names[i])
-    plt.legend(loc='best')
-    plt.grid()
+# for i in range(num_regions):
+#     plt.figure()
+#     plt.plot(t[0:ts:2], S[i, 0:ts:2], color = '#00BFFF', label='S')
+#     plt.plot(t, I[i, 0:ts], color = '#228B22', label='I')
+#     plt.plot(t, R[i, 0:ts], color = '#B22222', label='R')
+#     plt.plot(t[0:ts:2], P[i, 0:ts:2], label='P')
+#     plt.ylabel(names[i])
+#     plt.legend(loc='best')
+#     plt.grid()
 
 
-plt.show()
+# plt.show()
 
 #%% Total plot:
 S_tot = np.sum(S,0)
@@ -120,9 +120,9 @@ plt.plot(t[0:ts:2], S_tot[0:ts:2], color = '#00BFFF', label='S')
 plt.plot(t, I_tot[0:ts], color = '#228B22', label='I')
 plt.plot(t, R_tot[0:ts], color = '#B22222', label='R')
 plt.plot(t[0:ts:2], P_tot[0:ts:2], label='Population')
-#plt.plot(range(len(sick)-160), sick[160:], label='Dansk data')
+plt.plot(range(len(sick)), sick, label='Dansk data')
 plt.ylabel("Antal Mennesker")
-plt.xlabel("Dage")
+plt.xlabel("Halve Dage")
 plt.legend(loc='best')
-plt.title(r"SIR model for kombinerede kommuner med $\beta$={}".format(beta))
+plt.title(r"SIRS model for kombinerede kommuner med $\beta$={}".format(beta))
 plt.grid()
