@@ -112,3 +112,6 @@ def trapezoid(fx, dt):
         sum += 1/2 * dt * (fx[i] + fx[i+1])
     return sum
 # endregion
+
+
+
