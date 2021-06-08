@@ -1,26 +1,27 @@
+#%%
 import matplotlib.pyplot as plt
 from Models import*
 from Kom_dat import *
 
+# num_regions = 3
+# population = np.array([N, N, N])
+# gammas = np.array([1/7, 1/7, 1/7])
+# travel_out = np.array([0.1, 0.3, 0.0])
+# travel_in = np.array([[0, 0.8, 0.2],
+#                       [0.3, 0, 0.7],
+#                       [0.5, 0.5, 0]])
 
-num_regions = 3
-population = np.array([N, N, N])
-gammas = np.array([1/7, 1/7, 1/7])
-travel_out = np.array([0.5, 0.2, 0.4])
-travel_in = np.array([[0, 0.2, 0.8],
-                      [0.3, 0, 0.7],
-                      [0.5, 0.5, 0]])
-
-#num_regions = len(travel_out)
-#population = np.array(population)
-#gammas = np.ones(num_regions) * 1/7
-#travel_out = np.array(travel_out)
-#travel_in = np.array(travel_in)
-
+num_regions = len(travel_out)
+population = np.array(population) * 2
+gammas = np.ones(num_regions) / 6
+travel_out = np.array(travel_out)
+travel_in = np.array(travel_in)
+beta = 0.188
 
 def SIR_SEG(z, t):
     r, c = z.shape
     l = t.size
+    k = 1
     S = np.zeros((r, l+1))
     I = np.zeros((r, l+1))
     R = np.zeros((r, l+1))
@@ -30,52 +31,98 @@ def SIR_SEG(z, t):
     R[:, 0] = z[:, 2]
     P[:, 0 ] = S[:, 0] + I[: , 0] + R[:, 0]
     for i in range(1, t.size):
-        dSdt = -beta * S[:, i - 1] * I[:, i - 1] / population - travel_out * S[:, i - 1] + (travel_out * travel_in.T).dot(S[:, i - 1])
-        dIdt = beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 1] - travel_out * I[:, i - 1] + (travel_out * travel_in.T).dot(I[:, i - 1])
-        dRdt = gammas * I[:, i - 1] - travel_out * R[:, i - 1] + (travel_out * travel_in.T).dot(R[:, i - 1])
+        #Standard form:
+        # dSdt = -beta * S[:, i - 1] * I[:, i - 1] / population - travel_out * S[:, i - 1] + (travel_out * travel_in.T).dot(S[:, i - 1])
+        # dIdt = beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 1] - travel_out * I[:, i - 1] + (travel_out * travel_in.T).dot(I[:, i - 1])
+        # dRdt = gammas * I[:, i - 1] - travel_out * R[:, i - 1] + (travel_out * travel_in.T).dot(R[:, i - 1])
 
-        S[:, i] = S[:, i-1] + dSdt
-        I[:, i] = I[:, i-1] + dIdt
-        R[:, i] = R[:, i-1] + dRdt
+        #Homecoming form:
+        if k%2:
+            dSdt = -beta * S[:, i - 1] * I[:, i - 1] / population - travel_out * S[:, i - 1] + (travel_out * travel_in.T).dot(S[:, i - 1]) + alpha * R[:,i-1]
+            dIdt = beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 1] - travel_out * I[:, i - 1] + (travel_out * travel_in.T).dot(I[:, i - 1])
+            dRdt = gammas * I[:, i - 1] - travel_out * R[:, i - 1] + (travel_out * travel_in.T).dot(R[:, i - 1]) - alpha * R[:, i-1]
+        else:
+            dSdt = -beta * S[:, i - 1] * I[:, i - 1] / population + travel_out * S[:, i - 2] - (travel_out * travel_in.T).dot(S[:, i - 2]) + alpha *R[:,i-1]
+            dIdt = beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 2] + travel_out * I[:, i - 1] - (travel_out * travel_in.T).dot(I[:, i - 2])
+            dRdt = gammas * I[:, i - 1] + travel_out * R[:, i - 2] - (travel_out * travel_in.T).dot(R[:, i - 2]) - alpha *R[:,i-1]
+
+        k += 1
+
+        S[:, i] = S[:, i-1] + 1/2 * dSdt
+        I[:, i] = I[:, i-1] + 1/2 * dIdt
+        R[:, i] = R[:, i-1] + 1/2 * dRdt
         P[:, i] += S[:, i] + I[: , i] + R[:, i]
+
+        
+
     return S, I, R, P
 
 
-#I0 = np.ones(num_regions)
-I0 = np.array([10, 0, 5])
+I0 = np.ones(num_regions)*10
 R0 = np.zeros(num_regions)
-S0 = population - I0
+S0 = population - I0 #np.ones(num_regions) * (N - 1)
 Z0 = np.transpose(np.array([S0, I0, R0]))
 ts = t.size
 
 S, I, R, P = SIR_SEG(Z0, t)
-fig1 = plt.figure(1)
-fig1.add_subplot(3, 1, 1)
-plt.plot(t, S[0, 0:ts], color = '#00BFFF', label='S')
-plt.plot(t, I[0, 0:ts], color = '#228B22', label='I')
-plt.plot(t, R[0, 0:ts], color = '#B22222', label='R')
-plt.plot(t, P[0, 0:ts], label='P')
-plt.ylabel('# Mennesker')
-#plt.legend(loc='best')
-plt.grid()
+# fig1 = plt.figure(1)
 
-fig1.add_subplot(3, 1, 2)
-plt.plot(t, S[1, 0:ts], color = '#00BFFF', label='S')
-plt.plot(t, I[1, 0:ts], color = '#228B22', label='I')
-plt.plot(t, R[1, 0:ts], color = '#B22222', label='R')
-plt.plot(t, P[1, 0:ts], label='P')
-plt.ylabel('# Mennesker')
-#plt.legend(loc='best')
-plt.grid()
+# fig1.add_subplot(3, 1, 1)
+# plt.plot(t, S[0, 0:ts], color = '#00BFFF', label='S')
+# plt.plot(t, I[0, 0:ts], color = '#228B22', label='I')
+# plt.plot(t, R[0, 0:ts], color = '#B22222', label='R')
+# plt.plot(t, P[0, 0:ts], label='P')
+# plt.ylabel(names[0])
+# #plt.legend(loc='best')
+# plt.grid()
 
-fig1.add_subplot(3, 1, 3)
-plt.plot(t, S[2, 0:ts], color = '#00BFFF', label='S')
-plt.plot(t, I[2, 0:ts], color = '#228B22', label='I')
-plt.plot(t, R[2, 0:ts], color = '#B22222', label='R')
-plt.plot(t, P[2, 0:ts], label='P')
-plt.xlabel('t [dage]')
-plt.ylabel('# Mennesker')
-#plt.legend(loc='best')
+# fig1.add_subplot(3, 1, 2)
+# plt.plot(t, S[1, 0:ts], color = '#00BFFF', label='S')
+# plt.plot(t, I[1, 0:ts], color = '#228B22', label='I')
+# plt.plot(t, R[1, 0:ts], color = '#B22222', label='R')
+# plt.plot(t, P[1, 0:ts], label='P')
+# plt.ylabel(names[1])
+# #plt.legend(loc='best')
+# plt.grid()
+
+# fig1.add_subplot(3, 1, 3)
+# plt.plot(t, S[2, 0:ts], color = '#00BFFF', label='S')
+# plt.plot(t, I[2, 0:ts], color = '#228B22', label='I')
+# plt.plot(t, R[2, 0:ts], color = '#B22222', label='R')
+# plt.plot(t, P[2, 0:ts], label='P')
+# plt.ylabel(names[2])
+# #plt.legend(loc='best')
+# plt.grid()
+
+# plt.tight_layout()
+
+# for i in range(num_regions):
+#     plt.figure()
+#     plt.plot(t[0:ts:2], S[i, 0:ts:2], color = '#00BFFF', label='S')
+#     plt.plot(t, I[i, 0:ts], color = '#228B22', label='I')
+#     plt.plot(t, R[i, 0:ts], color = '#B22222', label='R')
+#     plt.plot(t[0:ts:2], P[i, 0:ts:2], label='P')
+#     plt.ylabel(names[i])
+#     plt.legend(loc='best')
+#     plt.grid()
+
+
+# plt.show()
+
+#%% Total plot:
+S_tot = np.sum(S,0)
+I_tot = np.sum(I,0)
+R_tot = np.sum(R,0)
+P_tot = np.sum(P,0)
+
+plt.figure()
+plt.plot(t[0:ts:2], S_tot[0:ts:2], color = '#00BFFF', label='S')
+plt.plot(t, I_tot[0:ts], color = '#228B22', label='I')
+plt.plot(t, R_tot[0:ts], color = '#B22222', label='R')
+plt.plot(t[0:ts:2], P_tot[0:ts:2], label='Population')
+plt.plot(range(len(sick)), sick, label='Dansk data')
+plt.ylabel("Antal Mennesker")
+plt.xlabel("Halve Dage")
+plt.legend(loc='best')
+plt.title(r"SIRS model for kombinerede kommuner med $\beta$={}".format(beta))
 plt.grid()
-plt.tight_layout()
-plt.show()
