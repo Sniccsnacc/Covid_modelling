@@ -11,6 +11,7 @@ mat_num_people = []
 travel_in = []
 population = []
 ib = all_dat.Bopæl[0]
+names = []
 
 #Selective cities
 num_city = 3
@@ -25,6 +26,7 @@ for i in all_dat.index:
 
     if bo != ib:
         mat_num_people.append(temp)
+        names.append(ib)
 
         temp = []
         ib = bo
@@ -34,7 +36,7 @@ for i in all_dat.index:
 
 
 mat_num_people.append(temp)
-
+names.append(bo)
 
 
 
@@ -57,6 +59,24 @@ mat_num_people.pop(81-13)
 mat_num_people.pop(93-14)
 mat_num_people.pop(102-15)
 mat_num_people.pop(103-16)
+
+names.pop(0)
+names.pop(1-1)
+names.pop(6-2)
+names.pop(20-3)
+names.pop(32-4)
+names.pop(33-5)
+names.pop(35-6)
+names.pop(36-7)
+names.pop(42-8)
+names.pop(55-9)
+names.pop(56-10)
+names.pop(67-11)
+names.pop(80-12)
+names.pop(81-13)
+names.pop(93-14)
+names.pop(102-15)
+names.pop(103-16)
 
 for elem in mat_num_people:
     elem.pop(0)
@@ -108,3 +128,5 @@ for i in range(len(travel_in_2)):
 # %% Delete non-usable variables
 
 del all_dat, bo, elem, i, ib, j, k, mat_num_people, row, s, temp, temp2, num_city
+
+# %%
