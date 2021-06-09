@@ -12,7 +12,7 @@ new_pos = mat.NewPositive
 
 # finding the total number of sick people
 for i in range(1, cases.size):
-    if i < 14:
+    if i < 7:
         sick[i] = cases[i] + sick[i - 1]
     else:
         sick[i] = sick[i-1] + cases[i] - cases[i-14]
@@ -46,7 +46,7 @@ tau = (60937 / 365)
 psi = (54645 / 365)
 
 # time span
-num_days = 730
+num_days = 150
 t = np.linspace(0, num_days, num_days)
 
 # endregion
