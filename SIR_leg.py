@@ -1,5 +1,6 @@
 #%%
 import matplotlib.pyplot as plt
+import numpy as np
 from scipy.integrate import odeint
 from Models import*
 
@@ -164,6 +165,7 @@ plt.plot(t, z[:, 2], color = '#FF8C00', label='Q')
 plt.plot(t, z[:, 3], color = '#B22222', label='R')
 plt.plot(t, z[:, 4], '-', label='V', color='pink')
 plt.xlabel('time')
+plt.xticks(np.linspace(0, 150, int(150/2)))
 plt.ylabel('SIQRSV-værdier')
 plt.legend(loc='best')
 plt.title('SIQRSV')
