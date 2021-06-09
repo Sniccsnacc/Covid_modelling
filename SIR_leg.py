@@ -114,15 +114,15 @@ plt.tight_layout(h_pad=0.02)
 
 # region SIQRS
 Q0 = 0
-z0 = [S0, I0, Q0, R0]
+z0 = [S0, Q0, I0, R0]
 
-z = odeint(SIQRS, z0, t)
+z = odeint(co, z0, t)
 
 
 fig1.add_subplot(4, 1, 4)
 plt.plot(t, z[:, 0], color = '#00BFFF', label='S')
-plt.plot(t, z[:, 1], color = '#228B22', label='I')
-plt.plot(t, z[:, 2], color = '#FF8C00', label='Q')
+plt.plot(t, z[:, 1], color = '#228B22', label='$I_q$')
+plt.plot(t, z[:, 2], color = '#FF8C00', label='$I_i$')
 plt.plot(t, z[:, 3], color = '#B22222', label='R')
 plt.ylabel('# mennesker')
 plt.xlabel('t [dage]')
@@ -132,45 +132,44 @@ plt.grid()
 plt.tight_layout(h_pad=-1)
 
 # endregion
-
-# region SIQRSV
-V0 = 0
-z0 = [S0, I0, Q0, R0, V0]
-z = odeint(SIQRSV, z0, t)
-fig2 = plt.figure(2)
-fig2.add_subplot(1, 1, 1)
-plt.plot(t, z[:, 0], color = '#00BFFF', label='S')
-plt.plot(t, z[:, 1], color = '#228B22', label='I')
-plt.plot(t, z[:, 2], color = '#FF8C00', label='Q')
-plt.plot(t, z[:, 3], color = '#B22222', label='R')
-plt.plot(t, z[:, 4], '-', label='V', color='pink')
-plt.xlabel('time')
-plt.xticks(np.linspace(0, 150, int(150/2)))
-plt.ylabel('SIQRSV-værdier')
-plt.legend(loc='best')
-plt.title('SIQRSV')
-plt.grid()
-plt.tight_layout()
-
-
-# endregion
-
-# region Quar, SIRS with quarantine after a given number of infected
-z0 = [S0, I0, Q0, R0]
-z = odeint(Quar, z0, t)
-
-plt.figure(3)
-plt.plot(t, z[:, 0], color = '#00BFFF', label='S')
-plt.plot(t, z[:, 1], color = '#228B22', label='I')
-plt.plot(t, z[:, 2], color = '#FF8C00', label='Q')
-plt.plot(t, z[:, 3], color = '#B22222', label='R')
-plt.ylabel('SIQRS-værdier')
-plt.legend(loc='best')
-plt.title('Quar')
-plt.grid()
-plt.show()
-
-
-
-# endregion
-
+#
+# # region SIQRSV
+# V0 = 0
+# z0 = [S0, I0, Q0, R0, V0]
+# z = odeint(SIQRSV, z0, t)
+# fig2 = plt.figure(2)
+# fig2.add_subplot(1, 1, 1)
+# plt.plot(t, z[:, 0], color = '#00BFFF', label='S')
+# plt.plot(t, z[:, 1], color = '#228B22', label='I')
+# plt.plot(t, z[:, 2], color = '#FF8C00', label='Q')
+# plt.plot(t, z[:, 3], color = '#B22222', label='R')
+# plt.plot(t, z[:, 4], '-', label='V', color='pink')
+# plt.xlabel('time')
+# plt.ylabel('SIQRSV-værdier')
+# plt.legend(loc='best')
+# plt.title('SIQRSV')
+# plt.grid()
+# plt.tight_layout()
+#
+#
+# # endregion
+#
+# # region Quar, SIRS with quarantine after a given number of infected
+# z0 = [S0, I0, Q0, R0]
+# z = odeint(Quar, z0, t)
+#
+# plt.figure(3)
+# plt.plot(t, z[:, 0], color = '#00BFFF', label='S')
+# plt.plot(t, z[:, 1], color = '#228B22', label='I')
+# plt.plot(t, z[:, 2], color = '#FF8C00', label='Q')
+# plt.plot(t, z[:, 3], color = '#B22222', label='R')
+# plt.ylabel('SIQRS-værdier')
+# plt.legend(loc='best')
+# plt.title('Quar')
+# plt.grid()
+# plt.show()
+#
+#
+#
+# # endregion
+#

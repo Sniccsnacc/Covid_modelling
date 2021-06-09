@@ -77,7 +77,6 @@ plt.title('SIRS for alpha[10]')
 plt.legend(loc='best')
 plt.grid()
 
-idx = (5806000/7/2 - 1000< z[:,0]) * (5806000/7/2 + 1000 > z[:,0])
 result = np.where(idx)
 print(result)
 k = np.array(result)
