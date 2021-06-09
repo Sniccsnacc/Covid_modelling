@@ -125,10 +125,8 @@ t = np.where(idx == False) # dag 269
 Q0 = 0
 z0 = [S0, Q0, I0, R0]
 
-<<<<<<< HEAD
+
 z = odeint(co, z0, t)
-=======
->>>>>>> dfb9941d4efd7e511388b72e9b9fa4672acc52d1
 
 z = odeint(SIQRS, z0, t)
 

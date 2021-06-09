@@ -73,11 +73,8 @@ def mads(z, t):
     dRdt = (1 - r) * gamma * z[1] - alpha * z[3] + gamma * z[2]
     return [dSdt, dIdt, dQdt, dRdt]
 
-<<<<<<< HEAD
-def co(z,t, alpha=alpha, r=r):
-=======
+
 def co(z,t, alpha=alpha, r = r):
->>>>>>> dfb9941d4efd7e511388b72e9b9fa4672acc52d1
     dSdt = - (beta * z[0] * z[2] / N) + alpha * z[3]
     dIqdt = beta * z[0] * z[2] * r / N - gamma * z[1]
     dIidt = beta * z[0] * z[2] * (1-r) / N - gamma * z[2]

@@ -54,7 +54,6 @@ plt.grid()
 
 
 
-<<<<<<< HEAD
 z = odeint(SIS, z0SIS, t, args=(alpha[0],))
 
 fig2 = plt.figure()
@@ -78,17 +77,5 @@ plt.ylabel('SIRS-values')
 plt.title('SIRS for alpha[10]')
 plt.legend(loc='best')
 plt.grid()
-
-result = np.where(idx)
-print(result)
-k = np.array(result)
-
-for i in range (k.size):
-    print(z[k[0][i],1])
-
-
-
-=======
->>>>>>> dfb9941d4efd7e511388b72e9b9fa4672acc52d1
 
 
