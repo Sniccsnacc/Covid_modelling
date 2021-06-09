@@ -17,7 +17,7 @@ gammas = np.ones(num_regions) / 6
 travel_out = np.array(travel_out)
 travel_in = np.array(travel_in)
 #beta = 0.188 #Beta value for SIR and SIRS model
-beta = 0.2
+beta = 0.265
 
 
 
@@ -214,12 +214,12 @@ If = I_tot + Q_tot
 
 plt.figure()
 #plt.plot(t[0:ts:2], S_tot[0:ts:2], color = '#00BFFF', label='S')
-#plt.plot(t, I_tot[0:ts], color = '#228B22', label='I')
-#plt.plot(t, Q_tot[0:ts], color = '#FF8C00', label='Q')
+plt.plot(t, I_tot[0:ts], color = '#228B22', label='I')
+plt.plot(t, Q_tot[0:ts], color = '#FF8C00', label='Q')
 #plt.plot(t, R_tot[0:ts], color = '#B22222', label='R')
-plt.plot(t[0:ts:2], P_tot[0:ts:2], label='Population')
-#plt.plot(t, If[0:ts], label = 'Infected')
-#plt.plot(range(len(sick)), sick, label='Dansk data')
+#plt.plot(t[0:ts:2], P_tot[0:ts:2], label='Population')
+plt.plot(t, If[0:ts], label = 'Infected')
+plt.plot(range(len(sick)), sick, label='Dansk data')
 plt.ylabel("Antal Mennesker")
 plt.xlabel("Halve Dage")
 plt.legend(loc='best')
@@ -227,4 +227,3 @@ plt.title(r"SIRS model for kombinerede kommuner med $\beta$={}".format(beta))
 plt.grid()
 
 # %%
-
