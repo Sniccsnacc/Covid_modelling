@@ -12,10 +12,10 @@ new_pos = mat.NewPositive
 
 # finding the total number of sick people
 for i in range(1, cases.size):
-    if i < 14:
+    if i < 6:
         sick[i] = cases[i] + sick[i - 1]
     else:
-        sick[i] = sick[i-1] + cases[i] - cases[i-14]
+        sick[i] = sick[i-1] + cases[i] - cases[i-6]
 
 # endregion
 
@@ -26,7 +26,7 @@ N = 5.806e6
 quar_thresshold_procentage = 0.25
 quar_thresshold = N * (1 - quar_thresshold_procentage)
 beta = 2
-gamma = 1/7
+gamma = 1/6
 
 # new parameter, for how quickly you can become susceptible again
 # used in SIS model
@@ -36,7 +36,7 @@ alpha = 1/240
 # new parameter, for how many infected go to quarantine
 # used in SIQRS model
 mu = 1/7
-r = 2/7
+r = 1/7
 
 # new parameter, for how many quarantined and removed individuals get vaccinated / become immune
 zeta = 0.02
@@ -46,7 +46,7 @@ tau = (60937 / 365)
 psi = (54645 / 365)
 
 # time span
-num_days = 730
+num_days = 2*498
 t = np.linspace(0, num_days, num_days)
 
 # endregion

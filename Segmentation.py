@@ -17,7 +17,16 @@ gammas = np.ones(num_regions) / 6
 travel_out = np.array(travel_out)
 travel_in = np.array(travel_in)
 #beta = 0.188 #Beta value for SIR and SIRS model
-beta = 0.265
+beta = np.array([0.2 , 0.2 , 0.2 , 0.2 , 0.2 , 0.2 , 0.2 , 0.2 , 0.2 , 0.2 , 0.2 ,
+       0.2 , 0.2 , 0.2 , 0.2 , 0.2 , 0.2 , 0.2 , 0.2 , 0.2 , 0.2 , 0.2 ,
+       0.2 , 0.2 , 0.2 , 0.2 , 0.2 , 0.2 , 0.2 , 0.25, 0.25, 0.25, 0.25,
+       0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25,
+       0.25, 0.25, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15,
+       0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15,
+       0.15, 0.15, 0.2 , 0.2 , 0.2 , 0.2 , 0.2 , 0.2 , 0.2 , 0.2 , 0.2 ,
+       0.2 , 0.2 , 0.2 , 0.2 , 0.2 , 0.2 , 0.2 , 0.2 , 0.2 , 0.2 , 0.15,
+       0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15])
+
 
 
 
@@ -101,7 +110,7 @@ def SIRS_SEG(z, t):
 
     return S, I, R, P
 
-def SIQRS_SEG(z, t):
+def SIQRS_SEG(z, t, beta = beta):
     rows, c = z.shape
     l = t.size
     k = 1
@@ -148,7 +157,11 @@ def SIQRS_SEG(z, t):
 
 #%% Starting conditions
 
-I0 = np.ones(num_regions)*10
+I0 = np.zeros(num_regions)
+
+#23 i Kbh, 1 i Odense og 25 i Aarhus
+I0[0] = 23; I0[53] = 1; I0[78] = 25     #udtræk fra 09/03-2020
+
 Q0 = np.zeros(num_regions)
 R0 = np.zeros(num_regions)
 S0 = population - I0 - Q0 - R0 #np.ones(num_regions) * (N - 1)
@@ -212,18 +225,23 @@ R_tot = np.sum(R,0)
 P_tot = np.sum(P,0)
 If = I_tot + Q_tot
 
+
 plt.figure()
 #plt.plot(t[0:ts:2], S_tot[0:ts:2], color = '#00BFFF', label='S')
-plt.plot(t, I_tot[0:ts], color = '#228B22', label='I')
-plt.plot(t, Q_tot[0:ts], color = '#FF8C00', label='Q')
-#plt.plot(t, R_tot[0:ts], color = '#B22222', label='R')
+#plt.plot(range(len(sick)), I_tot[0:ts:2], color = '#228B22', label='I')
+#plt.plot(range(len(sick)), Q_tot[0:ts:2], color = '#FF8C00', label='Q')
+#plt.plot(range(len(sick)), R_tot[0:ts], color = '#B22222', label='R')
 #plt.plot(t[0:ts:2], P_tot[0:ts:2], label='Population')
-plt.plot(t, If[0:ts], label = 'Infected')
-plt.plot(range(len(sick)), sick, label='Dansk data')
+plt.plot(range(len(sick)), If[0:ts:2], label = 'Inficerede')
+plt.plot(range(len(sick)), sick, label='Positivt testede')
 plt.ylabel("Antal Mennesker")
-plt.xlabel("Halve Dage")
+plt.xlabel("Dage")
 plt.legend(loc='best')
-plt.title(r"SIRS model for kombinerede kommuner med $\beta$={}".format(beta))
+plt.title(r"Segmenteret SIQRS model") #med $\beta$={}".format(beta))
 plt.grid()
+
+plt.show()
+
+ # %%
 
 # %%
