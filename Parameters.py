@@ -28,6 +28,16 @@ for i in range(1, cases.size):
 
 # region The parameters used in the different models:
 
+<<<<<<< HEAD
+=======
+# Parameters
+N = 5.806e6
+quar_thresshold_procentage = 0.25
+quar_thresshold = N * (1 - quar_thresshold_procentage)
+beta = 2
+gamma = 1/6
+
+>>>>>>> dfb9941d4efd7e511388b72e9b9fa4672acc52d1
 # new parameter, for how quickly you can become susceptible again
 # used in SIS model
 #alpha = 0.00020202020202020205

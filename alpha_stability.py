@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # time span
-num_days = 5000
+num_days = 269
 t = np.linspace(0, num_days, num_days)
 
 Ii0 = 1
@@ -29,8 +29,9 @@ plt.plot(alpha, steady[:, 3], color = '#B22222', label='R')
 plt.xlabel(r'$\alpha$, [$1/dage$]')
 plt.ylabel('co-stabil')
 plt.legend(loc='best')
-plt.title(r'Stabilitet for Co når $\alpha$ varierer')
+plt.title(r'Stabilitet for SIQRS når $\alpha$ varierer')
 plt.grid()
+
 
 
 steady = np.zeros((len(alpha), 3))
@@ -53,6 +54,7 @@ plt.grid()
 
 
 
+<<<<<<< HEAD
 z = odeint(SIS, z0SIS, t, args=(alpha[0],))
 
 fig2 = plt.figure()
@@ -86,113 +88,7 @@ for i in range (k.size):
 
 
 
+=======
+>>>>>>> dfb9941d4efd7e511388b72e9b9fa4672acc52d1
 
 
-
-z = odeint(SIS, z0SIS, t, args=(alpha[20],))
-
-fig2 = plt.figure()
-plt.plot(t, z[:, 0], color = '#00BFFF', label='S')
-plt.plot(t, z[:, 1], color = '#228B22', label='I')
-plt.plot(t, z[:, 2], color = '#B22222', label='R')
-plt.xlabel('t')
-plt.ylabel('SIRS-values')
-plt.title('SIRS for alpha[20]')
-plt.legend(loc='best')
-plt.grid()
-
-z = odeint(SIS, z0SIS, t, args=(alpha[30],))
-
-fig3 = plt.figure()
-plt.plot(t, z[:, 0], color = '#00BFFF', label='S')
-plt.plot(t, z[:, 1], color = '#228B22', label='I')
-plt.plot(t, z[:, 2], color = '#B22222', label='R')
-plt.xlabel('t')
-plt.ylabel('SIRS-values')
-plt.title('SIRS for alpha[30]')
-plt.legend(loc='best')
-plt.grid()
-
-z = odeint(SIS, z0SIS, t, args=(alpha[40],))
-
-fig2 = plt.figure()
-plt.plot(t, z[:, 0], color = '#00BFFF', label='S')
-plt.plot(t, z[:, 1], color = '#228B22', label='I')
-plt.plot(t, z[:, 2], color = '#B22222', label='R')
-plt.xlabel('t')
-plt.ylabel('SIRS-values')
-plt.title('SIRS for alpha[40]')
-plt.legend(loc='best')
-plt.grid()
-
-z = odeint(SIS, z0SIS, t, args=(alpha[50],))
-
-fig3 = plt.figure()
-plt.plot(t, z[:, 0], color = '#00BFFF', label='S')
-plt.plot(t, z[:, 1], color = '#228B22', label='I')
-plt.plot(t, z[:, 2], color = '#B22222', label='R')
-plt.xlabel('t')
-plt.ylabel('SIRS-values')
-plt.title('SIRS for alpha[50]')
-plt.legend(loc='best')
-plt.grid()
-
-z = odeint(SIS, z0SIS, t, args=(alpha[60],))
-
-fig2 = plt.figure()
-plt.plot(t, z[:, 0], color = '#00BFFF', label='S')
-plt.plot(t, z[:, 1], color = '#228B22', label='I')
-plt.plot(t, z[:, 2], color = '#B22222', label='R')
-plt.xlabel('t')
-plt.ylabel('SIRS-values')
-plt.title('SIRS for alpha[60]')
-plt.legend(loc='best')
-plt.grid()
-
-z = odeint(SIS, z0SIS, t, args=(alpha[70],))
-
-fig3 = plt.figure()
-plt.plot(t, z[:, 0], color = '#00BFFF', label='S')
-plt.plot(t, z[:, 1], color = '#228B22', label='I')
-plt.plot(t, z[:, 2], color = '#B22222', label='R')
-plt.xlabel('t')
-plt.ylabel('SIRS-values')
-plt.title('SIRS for alpha[70]')
-plt.legend(loc='best')
-plt.grid()
-
-z = odeint(SIS, z0SIS, t, args=(alpha[80],))
-
-fig2 = plt.figure()
-plt.plot(t, z[:, 0], color = '#00BFFF', label='S')
-plt.plot(t, z[:, 1], color = '#228B22', label='I')
-plt.plot(t, z[:, 2], color = '#B22222', label='R')
-plt.xlabel('t')
-plt.ylabel('SIRS-values')
-plt.title('SIRS for alpha[80]')
-plt.legend(loc='best')
-plt.grid()
-
-z = odeint(SIS, z0SIS, t, args=(alpha[90],))
-
-fig3 = plt.figure()
-plt.plot(t, z[:, 0], color = '#00BFFF', label='S')
-plt.plot(t, z[:, 1], color = '#228B22', label='I')
-plt.plot(t, z[:, 2], color = '#B22222', label='R')
-plt.xlabel('t')
-plt.ylabel('SIRS-values')
-plt.title('SIRS for alpha[90]')
-plt.legend(loc='best')
-plt.grid()
-
-z = odeint(SIS, z0SIS, t, args=(alpha[99],))
-
-fig3 = plt.figure()
-plt.plot(t, z[:, 0], color = '#00BFFF', label='S')
-plt.plot(t, z[:, 1], color = '#228B22', label='I')
-plt.plot(t, z[:, 2], color = '#B22222', label='R')
-plt.xlabel('t')
-plt.ylabel('SIRS-values')
-plt.title('SIRS for alpha = 1/300')
-plt.legend(loc='best')
-plt.grid()
