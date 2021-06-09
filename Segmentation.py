@@ -147,7 +147,7 @@ def SIQRS_SEG(z, t, beta = beta):
         I[:, i] = I[:, i-1] + 1/2 * dIdt
         Q[:, i] = Q[:, i-1] + 1/2 * dQdt
         R[:, i] = R[:, i-1] + 1/2 * dRdt
-        P[:, i] += S[:, i] + I[: , i] + Q[:, i] + R[:, i]
+        P[:, i] += S[:, i] + I[:, i] + Q[:, i] + R[:, i]
 
         
 
@@ -239,6 +239,7 @@ plt.xlabel("Dage")
 plt.legend(loc='best')
 plt.title(r"Segmenteret SIQRS model") #med $\beta$={}".format(beta))
 plt.grid()
+plt.show()
 
 plt.show()
 

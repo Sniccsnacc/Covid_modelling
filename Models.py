@@ -73,7 +73,8 @@ def mads(z, t):
     dRdt = (1 - r) * gamma * z[1] - alpha * z[3] + gamma * z[2]
     return [dSdt, dIdt, dQdt, dRdt]
 
-def co(z,t, alpha=alpha):
+
+def co(z,t, alpha=alpha, r = r):
     dSdt = - (beta * z[0] * z[2] / N) + alpha * z[3]
     dIqdt = beta * z[0] * z[2] * r / N - gamma * z[1]
     dIidt = beta * z[0] * z[2] * (1-r) / N - gamma * z[2]
@@ -83,26 +84,30 @@ def co(z,t, alpha=alpha):
 # region Extra functions
 
 # region Explicit Euler
-def ExplicitEuler(fun, xa, Tspan):
-    def feval(funcName, *args):
-        return eval(funcName)(*args)
+def ExplicitEuler_co(z0, t, alpha=alpha, r=r):
+    l = t.size
+    dt = t[1]-t[0]
+    S = np.zeros(l)
+    Iq = np.zeros(l)
+    Ii = np.zeros(l)
+    R = np.zeros(l)
+    S[0] = z0[0]
+    Iq[0] = z0[1]
+    Ii[0] = z0[2]
+    R[0] = z0[3]
+    for i in range(1, t.size):
+        dSdt = - (beta * S[i-1] * Ii[i-1] / N) + alpha * R[i-1]
+        dIqdt = beta * S[i-1] * Ii[i-1] * r / N - gamma * Iq[i-1]
+        dIidt = beta * S[i-1] * Ii[i-1] * (1 - r) / N - gamma * Ii[i-1]
+        dRdt = gamma * S[i-1] + gamma * Ii[i-1] - alpha * R[i-1]
 
-    nx = len(xa)
-    N = len(Tspan)
-    X = np.zeros((N, nx))
-    T = np.zeros(N)
+        S[i] = S[i - 1] + dSdt
+        Iq[i] = Iq[i - 1] + dIqdt * dt
+        Ii[i] = Iq[i - 1] + dIidt * dt
+        R[i] = R[i - 1] + dRdt
 
-    #Explicit euler method
-    T[0] = Tspan[0]
-    X[0, :] = xa
+    return S, Iq, Ii, R
 
-    for k in range(N-1):
-        f = np.array([feval(fun, X[k, :], T[k])])
-        T[k+1] = Tspan[k+1]
-        dt = T[k+1] - T[k]
-        X[k+1, :] = X[k, :] + f*dt
-
-    return X
 # endregion
 
 # Trapazoid

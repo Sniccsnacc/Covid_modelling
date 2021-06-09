@@ -1,6 +1,7 @@
 #%% 
 import numpy as np
 import pandas as pd
+from scipy.interpolate import interp1d
 
 # region loading data and modifying
 mat = pd.read_csv('Data2/Test_pos_over_time.csv', sep=';')
@@ -9,13 +10,19 @@ time = np.linspace(0, cases.size, cases.size)
 sick = np.zeros(cases.size)
 new_pos = mat.NewPositive
 
+# Parameters
+N = 5.806e6
+quar_thresshold_procentage = 0.25
+quar_thresshold = N * (1 - quar_thresshold_procentage)
+beta = 2
+gamma = 1/6
 
 # finding the total number of sick people
 for i in range(1, cases.size):
-    if i < 6:
+    if i < int(1/gamma):
         sick[i] = cases[i] + sick[i - 1]
     else:
-        sick[i] = sick[i-1] + cases[i] - cases[i-6]
+        sick[i] = sick[i-1] + cases[i] - cases[i-int(1/gamma)]
 
 # endregion
 
@@ -30,8 +37,9 @@ gamma = 1/6
 
 # new parameter, for how quickly you can become susceptible again
 # used in SIS model
+#alpha = 0.00020202020202020205
+#alpha = 0.0002356902356902357
 alpha = 1/240
-
 
 # new parameter, for how many infected go to quarantine
 # used in SIQRS model
