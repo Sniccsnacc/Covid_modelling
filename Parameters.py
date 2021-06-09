@@ -25,7 +25,7 @@ N = 5.806e6
 quar_thresshold_procentage = 0.25
 quar_thresshold = N * (1 - quar_thresshold_procentage)
 beta = 2
-gamma = 1/7
+gamma = 1/6
 
 # new parameter, for how quickly you can become susceptible again
 # used in SIS model

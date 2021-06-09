@@ -109,14 +109,23 @@ plt.tight_layout(h_pad=0.02)
 
 
 
+idx = (483830 - 1000 < z[:,0]) * (z[:,0] < 483830 + 1000)
+t = np.where(idx == False) # dag 269
+
+
+
+
+
+
+
 # endregion
 
 # region SIQRS
 Q0 = 0
 z0 = [S0, I0, Q0, R0]
 
-z = odeint(SIQRS, z0, t)
 
+z = odeint(SIQRS, z0, t)
 
 fig1.add_subplot(4, 1, 4)
 plt.plot(t, z[:, 0], color = '#00BFFF', label='S')
@@ -129,6 +138,17 @@ plt.legend(loc='best')
 plt.title('SIQRS')
 plt.grid()
 plt.tight_layout(h_pad=-1)
+
+
+
+
+
+idx = (5806000/7 - 1000 < z[:,0]) * (5806000/7 + 1000 > z[:,0])
+k = np.where(idx)[0]
+for i in range(k.size):
+    print(z[k[0][i],0])
+
+
 
 # endregion
 
