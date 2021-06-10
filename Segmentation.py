@@ -17,6 +17,8 @@ gammas = np.ones(num_regions) / 6
 travel_out = np.array(travel_out)
 travel_in = np.array(travel_in)
 #beta = 0.188 #Beta value for SIR and SIRS model
+#beta = 0.207 #Beta værdi fundet ved MSE mellem 0.15 og 0.25 (singulær)
+
 ## Beta værdi fundet ved MSE mellem 0.15 og 0.25
 beta = np.array([0.15      , 0.15      , 0.15      , 0.15      , 0.15      ,
        0.15      , 0.15      , 0.15      , 0.15      , 0.15      ,
@@ -244,8 +246,8 @@ plt.plot(range(len(sick)), I_tot[0:ts:2], color = '#228B22', label='I')
 plt.plot(range(len(sick)), Q_tot[0:ts:2], color = '#FF8C00', label='Q')
 #plt.plot(range(len(sick)), R_tot[0:ts:2], color = '#B22222', label='R')
 #plt.plot(range(len(sick)), P_tot[0:ts:2], label='Population')
-plt.plot(range(len(sick)), If[0:ts:2], label = 'Inficerede')
-plt.plot(range(len(sick)), sick, color = '#00BFFF', label='Positivt testede')
+plt.plot(range(len(sick)), If[0:ts:2], label = 'Inficerede (I + Q)')
+plt.plot(range(len(sick)), sick, color = '#B22222', label='Positivt testede')
 plt.ylabel("Antal Mennesker")
 plt.xlabel("Dage")
 plt.legend(loc='best')
