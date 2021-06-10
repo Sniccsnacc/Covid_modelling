@@ -54,7 +54,7 @@ numplot = 2
 # region SIR model
 
 # initial conditions
-I0 = 1
+I0 = 0.5
 S0 = N - I0
 R0 = 0
 z0 = [S0, I0, R0]
