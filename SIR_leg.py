@@ -29,7 +29,7 @@ print('\nSIQRS - parameters')
 print('   beta = ', beta, '\n',
       '  gamma = ', gamma, '\n',
       '  resusceptible rate = ', alpha, '\n',
-      '  quarantine rate = ', mu, '\n')
+      '  quarantine rate = ', r, '\n')
 
 print('\nSIQRSV - parameters')
 print('   beta = ', beta, '\n',
@@ -55,23 +55,22 @@ I0 = 1
 S0 = N - I0
 R0 = 0
 z0 = np.array([S0, I0, R0])
-t = np.linspace(0, 70, 200)
+t = np.linspace(0, 120, 200)
 
 # solving the SIR ODE
-#z = odeint(SIR, z0, t)
-z = solve_ivp(SIR, (0, 70), z0, vectorized=True, rtol=0.00000001)
+z = odeint(SIR, z0, t)
 
 # plotting the SIR model
 plt.figure(1)
-plt.plot(z.t, z.y[0, :], color = '#00BFFF', label='S')
-plt.plot(z.t, z.y[1, :], color = '#228B22', label='I')
-plt.plot(z.t, z.y[2, :], color = '#B22222', label='R')
+plt.plot(t, z[:, 0], color = '#00BFFF', label='S')
+plt.plot(t, z[:, 1], color = '#228B22', label='I')
+plt.plot(t, z[:, 2], color = '#B22222', label='R')
 plt.ylabel('Antal mennesker')
 plt.xlabel('t [dage]')
 plt.title('SIR')
 plt.legend(loc='best')
 plt.grid()
-print(1e-6 + 0.00000001 * max(z.y))
+print(z[199, 1])
 
 
 #endregion
