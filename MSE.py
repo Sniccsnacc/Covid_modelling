@@ -25,7 +25,7 @@ print(new_beta[ind])
 
 #%% 
 from Segmentation import *
-
+import time
 
 n_h = 29
 n_s = 17
@@ -33,13 +33,15 @@ n_sd = 22
 n_mj = 19
 n_nj = 11
 
-betas = np.linspace(0.15, 0.25, 10)
+betas = np.linspace(0.10, 0.25, 16)
 beta2 = np.ones(len(names))
 new_beta = []
 err = []
-k = 1
+
+start = time.time()
 
 for hoved in betas:
+    start2 = time.time()
     for sjael in betas:
         for syddan in betas:
             for midtjyl in betas:
@@ -58,14 +60,15 @@ for hoved in betas:
                     if abs(max(If) - max(sick)) <= 3000:
                         new_beta.append(beta2.copy())
                         err.append(sum((If[0:ts:2] - sick) ** 2))
+                    
     
-    print(k)
-    k += 1
+    end2 = time.time()
+    print(end2 - start2)
 
+end = time.time()
 
-#%%
+print(end - start)
 
 ind = np.where(err == min(err))[0][0]
 
-print(new_beta[ind])
 
