@@ -2,7 +2,7 @@ from Parameters import*
 
 
 # region SIR model
-def SIR(z, t):
+def SIR(t, z):
     dSdt = -beta * z[0] * z[1] / N
     dIdt = beta * z[0] * z[1] / N - gamma * z[1]
     dRdt = gamma * z[1]

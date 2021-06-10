@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # time span
-num_days = 269
+num_days = 880
 t = np.linspace(0, num_days, num_days)
 
 Ii0 = 1
@@ -32,7 +32,7 @@ plt.legend(loc='best')
 plt.title(r'Stabilitet for SIQRS når $\alpha$ varierer')
 plt.grid()
 
-
+print(min(steady[2, :]))
 
 steady = np.zeros((len(alpha), 3))
 for i in range(len(alpha)):
@@ -48,34 +48,4 @@ plt.ylabel('SIRS-stabil')
 plt.legend(loc='best')
 plt.title(r'Stabilitet for SIRS når $\alpha$ varierer')
 plt.grid()
-
-
-
-
-
-
-z = odeint(SIS, z0SIS, t, args=(alpha[0],))
-
-fig2 = plt.figure()
-plt.plot(t, z[:, 0], color = '#00BFFF', label='S')
-plt.plot(t, z[:, 1], color = '#228B22', label='I')
-plt.plot(t, z[:, 2], color = '#B22222', label='R')
-plt.xlabel('t')
-plt.ylabel('SIRS-values')
-plt.title('SIRS for alpha = 1')
-plt.legend(loc='best')
-plt.grid()
-
-z = odeint(SIS, z0SIS, t, args=(alpha[10],))
-
-fig3 = plt.figure()
-plt.plot(t, z[:, 0], color = '#00BFFF', label='S')
-plt.plot(t, z[:, 1], color = '#228B22', label='I')
-plt.plot(t, z[:, 2], color = '#B22222', label='R')
-plt.xlabel('t')
-plt.ylabel('SIRS-values')
-plt.title('SIRS for alpha[10]')
-plt.legend(loc='best')
-plt.grid()
-
-
+plt.show()

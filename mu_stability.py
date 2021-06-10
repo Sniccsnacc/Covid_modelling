@@ -20,15 +20,8 @@ steady = np.zeros((len(r), 4))
 ### alpha = 1/2 og mu varierer
 for i in range(len(r)):
     z = odeint(co, z0co, t, args=(1/240, r[i],))
-z0SIQRS = [S0, Q0, I0, R0]
-mu = np.linspace(0, 1, 10)
-steady = np.zeros((len(mu), 4))
-
-
-### alpha = 1/240 og mu varierer
-for i in range(len(mu)):
-    z = odeint(co, z0SIQRS, t, args=(1/240, mu[i],))
     steady[i, :] = z[-1, :]
+
 plt.figure()
 plt.plot(r, steady[:, 0], color = '#00BFFF', label='S')
 plt.plot(r, steady[:, 1], color = '#228B22', label='$I_i$')
