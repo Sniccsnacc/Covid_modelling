@@ -32,7 +32,7 @@ for i in range(1, cases.size):
 N = 5.806e6
 quar_thresshold_procentage = 0.25
 quar_thresshold = N * (1 - quar_thresshold_procentage)
-beta = 2
+beta = 1
 gamma = 1/6
 
 # new parameter, for how quickly you can become susceptible again
@@ -54,7 +54,7 @@ tau = (60937 / 365)
 psi = (54645 / 365)
 
 # time span
-num_days = 2*498
+num_days = 200
 t = np.linspace(0, num_days, num_days)
 
 # endregion

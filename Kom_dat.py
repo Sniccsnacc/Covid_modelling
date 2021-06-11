@@ -4,19 +4,20 @@ from numpy.lib.function_base import append
 import pandas as pd
 
 all_dat = pd.read_csv('Kommune_data/dat.csv', sep=';')
+popu = pd.read_csv('Kommune_data/kompop.csv', sep=';')
 
 temp = []
 temp2 = []
 mat_num_people = []
 travel_in = []
-population = []
+population = list(popu.Folketal)
 ib = all_dat.Bopæl[0]
 names = []
 
 #Selective cities
 num_city = 3
 travel_in_2 = []
-population_2 = []
+population_2 = population[0:num_city].copy()
 
 
 
@@ -42,6 +43,8 @@ names.append(bo)
 
 
 #%% Remove 
+population.pop(28)
+
 mat_num_people.pop(0)
 mat_num_people.pop(1-1)
 mat_num_people.pop(6-2)
@@ -101,11 +104,9 @@ for elem in mat_num_people:
 
 for row in mat_num_people:
     travel_in.append(row.copy())
-    population.append(sum(row))
 
 for row in mat_num_people[0:num_city]:
     travel_in_2.append(row[0:num_city].copy())
-    population_2.append(sum(row[0:num_city]))
 
 travel_out = population.copy()
 travel_out_2 = population_2.copy()

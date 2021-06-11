@@ -1,12 +1,12 @@
 #%%
 from Models import *
-from scipy.integrate import odeint
+from scipy.integrate import odeint, solve_ivp
 import matplotlib.pyplot as plt
 import numpy as np
 
 # time span
-num_days = 269
-t = np.linspace(0, num_days, num_days)
+t0 = 0
+tf = 120
 
 Ii0 = 1
 S0 = N - Ii0
@@ -17,9 +17,22 @@ z0Co = [S0, Iq0, Ii0, R0]
 alpha = np.linspace(0, 1/300, 100)
 steady = np.zeros((len(alpha), 4))
 
+def SIS(t, z, alpha=alpha):
+    dSdt = -beta * z[0] * z[1] / N + alpha * z[2]
+    dIdt = beta*z[0]*z[1] / N - gamma * z[1]
+    dRdt = gamma * z[1] - alpha * z[2]
+    return [dSdt, dIdt, dRdt]
+
+def co(t, z, alpha=alpha, r = r):
+    dSdt = - (beta * z[0] * z[2] / N) + alpha * z[3]
+    dIqdt = beta * z[0] * z[2] * r / N - gamma * z[1]
+    dIidt = beta * z[0] * z[2] * (1-r) / N - gamma * z[2]
+    dRdt = gamma * z[1] + gamma * z[2] - alpha * z[3]
+    return [dSdt, dIqdt, dIidt, dRdt]
+
 for i in range(len(alpha)):
-    z = odeint(co, z0Co, t, args=(alpha[i],))
-    steady[i, :] = z[-1, :]
+    z = solve_ivp(co, (t0, tf), z0Co, vectorized=True, args=(alpha[i],), rtol=2.220446049250313e-14)
+    steady[i, :] = z.y[:, -1]
 
 plt.figure()
 plt.plot(alpha, steady[:, 0], color = '#00BFFF', label='S')
@@ -32,12 +45,12 @@ plt.legend(loc='best')
 plt.title(r'Stabilitet for SIQRS når $\alpha$ varierer')
 plt.grid()
 
-
+print('her')
 
 steady = np.zeros((len(alpha), 3))
 for i in range(len(alpha)):
-    z = odeint(SIS, z0SIS, t, args=(alpha[i],))
-    steady[i, :] = z[-1, :]
+    z = solve_ivp(SIS, (t0, tf), z0SIS, vectorized=True, args=(alpha[i],), rtol=2.220446049250313e-14)
+    steady[i, :] = z.y[:, -1]
 
 plt.figure()
 plt.plot(alpha, steady[:, 0], color = '#00BFFF', label='S')
@@ -48,34 +61,4 @@ plt.ylabel('SIRS-stabil')
 plt.legend(loc='best')
 plt.title(r'Stabilitet for SIRS når $\alpha$ varierer')
 plt.grid()
-
-
-
-
-
-
-z = odeint(SIS, z0SIS, t, args=(alpha[0],))
-
-fig2 = plt.figure()
-plt.plot(t, z[:, 0], color = '#00BFFF', label='S')
-plt.plot(t, z[:, 1], color = '#228B22', label='I')
-plt.plot(t, z[:, 2], color = '#B22222', label='R')
-plt.xlabel('t')
-plt.ylabel('SIRS-values')
-plt.title('SIRS for alpha = 1')
-plt.legend(loc='best')
-plt.grid()
-
-z = odeint(SIS, z0SIS, t, args=(alpha[10],))
-
-fig3 = plt.figure()
-plt.plot(t, z[:, 0], color = '#00BFFF', label='S')
-plt.plot(t, z[:, 1], color = '#228B22', label='I')
-plt.plot(t, z[:, 2], color = '#B22222', label='R')
-plt.xlabel('t')
-plt.ylabel('SIRS-values')
-plt.title('SIRS for alpha[10]')
-plt.legend(loc='best')
-plt.grid()
-
-
+plt.show()
