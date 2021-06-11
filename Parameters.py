@@ -54,7 +54,7 @@ tau = (60937 / 365)
 psi = (54645 / 365)
 
 # time span
-num_days = 200
+num_days = 2*498
 t = np.linspace(0, num_days, num_days)
 
 # endregion

@@ -6,19 +6,19 @@ from Kom_dat import *
 # num_regions = 3
 # population = np.array([N, N, N])
 # gammas = np.array([1/7, 1/7, 1/7])
-# travel_out = np.array([0.1, 0.3, 0.0])
-# travel_in = np.array([[0, 0.8, 0.2],
+# g = np.array([0.1, 0.3, 0.0])
+# MT = np.array([[0, 0.8, 0.2],
 #                       [0.3, 0, 0.7],
 #                       [0.5, 0.5, 0]])
 
 num_regions = len(travel_out)
 population = np.array(population)
 gammas = np.ones(num_regions) / 6
-travel_out = np.array(travel_out)
-travel_in = np.array(travel_in)
+g = np.array(travel_out)
+MT = np.array(travel_in).T
 #beta = 0.188 #Beta value for SIR and SIRS model
 #beta = 0.146 #Beta værdi fundet ved MSE mellem 0.01 og 0.3 (singulær)
-beta = 0.1
+beta = 0.22
 
 ## Beta værdi fundet ved MSE mellem 0.15 og 0.25
 # beta = np.array([0.15      , 0.15      , 0.15      , 0.15      , 0.15      ,
@@ -40,7 +40,7 @@ beta = 0.1
 #        0.15      , 0.15      , 0.15      , 0.15      , 0.15      ,
 #        0.15      , 0.15      , 0.15      , 0.15      , 0.15      ,
 #        0.15      , 0.15      , 0.15      , 0.15      , 0.15      ,
-#        0.15      , 0.15      , 0.15      ])
+#        0.15      , 0.15      , 0.15      ])*10
 
 
 
@@ -61,19 +61,19 @@ def SIR_SEG(z, t):
     P[:, 0 ] = S[:, 0] + I[: , 0] + R[:, 0]
     for i in range(1, t.size):
         #Standard form:
-        # dSdt = -beta * S[:, i - 1] * I[:, i - 1] / population - travel_out * S[:, i - 1] + (travel_out * travel_in.T).dot(S[:, i - 1])
-        # dIdt = beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 1] - travel_out * I[:, i - 1] + (travel_out * travel_in.T).dot(I[:, i - 1])
-        # dRdt = gammas * I[:, i - 1] - travel_out * R[:, i - 1] + (travel_out * travel_in.T).dot(R[:, i - 1])
+        # dSdt = -beta * S[:, i - 1] * I[:, i - 1] / population - g * S[:, i - 1] + (g * MT).dot(S[:, i - 1])
+        # dIdt = beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 1] - g * I[:, i - 1] + (g * MT).dot(I[:, i - 1])
+        # dRdt = gammas * I[:, i - 1] - g * R[:, i - 1] + (g * MT).dot(R[:, i - 1])
 
         #Homecoming form:
         if k%2:
-            dSdt = -1/2 * beta * S[:, i - 1] * I[:, i - 1] / population - travel_out * S[:, i - 1] + (travel_out * travel_in.T).dot(S[:, i - 1])
-            dIdt = 1/2 * beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 1] - travel_out * I[:, i - 1] + (travel_out * travel_in.T).dot(I[:, i - 1])
-            dRdt = gammas * I[:, i - 1] - travel_out * R[:, i - 1] + (travel_out * travel_in.T).dot(R[:, i - 1])
+            dSdt = -1/2 * beta * S[:, i - 1] * I[:, i - 1] / population - g * S[:, i - 1] + (g * MT).dot(S[:, i - 1])
+            dIdt = 1/2 * beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 1] - g * I[:, i - 1] + (g * MT).dot(I[:, i - 1])
+            dRdt = gammas * I[:, i - 1] - g * R[:, i - 1] + (g * MT).dot(R[:, i - 1])
         else:
-            dSdt = -1/2 * beta * S[:, i - 1] * I[:, i - 1] / population + travel_out * S[:, i - 2] - (travel_out * travel_in.T).dot(S[:, i - 2])
-            dIdt = 1/2 * beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 1] + travel_out * I[:, i - 2] - (travel_out * travel_in.T).dot(I[:, i - 2])
-            dRdt = gammas * I[:, i - 1] + travel_out * R[:, i - 2] - (travel_out * travel_in.T).dot(R[:, i - 2])
+            dSdt = -1/2 * beta * S[:, i - 1] * I[:, i - 1] / population + g * S[:, i - 2] - (g * MT).dot(S[:, i - 2])
+            dIdt = 1/2 * beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 1] + g * I[:, i - 2] - (g * MT).dot(I[:, i - 2])
+            dRdt = gammas * I[:, i - 1] + g * R[:, i - 2] - (g * MT).dot(R[:, i - 2])
 
         k += 1
 
@@ -100,19 +100,19 @@ def SIRS_SEG(z, t):
     P[:, 0 ] = S[:, 0] + I[: , 0] + R[:, 0]
     for i in range(1, t.size):
         #Standard form:
-        # dSdt = -beta * S[:, i - 1] * I[:, i - 1] / population - travel_out * S[:, i - 1] + (travel_out * travel_in.T).dot(S[:, i - 1])
-        # dIdt = beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 1] - travel_out * I[:, i - 1] + (travel_out * travel_in.T).dot(I[:, i - 1])
-        # dRdt = gammas * I[:, i - 1] - travel_out * R[:, i - 1] + (travel_out * travel_in.T).dot(R[:, i - 1])
+        # dSdt = -beta * S[:, i - 1] * I[:, i - 1] / population - g * S[:, i - 1] + (g * MT).dot(S[:, i - 1])
+        # dIdt = beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 1] - g * I[:, i - 1] + (g * MT).dot(I[:, i - 1])
+        # dRdt = gammas * I[:, i - 1] - g * R[:, i - 1] + (g * MT).dot(R[:, i - 1])
 
         #Homecoming form:
         if k%2:
-            dSdt = -beta * S[:, i - 1] * I[:, i - 1] / population - travel_out * S[:, i - 1] + (travel_out * travel_in.T).dot(S[:, i - 1]) + alpha * R[:,i-1]
-            dIdt = beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 1] - travel_out * I[:, i - 2] + (travel_out * travel_in.T).dot(I[:, i - 1])
-            dRdt = gammas * I[:, i - 1] - travel_out * R[:, i - 1] + (travel_out * travel_in.T).dot(R[:, i - 1]) - alpha * R[:, i-1]
+            dSdt = -beta * S[:, i - 1] * I[:, i - 1] / population - g * S[:, i - 1] + (g * MT).dot(S[:, i - 1]) + alpha * R[:,i-1]
+            dIdt = beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 1] - g * I[:, i - 2] + (g * MT).dot(I[:, i - 1])
+            dRdt = gammas * I[:, i - 1] - g * R[:, i - 1] + (g * MT).dot(R[:, i - 1]) - alpha * R[:, i-1]
         else:
-            dSdt = -beta * S[:, i - 1] * I[:, i - 1] / population + travel_out * S[:, i - 2] - (travel_out * travel_in.T).dot(S[:, i - 2]) + alpha *R[:,i-1]
-            dIdt = beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 1] + travel_out * I[:, i - 2] - (travel_out * travel_in.T).dot(I[:, i - 2])
-            dRdt = gammas * I[:, i - 1] + travel_out * R[:, i - 2] - (travel_out * travel_in.T).dot(R[:, i - 2]) - alpha *R[:,i-1]
+            dSdt = -beta * S[:, i - 1] * I[:, i - 1] / population + g * S[:, i - 2] - (g * MT).dot(S[:, i - 2]) + alpha *R[:,i-1]
+            dIdt = beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 1] + g * I[:, i - 2] - (g * MT).dot(I[:, i - 2])
+            dRdt = gammas * I[:, i - 1] + g * R[:, i - 2] - (g * MT).dot(R[:, i - 2]) - alpha *R[:,i-1]
 
         k += 1
 
@@ -134,32 +134,37 @@ def SIQRS_SEG(z, t, beta = beta):
     Q = np.zeros((rows, l+1))
     R = np.zeros((rows, l+1))
     P = np.zeros((rows, l))
-    dI = []
-    dQ = []
+
+    SA = np.zeros((rows, rows))
+    IA = np.zeros((rows, rows))
+    QA = np.zeros((rows, rows))
+    RA = np.zeros((rows, rows))
 
     S[:, 0] = z[:, 0]
     I[:, 0] = z[:, 1]
     Q[:, 0] = z[:, 2]
     R[:, 0] = z[:, 3]
     P[:, 0 ] = S[:, 0] + I[: , 0] + Q[:, 0] + R[:, 0]
+
     for i in range(1, t.size):
         #Standard form:
-        # dSdt = -1/2 *beta * S[:, i - 1] * I[:, i - 1] / population -travel_out * S[:, i - 1] + (travel_out * travel_in.T).dot(S[:, i - 1]) + alpha * R[:,i-1]
-        # dIdt = 1/2 *(1 - r) * beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 1] - travel_out * I[:, i - 1] + (travel_out * travel_in.T).dot(I[:, i - 1])
+        # dSdt = -1/2 *beta * S[:, i - 1] * I[:, i - 1] / population -g * S[:, i - 1] + (g * MT).dot(S[:, i - 1]) + alpha * R[:,i-1]
+        # dIdt = 1/2 *(1 - r) * beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 1] - g * I[:, i - 1] + (g * MT).dot(I[:, i - 1])
         # dQdt = 1/2 *r * beta * S[:, i - 1] * I[:, i - 1] / population - gammas * Q[:, i - 1]
-        # dRdt = gammas * I[:, i - 1] + gammas * Q[:, i-1] - travel_out * R[:, i - 1] + (travel_out * travel_in.T).dot(R[:, i - 1]) - alpha * R[:, i-1]
+        # dRdt = gammas * I[:, i - 1] + gammas * Q[:, i-1] - g * R[:, i - 1] + (g * MT).dot(R[:, i - 1]) - alpha * R[:, i-1]
 
         #Homecoming form:
         if k%2:
-            dSdt = -1/2 *beta * S[:, i - 1] * I[:, i - 1] / population -travel_out * S[:, i - 1] + (travel_out * travel_in.T).dot(S[:, i - 1]) + alpha * R[:,i-1]
-            dIdt = 1/2 *(1 - r) * beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 1] - travel_out * I[:, i - 1] + (travel_out * travel_in.T).dot(I[:, i - 1])
+            dSdt = -1/2 *beta * S[:, i - 1] * I[:, i - 1] / population -g * S[:, i - 1] + (g * MT).dot(S[:, i - 1]) + alpha * R[:,i-1]
+            dIdt = 1/2 *(1 - r) * beta * S[:, i - 1] * (I[:, i - 1]) / population - gammas * I[:, i - 1] - g * I[:, i - 1] + (g * MT).dot(I[:, i - 1])
             dQdt = 1/2 *r * beta * S[:, i - 1] * I[:, i - 1] / population - gammas * Q[:, i - 1]
-            dRdt = gammas * I[:, i - 1] + gammas * Q[:, i-1] - travel_out * R[:, i - 1] + (travel_out * travel_in.T).dot(R[:, i - 1]) - alpha * R[:, i-1]
+            dRdt = gammas * I[:, i - 1] + gammas * Q[:, i-1] - g * R[:, i - 1] + (g * MT).dot(R[:, i - 1]) - alpha * R[:, i-1]
+
         else:
-            dSdt = -1/2 *beta * S[:, i - 1] * I[:, i - 1] / population + travel_out * S[:, i - 2] - (travel_out * travel_in.T).dot(S[:, i - 2]) + alpha *R[:,i-1]
-            dIdt = 1/2 *(1-r) * beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 1] + travel_out * I[:, i - 2] - (travel_out * travel_in.T).dot(I[:, i - 2])
+            dSdt = -1/2 *beta * S[:, i - 1] * I[:, i - 1] / population + g * S[:, i - 2] - (g * MT).dot(S[:, i - 2]) + alpha *R[:,i-1]
+            dIdt = 1/2 *(1-r) * beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 1] + g * I[:, i - 2] - (g * MT).dot(I[:, i - 2])
             dQdt = 1/2 *r * beta * S[:, i - 1] * I[:, i - 1] / population - gammas * Q[:, i - 1]
-            dRdt = gammas * I[:, i - 1] + gammas * Q[:, i-1] + travel_out * R[:, i - 2] - (travel_out * travel_in.T).dot(R[:, i - 2]) - alpha *R[:,i-1]
+            dRdt = gammas * I[:, i - 1] + gammas * Q[:, i-1] + g * R[:, i - 2] - (g * MT).dot(R[:, i - 2]) - alpha *R[:,i-1]
 
         k += 1
         S[:, i] = S[:, i-1] + dSdt
@@ -167,12 +172,73 @@ def SIQRS_SEG(z, t, beta = beta):
         Q[:, i] = Q[:, i-1] + dQdt
         R[:, i] = R[:, i-1] + dRdt
         P[:, i] += S[:, i] + I[:, i] + Q[:, i] + R[:, i]
-        dI.append(dIdt)
-        dQ.append(dQdt)
 
         
 
     return S, I, Q, R, P
+
+
+def SIQRS_SEG2(z, t, beta = beta):
+    rows, c = z.shape
+    l = t.size
+    k = 1
+    S = np.zeros((rows, l+1))
+    I = np.zeros((rows, l+1))
+    Q = np.zeros((rows, l+1))
+    R = np.zeros((rows, l+1))
+    P = np.zeros((rows, l))
+
+    Sa = np.zeros((rows, rows))
+    Ia = np.zeros((rows, rows))
+    Qa = np.zeros((rows, rows))
+    Ra = np.zeros((rows, rows))
+
+    S[:, 0] = z[:, 0]
+    I[:, 0] = z[:, 1]
+    Q[:, 0] = z[:, 2]
+    R[:, 0] = z[:, 3]
+    P[:, 0 ] = S[:, 0] + I[: , 0] + Q[:, 0] + R[:, 0]
+
+    L = g * MT
+
+    for i in range(1, l):
+        if k%2: #Being home step
+            dSdt = -beta*S[:,i-1]*I[:,i-1] / population - g*S[:,i-1] + alpha*R[:, i-1]
+            dIdt = (1-r)*beta *S[:,i-1]*I[:,i-1] / population - gammas*I[:,i-1] - g*I[:,i-1]
+            dQdt = r*beta*S[:,i-1]*I[:,i-1] / population - gammas*Q[:,i-1]
+            dRdt = gammas*I[:,i-1] + gammas*Q[:,i-1] - alpha*R[:,i-1] - g*R[:,i-1]
+
+            Sa = (L*S[:,i-1]).T
+            Ia = (L*I[:,i-1]).T
+            Qa = Qa*0.0
+            Ra = (L*R[:,i-1]).T
+
+        else: #Being on work step
+            Ia_tot = np.sum(Ia,0)   #Folk på arbejde
+
+            dSa = -beta * Sa *(I[:,i-1] + Ia_tot)/population + alpha * Ra
+            dIa = (1-r)*beta * Sa *(I[:,i-1] + Ia_tot)/population - gammas * Ia
+            dQa = r*beta* Sa *(I[:,i-1] + Ia_tot)/population - gammas * Qa
+            dRa = gammas * Ia + gammas * Qa - alpha * Ra
+
+            Sa += 1/2 *dSa; Ia += 1/2*dIa; Qa += 1/2*dQa; Ra += 1/2*dRa
+
+            dSdt = -beta* S[:,i-1] * (I[:,i-1] + Ia_tot) / population + alpha * R[:,i-1] + np.sum(Sa, 1)
+            dIdt = (1-r)*beta *S[:,i-1] * (I[:,i-1] + Ia_tot) / population - gammas*I[:,i-1] + np.sum(Ia, 1)
+            dQdt = r*beta*S[:,i-1]*(I[:,i-1] + Ia_tot) / population - gammas*Q[:,i-1] + np.sum(Qa, 1)
+            dRdt = gammas * I[:,i-1] + gammas*Q[:,i-1] - alpha*R[:,i-1] + np.sum(Ra, 1)
+
+        
+        k += 1
+        S[:, i] = S[:, i-1] + 1/2 * dSdt
+        I[:, i] = I[:, i-1] + 1/2 * dIdt
+        Q[:, i] = Q[:, i-1] + 1/2 * dQdt
+        R[:, i] = R[:, i-1] + 1/2 * dRdt
+        P[:, i] = S[:, i] + I[: , i] + Q[:, i] + R[:, i]
+
+    return S, I, Q, R, P
+
+        
 
 
 
@@ -181,7 +247,7 @@ def SIQRS_SEG(z, t, beta = beta):
 I0 = np.zeros(num_regions)
 
 #23 i Kbh, 1 i Odense og 25 i Aarhus
-#I0[0] = 23; I0[53] = 1; I0[78] = 25     #udtræk fra 09/03-2020
+I0[0] = 23; I0[53] = 1; I0[78] = 25     #udtræk fra 09/03-2020
 
 Q0 = np.zeros(num_regions)
 R0 = np.zeros(num_regions)
@@ -189,7 +255,7 @@ S0 = population - I0 - Q0 - R0 #np.ones(num_regions) * (N - 1)
 Z0 = np.transpose(np.array([S0, I0, Q0, R0]))
 ts = t.size
 
-S, I, Q, R, P = SIQRS_SEG(Z0, t)
+S, I, Q, R, P = SIQRS_SEG2(Z0, t)
 
 
 #%% Plotting 3 first cities
@@ -225,7 +291,7 @@ S, I, Q, R, P = SIQRS_SEG(Z0, t)
 
 # plt.tight_layout()
 
-for i in range(num_regions):
+for i in range(3):
     plt.figure()
     #plt.plot(t[0:ts:2], S[i, 0:ts:2], color = '#00BFFF', label='S')
     plt.plot(range(len(sick)), I[i, 0:ts:2], color = '#228B22', label='I')
@@ -249,12 +315,12 @@ If = I_tot + Q_tot
 
 plt.figure()
 #plt.plot(range(len(sick)), S_tot[0:ts:2], color = '#00BFFF', label='S')
-plt.plot(range(len(sick)), I_tot[0:ts:2], color = '#228B22', label='I')
-plt.plot(range(len(sick)), Q_tot[0:ts:2], color = '#FF8C00', label='Q')
+plt.plot(t[0:int(ts/2)], I_tot[0:ts:2], color = '#228B22', label='I')
+plt.plot(t[0:int(ts/2)], Q_tot[0:ts:2], color = '#FF8C00', label='Q')
 #plt.plot(range(len(sick)), R_tot[0:ts:2], color = '#B22222', label='R')
 #plt.plot(range(len(sick)), P_tot[0:ts:2], label='Population')
-#plt.plot(range(len(sick)), If[0:ts:2], label = 'I + Q')
-#plt.plot(range(len(sick)), sick, color = '#B22222', label='Data')
+plt.plot(range(len(sick)), If[0:ts:2], label = 'I + Q')
+plt.plot(range(len(sick)), sick, color = '#B22222', label='Data')
 plt.ylabel("Antal Mennesker")
 plt.xlabel("Dage")
 plt.legend(loc='best')
