@@ -17,168 +17,89 @@ gammas = np.ones(num_regions) / 6
 g = np.array(travel_out)
 MT = np.array(travel_in).T
 #beta = 0.188 #Beta value for SIR and SIRS model
-#beta = 0.146 #Beta værdi fundet ved MSE mellem 0.01 og 0.3 (singulær)
-beta = 0.22
+beta = 0.204 #Beta værdi fundet ved MSE mellem 0.01 og 0.3 (singulær)
+#beta = 1
 
-## Beta værdi fundet ved MSE mellem 0.15 og 0.25
-# beta = np.array([0.15      , 0.15      , 0.15      , 0.15      , 0.15      ,
-#        0.15      , 0.15      , 0.15      , 0.15      , 0.15      ,
-#        0.15      , 0.15      , 0.15      , 0.15      , 0.15      ,
-#        0.15      , 0.15      , 0.15      , 0.15      , 0.15      ,
-#        0.15      , 0.15      , 0.15      , 0.15      , 0.15      ,
-#        0.15      , 0.15      , 0.15      , 0.15      , 0.15      ,
-#        0.15      , 0.15      , 0.15      , 0.15      , 0.15      ,
-#        0.15      , 0.15      , 0.15      , 0.15      , 0.15      ,
-#        0.15      , 0.15      , 0.15      , 0.15      , 0.15      ,
-#        0.15      , 0.23888889, 0.23888889, 0.23888889, 0.23888889,
-#        0.23888889, 0.23888889, 0.23888889, 0.23888889, 0.23888889,
-#        0.23888889, 0.23888889, 0.23888889, 0.23888889, 0.23888889,
-#        0.23888889, 0.23888889, 0.23888889, 0.23888889, 0.23888889,
-#        0.23888889, 0.23888889, 0.23888889, 0.15      , 0.15      ,
-#        0.15      , 0.15      , 0.15      , 0.15      , 0.15      ,
-#        0.15      , 0.15      , 0.15      , 0.15      , 0.15      ,
-#        0.15      , 0.15      , 0.15      , 0.15      , 0.15      ,
-#        0.15      , 0.15      , 0.15      , 0.15      , 0.15      ,
-#        0.15      , 0.15      , 0.15      , 0.15      , 0.15      ,
-#        0.15      , 0.15      , 0.15      ])*10
+## Beta værdi fundet ved MSE mellem 0.15 og 0.25 med 6 punkter
+# beta = np.array([0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16,
+#        0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16,
+#        0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.13, 0.13, 0.13, 0.13,
+#        0.13, 0.13, 0.13, 0.13, 0.13, 0.13, 0.13, 0.13, 0.13, 0.13, 0.13,
+#        0.13, 0.13, 0.19, 0.19, 0.19, 0.19, 0.19, 0.19, 0.19, 0.19, 0.19,
+#        0.19, 0.19, 0.19, 0.19, 0.19, 0.19, 0.19, 0.19, 0.19, 0.19, 0.19,
+#        0.19, 0.19, 0.22, 0.22, 0.22, 0.22, 0.22, 0.22, 0.22, 0.22, 0.22,
+#        0.22, 0.22, 0.22, 0.22, 0.22, 0.22, 0.22, 0.22, 0.22, 0.22, 0.13,
+#        0.13, 0.13, 0.13, 0.13, 0.13, 0.13, 0.13, 0.13, 0.13, 0.13])
+
+beta = np.array([0.1 , 0.1 , 0.1 , 0.1 , 0.1 , 0.1 , 0.1 , 0.1 , 0.1 , 0.1 , 0.1 ,
+       0.1 , 0.1 , 0.1 , 0.1 , 0.1 , 0.1 , 0.1 , 0.1 , 0.1 , 0.1 , 0.1 ,
+       0.1 , 0.1 , 0.1 , 0.1 , 0.1 , 0.1 , 0.1 , 0.22, 0.22, 0.22, 0.22,
+       0.22, 0.22, 0.22, 0.22, 0.22, 0.22, 0.22, 0.22, 0.22, 0.22, 0.22,
+       0.22, 0.22, 0.1 , 0.1 , 0.1 , 0.1 , 0.1 , 0.1 , 0.1 , 0.1 , 0.1 ,
+       0.1 , 0.1 , 0.1 , 0.1 , 0.1 , 0.1 , 0.1 , 0.1 , 0.1 , 0.1 , 0.1 ,
+       0.1 , 0.1 , 0.1 , 0.1 , 0.1 , 0.1 , 0.1 , 0.1 , 0.1 , 0.1 , 0.1 ,
+       0.1 , 0.1 , 0.1 , 0.1 , 0.1 , 0.1 , 0.1 , 0.1 , 0.1 , 0.1 , 0.25,
+       0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25])
 
 
 
 
 #%% Models
 
-def SIR_SEG(z, t):
-    r, c = z.shape
-    l = t.size
-    k = 1
-    S = np.zeros((r, l+1))
-    I = np.zeros((r, l+1))
-    R = np.zeros((r, l+1))
-    P = np.zeros((r,l))
-    S[:, 0] = z[:, 0]
-    I[:, 0] = z[:, 1]
-    R[:, 0] = z[:, 2]
-    P[:, 0 ] = S[:, 0] + I[: , 0] + R[:, 0]
-    for i in range(1, t.size):
-        #Standard form:
-        # dSdt = -beta * S[:, i - 1] * I[:, i - 1] / population - g * S[:, i - 1] + (g * MT).dot(S[:, i - 1])
-        # dIdt = beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 1] - g * I[:, i - 1] + (g * MT).dot(I[:, i - 1])
-        # dRdt = gammas * I[:, i - 1] - g * R[:, i - 1] + (g * MT).dot(R[:, i - 1])
-
-        #Homecoming form:
-        if k%2:
-            dSdt = -1/2 * beta * S[:, i - 1] * I[:, i - 1] / population - g * S[:, i - 1] + (g * MT).dot(S[:, i - 1])
-            dIdt = 1/2 * beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 1] - g * I[:, i - 1] + (g * MT).dot(I[:, i - 1])
-            dRdt = gammas * I[:, i - 1] - g * R[:, i - 1] + (g * MT).dot(R[:, i - 1])
-        else:
-            dSdt = -1/2 * beta * S[:, i - 1] * I[:, i - 1] / population + g * S[:, i - 2] - (g * MT).dot(S[:, i - 2])
-            dIdt = 1/2 * beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 1] + g * I[:, i - 2] - (g * MT).dot(I[:, i - 2])
-            dRdt = gammas * I[:, i - 1] + g * R[:, i - 2] - (g * MT).dot(R[:, i - 2])
-
-        k += 1
-
-        S[:, i] = S[:, i-1] + dSdt
-        I[:, i] = I[:, i-1] + dIdt
-        R[:, i] = R[:, i-1] + dRdt
-        P[:, i] += S[:, i] + I[: , i] + R[:, i]
-
-        
-
-    return S, I, R, P
-
-def SIRS_SEG(z, t):
-    r, c = z.shape
-    l = t.size
-    k = 1
-    S = np.zeros((r, l+1))
-    I = np.zeros((r, l+1))
-    R = np.zeros((r, l+1))
-    P = np.zeros((r,l))
-    S[:, 0] = z[:, 0]
-    I[:, 0] = z[:, 1]
-    R[:, 0] = z[:, 2]
-    P[:, 0 ] = S[:, 0] + I[: , 0] + R[:, 0]
-    for i in range(1, t.size):
-        #Standard form:
-        # dSdt = -beta * S[:, i - 1] * I[:, i - 1] / population - g * S[:, i - 1] + (g * MT).dot(S[:, i - 1])
-        # dIdt = beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 1] - g * I[:, i - 1] + (g * MT).dot(I[:, i - 1])
-        # dRdt = gammas * I[:, i - 1] - g * R[:, i - 1] + (g * MT).dot(R[:, i - 1])
-
-        #Homecoming form:
-        if k%2:
-            dSdt = -beta * S[:, i - 1] * I[:, i - 1] / population - g * S[:, i - 1] + (g * MT).dot(S[:, i - 1]) + alpha * R[:,i-1]
-            dIdt = beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 1] - g * I[:, i - 2] + (g * MT).dot(I[:, i - 1])
-            dRdt = gammas * I[:, i - 1] - g * R[:, i - 1] + (g * MT).dot(R[:, i - 1]) - alpha * R[:, i-1]
-        else:
-            dSdt = -beta * S[:, i - 1] * I[:, i - 1] / population + g * S[:, i - 2] - (g * MT).dot(S[:, i - 2]) + alpha *R[:,i-1]
-            dIdt = beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 1] + g * I[:, i - 2] - (g * MT).dot(I[:, i - 2])
-            dRdt = gammas * I[:, i - 1] + g * R[:, i - 2] - (g * MT).dot(R[:, i - 2]) - alpha *R[:,i-1]
-
-        k += 1
-
-        S[:, i] = S[:, i-1] + dSdt
-        I[:, i] = I[:, i-1] + dIdt
-        R[:, i] = R[:, i-1] + dRdt
-        P[:, i] += S[:, i] + I[: , i] + R[:, i]
-
-        
-
-    return S, I, R, P
-
-def SIQRS_SEG(z, t, beta = beta):
+def SIR_SEG(z, t, beta = beta):
     rows, c = z.shape
     l = t.size
     k = 1
     S = np.zeros((rows, l+1))
     I = np.zeros((rows, l+1))
-    Q = np.zeros((rows, l+1))
     R = np.zeros((rows, l+1))
     P = np.zeros((rows, l))
 
-    SA = np.zeros((rows, rows))
-    IA = np.zeros((rows, rows))
-    QA = np.zeros((rows, rows))
-    RA = np.zeros((rows, rows))
+    Sa = np.zeros((rows, rows))
+    Ia = np.zeros((rows, rows))
+    Ra = np.zeros((rows, rows))
 
     S[:, 0] = z[:, 0]
     I[:, 0] = z[:, 1]
-    Q[:, 0] = z[:, 2]
-    R[:, 0] = z[:, 3]
-    P[:, 0 ] = S[:, 0] + I[: , 0] + Q[:, 0] + R[:, 0]
+    R[:, 0] = z[:, 2]
+    P[:, 0 ] = S[:, 0] + I[: , 0] + R[:, 0]
 
-    for i in range(1, t.size):
-        #Standard form:
-        # dSdt = -1/2 *beta * S[:, i - 1] * I[:, i - 1] / population -g * S[:, i - 1] + (g * MT).dot(S[:, i - 1]) + alpha * R[:,i-1]
-        # dIdt = 1/2 *(1 - r) * beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 1] - g * I[:, i - 1] + (g * MT).dot(I[:, i - 1])
-        # dQdt = 1/2 *r * beta * S[:, i - 1] * I[:, i - 1] / population - gammas * Q[:, i - 1]
-        # dRdt = gammas * I[:, i - 1] + gammas * Q[:, i-1] - g * R[:, i - 1] + (g * MT).dot(R[:, i - 1]) - alpha * R[:, i-1]
+    L = g * MT
 
-        #Homecoming form:
-        if k%2:
-            dSdt = -1/2 *beta * S[:, i - 1] * I[:, i - 1] / population -g * S[:, i - 1] + (g * MT).dot(S[:, i - 1]) + alpha * R[:,i-1]
-            dIdt = 1/2 *(1 - r) * beta * S[:, i - 1] * (I[:, i - 1]) / population - gammas * I[:, i - 1] - g * I[:, i - 1] + (g * MT).dot(I[:, i - 1])
-            dQdt = 1/2 *r * beta * S[:, i - 1] * I[:, i - 1] / population - gammas * Q[:, i - 1]
-            dRdt = gammas * I[:, i - 1] + gammas * Q[:, i-1] - g * R[:, i - 1] + (g * MT).dot(R[:, i - 1]) - alpha * R[:, i-1]
+    for i in range(1, l):
+        if k%2: #Being home step
+            dSdt = -beta*S[:,i-1]*I[:,i-1] / population - 2*g*S[:,i-1]
+            dIdt = beta *S[:,i-1]*I[:,i-1] / population - gammas*I[:,i-1] - 2*g*I[:,i-1]
+            dRdt = gammas*I[:,i-1] - 2*g*R[:,i-1]
 
-        else:
-            dSdt = -1/2 *beta * S[:, i - 1] * I[:, i - 1] / population + g * S[:, i - 2] - (g * MT).dot(S[:, i - 2]) + alpha *R[:,i-1]
-            dIdt = 1/2 *(1-r) * beta * S[:, i - 1] * I[:, i - 1] / population - gammas * I[:, i - 1] + g * I[:, i - 2] - (g * MT).dot(I[:, i - 2])
-            dQdt = 1/2 *r * beta * S[:, i - 1] * I[:, i - 1] / population - gammas * Q[:, i - 1]
-            dRdt = gammas * I[:, i - 1] + gammas * Q[:, i-1] + g * R[:, i - 2] - (g * MT).dot(R[:, i - 2]) - alpha *R[:,i-1]
+            Sa = (L*S[:,i-1]).T
+            Ia = (L*I[:,i-1]).T
+            Ra = (L*R[:,i-1]).T
 
-        k += 1
-        S[:, i] = S[:, i-1] + dSdt
-        I[:, i] = I[:, i-1] + dIdt
-        Q[:, i] = Q[:, i-1] + dQdt
-        R[:, i] = R[:, i-1] + dRdt
-        P[:, i] += S[:, i] + I[:, i] + Q[:, i] + R[:, i]
+        else: #Being on work step
+            Ia_tot = np.sum(Ia,0)   #Folk på arbejde
+
+            dSa = -beta * Sa *(I[:,i-1] + Ia_tot)/population
+            dIa = beta * Sa *(I[:,i-1] + Ia_tot)/population - gammas * Ia
+            dRa = gammas * Ia
+
+            Sa += 1/2 *dSa; Ia += 1/2*dIa; Ra += 1/2*dRa
+
+            dSdt = -beta* S[:,i-1] * (I[:,i-1] + Ia_tot) / population + 2*np.sum(Sa, 1)
+            dIdt = beta *S[:,i-1] * (I[:,i-1] + Ia_tot) / population - gammas*I[:,i-1] + 2*np.sum(Ia, 1)
+            dRdt = gammas * I[:,i-1] + 2*np.sum(Ra, 1)
 
         
+        k += 1
+        S[:, i] = S[:, i-1] + 1/2 * dSdt
+        I[:, i] = I[:, i-1] + 1/2 * dIdt
+        R[:, i] = R[:, i-1] + 1/2 * dRdt
+        P[:, i] = S[:, i] + I[: , i] + R[:, i]
 
-    return S, I, Q, R, P
+    return S, I, R, P
 
 
-def SIQRS_SEG2(z, t, beta = beta):
+def SIQRS_SEG(z, t, beta = beta):
     rows, c = z.shape
     l = t.size
     k = 1
@@ -203,10 +124,10 @@ def SIQRS_SEG2(z, t, beta = beta):
 
     for i in range(1, l):
         if k%2: #Being home step
-            dSdt = -beta*S[:,i-1]*I[:,i-1] / population - g*S[:,i-1] + alpha*R[:, i-1]
-            dIdt = (1-r)*beta *S[:,i-1]*I[:,i-1] / population - gammas*I[:,i-1] - g*I[:,i-1]
+            dSdt = -beta*S[:,i-1]*I[:,i-1] / population + alpha*R[:, i-1] - 2*g*S[:,i-1]
+            dIdt = (1-r)*beta *S[:,i-1]*I[:,i-1] / population - gammas*I[:,i-1] - 2*g*I[:,i-1]
             dQdt = r*beta*S[:,i-1]*I[:,i-1] / population - gammas*Q[:,i-1]
-            dRdt = gammas*I[:,i-1] + gammas*Q[:,i-1] - alpha*R[:,i-1] - g*R[:,i-1]
+            dRdt = gammas*I[:,i-1] + gammas*Q[:,i-1] - alpha*R[:,i-1] - 2*g*R[:,i-1]
 
             Sa = (L*S[:,i-1]).T
             Ia = (L*I[:,i-1]).T
@@ -223,10 +144,10 @@ def SIQRS_SEG2(z, t, beta = beta):
 
             Sa += 1/2 *dSa; Ia += 1/2*dIa; Qa += 1/2*dQa; Ra += 1/2*dRa
 
-            dSdt = -beta* S[:,i-1] * (I[:,i-1] + Ia_tot) / population + alpha * R[:,i-1] + np.sum(Sa, 1)
-            dIdt = (1-r)*beta *S[:,i-1] * (I[:,i-1] + Ia_tot) / population - gammas*I[:,i-1] + np.sum(Ia, 1)
-            dQdt = r*beta*S[:,i-1]*(I[:,i-1] + Ia_tot) / population - gammas*Q[:,i-1] + np.sum(Qa, 1)
-            dRdt = gammas * I[:,i-1] + gammas*Q[:,i-1] - alpha*R[:,i-1] + np.sum(Ra, 1)
+            dSdt = -beta* S[:,i-1] * (I[:,i-1] + Ia_tot) / population + alpha * R[:,i-1] + 2*np.sum(Sa, 1)
+            dIdt = (1-r)*beta *S[:,i-1] * (I[:,i-1] + Ia_tot) / population - gammas*I[:,i-1] + 2*np.sum(Ia, 1)
+            dQdt = r*beta*S[:,i-1]*(I[:,i-1] + Ia_tot) / population - gammas*Q[:,i-1] + 2*np.sum(Qa, 1)
+            dRdt = gammas * I[:,i-1] + gammas*Q[:,i-1] - alpha*R[:,i-1] + 2*np.sum(Ra, 1)
 
         
         k += 1
@@ -255,56 +176,54 @@ S0 = population - I0 - Q0 - R0 #np.ones(num_regions) * (N - 1)
 Z0 = np.transpose(np.array([S0, I0, Q0, R0]))
 ts = t.size
 
-S, I, Q, R, P = SIQRS_SEG2(Z0, t)
+S, I, Q, R, P = SIQRS_SEG(Z0, t)
 
 
 #%% Plotting 3 first cities
 
-# fig1 = plt.figure(1)
-
-# fig1.add_subplot(3, 1, 1)
-# plt.plot(t, S[0, 0:ts], color = '#00BFFF', label='S')
-# plt.plot(t, I[0, 0:ts], color = '#228B22', label='I')
-# plt.plot(t, R[0, 0:ts], color = '#B22222', label='R')
-# plt.plot(t, P[0, 0:ts], label='P')
-# plt.ylabel(names[0])
-# #plt.legend(loc='best')
-# plt.grid()
-
-# fig1.add_subplot(3, 1, 2)
-# plt.plot(t, S[1, 0:ts], color = '#00BFFF', label='S')
-# plt.plot(t, I[1, 0:ts], color = '#228B22', label='I')
-# plt.plot(t, R[1, 0:ts], color = '#B22222', label='R')
-# plt.plot(t, P[1, 0:ts], label='P')
-# plt.ylabel(names[1])
-# #plt.legend(loc='best')
-# plt.grid()
-
-# fig1.add_subplot(3, 1, 3)
-# plt.plot(t, S[2, 0:ts], color = '#00BFFF', label='S')
-# plt.plot(t, I[2, 0:ts], color = '#228B22', label='I')
-# plt.plot(t, R[2, 0:ts], color = '#B22222', label='R')
-# plt.plot(t, P[2, 0:ts], label='P')
-# plt.ylabel(names[2])
-# #plt.legend(loc='best')
-# plt.grid()
-
-# plt.tight_layout()
-
-for i in range(3):
-    plt.figure()
-    #plt.plot(t[0:ts:2], S[i, 0:ts:2], color = '#00BFFF', label='S')
-    plt.plot(range(len(sick)), I[i, 0:ts:2], color = '#228B22', label='I')
-    plt.plot(range(len(sick)), R[i, 0:ts:2], color = '#B22222', label='R')
-    #plt.plot(t[0:ts:2], P[i, 0:ts:2], label='P')
-    plt.ylabel(names[i])
-    plt.legend(loc='best')
-    plt.grid()
+names[0] = "København"; names[14] = "Lyngby-Taarbæk"
 
 
-plt.show()
+plt.figure()
+plt.plot(range(int(ts/2)), S[0, 0:ts:2], color = '#00BFFF', label='S')
+plt.plot(range(int(ts/2)), I[0, 0:ts:2], color = '#228B22', label='I')
+plt.plot(range(int(ts/2)), Q[0, 0:ts:2], color = '#FF8C00', label='Q')
+plt.plot(range(int(ts/2)), R[0, 0:ts:2], color = '#B22222', label='R')
+plt.plot(range(int(ts/2)), I[0, 0:ts:2] + Q[0, 0:ts:2], label='I + Q')
+plt.ylabel("Antal mennesker")
+plt.xlabel("t [Dage]")
+plt.legend(loc='right')
+plt.title(r"Segmenteret SIQRS model med $\beta$={} i {}".format(beta,names[0]))
+plt.grid()
 
-#%% Total plot:
+plt.figure()
+plt.plot(range(int(ts/2)), S[14, 0:ts:2], color = '#00BFFF', label='S')
+plt.plot(range(int(ts/2)), I[14, 0:ts:2], color = '#228B22', label='I')
+plt.plot(range(int(ts/2)), Q[14, 0:ts:2], color = '#FF8C00', label='Q')
+plt.plot(range(int(ts/2)), R[14, 0:ts:2], color = '#B22222', label='R')
+plt.plot(range(int(ts/2)), I[14, 0:ts:2] + Q[14, 0:ts:2], label='I + Q')
+plt.ylabel("Antal mennesker")
+plt.xlabel("t [Dage]")
+plt.legend(loc='right')
+plt.title(r"Segmenteret SQIRS model med $\beta$={} i {}".format(beta,names[14]))
+plt.grid()
+
+
+# for i in range(6):
+#     plt.figure()
+#     plt.plot(range(len(sick)), S[i, 0:ts:2], color = '#00BFFF', label='S')
+#     plt.plot(range(len(sick)), I[i, 0:ts:2], color = '#228B22', label='I')
+#     plt.plot(range(len(sick)), Q[i, 0:ts:2], color = '#FF8C00', label='Q')
+#     plt.plot(range(len(sick)), R[i, 0:ts:2], color = '#B22222', label='R')
+#     #plt.plot(t[0:ts:2], P[i, 0:ts:2], label='P')
+#     plt.ylabel(names[i])
+#     plt.legend(loc='best')
+#     plt.grid()
+
+
+# plt.show()
+
+
 S_tot = np.sum(S,0)
 I_tot = np.sum(I,0)
 Q_tot = np.sum(Q,0)
@@ -314,17 +233,17 @@ If = I_tot + Q_tot
 
 
 plt.figure()
-#plt.plot(range(len(sick)), S_tot[0:ts:2], color = '#00BFFF', label='S')
-plt.plot(t[0:int(ts/2)], I_tot[0:ts:2], color = '#228B22', label='I')
-plt.plot(t[0:int(ts/2)], Q_tot[0:ts:2], color = '#FF8C00', label='Q')
-#plt.plot(range(len(sick)), R_tot[0:ts:2], color = '#B22222', label='R')
-#plt.plot(range(len(sick)), P_tot[0:ts:2], label='Population')
-plt.plot(range(len(sick)), If[0:ts:2], label = 'I + Q')
+#plt.plot(range(int(ts/2)), S_tot[0:ts:2], color = '#00BFFF', label='S')
+plt.plot(range(int(ts/2)), I_tot[0:ts:2], color = '#228B22', label='I')
+plt.plot(range(int(ts/2)), Q_tot[0:ts:2], color = '#FF8C00', label='Q')
+#plt.plot(range(int(ts/2)), R_tot[0:ts:2], color = '#B22222', label='R')
+#plt.plot(range(int(ts/2)), P_tot[0:ts:2], label='Population')
+plt.plot(range(int(ts/2)), If[0:ts:2], label = 'I + Q')
 plt.plot(range(len(sick)), sick, color = '#B22222', label='Data')
-plt.ylabel("Antal Mennesker")
-plt.xlabel("Dage")
-plt.legend(loc='best')
-plt.title(r"Segmenteret SIQRS model med $\beta$={}".format(beta))
+plt.ylabel("Antal mennesker")
+plt.xlabel("t [Dage]")
+plt.legend(loc='upper left')
+plt.title(r"Segmenteret SQIRS model på dansk data")
 plt.grid()
 plt.show()
 
