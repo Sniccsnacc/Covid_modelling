@@ -33,7 +33,7 @@ n_sd = 22
 n_mj = 19
 n_nj = 11
 
-betas = np.linspace(0.1, 0.25, 6)
+betas = np.linspace(0.08, 0.28, 7)
 beta2 = np.ones(len(names))
 new_beta = []
 err = []
