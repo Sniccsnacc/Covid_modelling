@@ -13,9 +13,9 @@ for i in betas:
     Q_tot = np.sum(Q,0)
     If = I_tot + Q_tot
 
-    #if abs(max(If) - max(sick)) <= 5000:
-    new_beta.append(i)
-    err.append(sum((If[0:ts:2] - sick) ** 2) / len(sick))
+    if max(If) >= max(sick):
+        new_beta.append(i)
+        err.append(sum((If[0:ts:2] - sick) ** 2) / len(sick))
 
 err = np.array(err)
 
@@ -33,7 +33,7 @@ n_sd = 22
 n_mj = 19
 n_nj = 11
 
-betas = np.linspace(0.08, 0.28, 7)
+betas = np.linspace(0.05, 0.3, 13)
 beta2 = np.ones(len(names))
 new_beta = []
 err = []
@@ -58,9 +58,9 @@ for hoved in betas:
                     Q_tot = np.sum(Q,0)
                     If = I_tot + Q_tot
                     
-                    #if abs(m - max(If)) <= 5000:
-                    new_beta.append(beta2.copy())
-                    err.append(sum((If[0:ts:2] - sick) ** 2) /len(sick) )
+                    if max(If) >= m:
+                        new_beta.append(beta2.copy())
+                        err.append(sum((If[0:ts:2] - sick) ** 2) /len(sick) )
                     
     
     end2 = time.time()
