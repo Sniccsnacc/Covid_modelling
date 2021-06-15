@@ -44,7 +44,7 @@ beta2 = np.ones(len(names))
 new_beta = []
 err = []
 m = max(sick)
-
+Z0 = np.transpose(np.array([S0, I0, R0]))
 
 def err_calc(c1):
     beta2[0:n_h] = c1
@@ -59,20 +59,20 @@ def err_calc(c1):
                     beta2[n_h + n_s + n_sd:n_h + n_s + n_sd + n_mj] = c4
                     beta2[n_h + n_s + n_sd + n_mj:n_h + n_s + n_sd + n_mj + n_nj] = c5
     
-                    S, I, Q, R, P = SIQRS_SEG(Z0, t, beta = beta2)
+                    S, I, R, P = SIR_SEG(Z0, t, beta = beta2)
                     I_tot = np.sum(I,0)
-                    Q_tot = np.sum(Q,0)
-                    If = I_tot + Q_tot
+                    #Q_tot = np.sum(Q,0)
+                    #If = I_tot + Q_tot
                     
                     #if max(If) >= m:
                     temp_beta.append(beta2.copy())
-                    err_temp.append(sum((If[0:ts:2] - sick) ** 2) /len(sick))
+                    err_temp.append(sum((I_tot[0:ts:2] - sick) ** 2) /len(sick))
     
     return [temp_beta, err_temp]
 
 def main():
 
-    pool = mp.Pool(12)
+    pool = mp.Pool(10)
     results = pool.map(err_calc, betas)
 
     pool.close()

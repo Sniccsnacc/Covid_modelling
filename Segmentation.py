@@ -18,7 +18,9 @@ g = np.array(travel_out)
 MT = np.array(travel_in).T
 beta = 0.204 #Beta værdi fundet ved MSE mellem 0.1 og 0.3 (singulær)
 beta = 0.210 #Beta værdi fundet ved MMSE mellem 0.1 og 0.3 (Thresholded) 
-beta = 0.222
+beta = 0.222 #Beta værdi fundet ved MMSE mellem 0.1 og 0.3 for SIQRS center
+#beta = 0.189 #Beta værdi fundet ved MMSE mellem 0.1 og 0.3 for SIR center
+#beta = 0.181 #Beta værdi fundet ved MMSE mellem 0.1 og 0.3 for SIR
 
 ## Beta værdi fundet ved MSE mellem 0.15 og 0.25 med 6 punkter
 # beta = np.array([0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16,
@@ -258,7 +260,7 @@ plt.plot(range(int(ts/2)), I[14, 0:ts:2] + Q[14, 0:ts:2], label='I + Q')
 plt.ylabel("Antal mennesker")
 plt.xlabel("t [Dage]")
 plt.legend(loc='right')
-plt.title(r"Segmenteret SQIRS model med $\beta$={} i {}".format(beta,names[14]))
+plt.title(r"Segmenteret SIQRS model med $\beta$={} i {}".format(beta,names[14]))
 plt.grid()
 
 
@@ -296,8 +298,8 @@ plt.plot(range(int(ts/2)), If[0:ts:2], label = 'I + Q')
 plt.ylabel("Antal mennesker")
 plt.xlabel("t [Dage]")
 plt.legend(loc='upper left')
-plt.title("Segmenteret SIQRS model på dansk data med \n {}".format(r"$\beta = \{0.113, 0.092, 0.238, 0.154, 0.196 \}$"))
-#plt.title(r"Segmenteret SIQRS model på dansk data med $\beta$ = {}".format(beta))
+#plt.title("Segmenteret SIR model på dansk data med \n {}".format(r"$\beta = \{0.113, 0.092, 0.238, 0.154, 0.196 \}$"))
+plt.title(r"Segmenteret SIQRS model på dansk data med $\beta$ = {}".format(beta))
 plt.grid()
 plt.show()
 

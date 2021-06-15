@@ -4,6 +4,7 @@ from Segmentation import *
 
 betas = np.linspace(0.1, 0.3, 101)
 t = np.linspace(0, 2*498, 2*498)
+Z0 = np.transpose(np.array([S0, I0, Q0, R0]))
 
 err = []
 new_beta = []
@@ -17,6 +18,7 @@ for i in betas:
     If = I_tot + Q_tot
 
     mIf = max(If)
+    mI = max(I_tot)
 
     if mIf >= m and abs(np.where(If == mIf)[0][0] - 2*sind) <= 10:
         new_beta.append(i)
