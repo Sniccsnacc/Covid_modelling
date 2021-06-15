@@ -3,9 +3,12 @@
 from Segmentation import *
 
 betas = np.linspace(0.1, 0.3, 101)
+t = np.linspace(0, 2*498, 2*498)
 
 err = []
 new_beta = []
+m = max(sick)
+sind = np.where(sick == m)[0][0]
 
 for i in betas:
     S, I, Q, R, P = SIQRS_SEG(Z0, t, beta = i)
@@ -13,7 +16,9 @@ for i in betas:
     Q_tot = np.sum(Q,0)
     If = I_tot + Q_tot
 
-    if max(If) >= max(sick):
+    mIf = max(If)
+
+    if mIf >= m and abs(np.where(If == mIf)[0][0] - 2*sind) <= 10:
         new_beta.append(i)
         err.append(sum((If[0:ts:2] - sick) ** 2) / len(sick))
 
@@ -75,3 +80,53 @@ ind = np.where(err == min(err))[0][0]
 
 
 # %%
+#### Simple SIRQS #####
+
+from Models import *
+from scipy.integrate import odeint
+import matplotlib.pyplot as plt
+
+t = np.linspace(0, 498, 498)
+
+I0 = 49 #Dansk data udtræk
+Q0 = 0
+R0 = 0
+S0 = N - I0 - Q0 - R0
+z0 = [S0, Q0, I0, R0]
+m = max(sick)
+sind = np.where(sick == m)[0][0]
+
+betas = np.linspace(0.1, 0.3, 101)
+err = []
+new_beta = []
+
+for i in betas:
+    Z = odeint(co, z0, t, args = (alpha, r, i))
+    If = Z[:, 1] + Z[:, 2]
+    mIf = max(If)
+
+    if mIf >= m and abs(np.where(If == mIf)[0][0] - sind) <= 10:
+        new_beta.append(i)
+        err.append( sum((If - sick) ** 2) / len(sick))
+
+
+err = np.array(err)
+
+ind = np.where(err == min(err))[0][0]
+print(r"Minimal error is at beta = ", end = ' ')
+print(new_beta[ind])
+
+z = odeint(co, z0, t, args = (alpha, r, new_beta[ind]))
+
+
+plt.figure()
+plt.plot(t, z[:, 2], color = '#228B22', label='$I$')
+plt.plot(t, z[:, 1], color = '#FF8C00', label='$Q$')
+plt.plot(t, z[:, 1] + z[:, 2], label = 'I + Q')
+plt.plot(t, sick, color = '#B22222', label='Data')
+plt.ylabel('Antal mennesker')
+plt.xlabel('t [dage]')
+plt.legend(loc='best')
+plt.title(r'SIQRS model på dansk data med $\beta$ = 0.224')
+plt.grid()
+plt.show()

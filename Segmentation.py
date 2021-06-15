@@ -18,6 +18,7 @@ g = np.array(travel_out)
 MT = np.array(travel_in).T
 beta = 0.204 #Beta værdi fundet ved MSE mellem 0.1 og 0.3 (singulær)
 beta = 0.210 #Beta værdi fundet ved MMSE mellem 0.1 og 0.3 (Thresholded) 
+beta = 0.222
 
 ## Beta værdi fundet ved MSE mellem 0.15 og 0.25 med 6 punkter
 # beta = np.array([0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16,
@@ -74,26 +75,27 @@ beta = 0.210 #Beta værdi fundet ved MMSE mellem 0.1 og 0.3 (Thresholded)
 #        0.23, 0.23, 0.23, 0.23, 0.23, 0.23, 0.23, 0.23, 0.23, 0.23, 0.23,
 #        0.23, 0.23, 0.23, 0.23, 0.23, 0.23, 0.23, 0.23, 0.23, 0.23])
 
-beta = np.array([0.1125    , 0.1125    , 0.1125    , 0.1125    , 0.1125    ,
-       0.1125    , 0.1125    , 0.1125    , 0.1125    , 0.1125    ,
-       0.1125    , 0.1125    , 0.1125    , 0.1125    , 0.1125    ,
-       0.1125    , 0.1125    , 0.1125    , 0.1125    , 0.1125    ,
-       0.1125    , 0.1125    , 0.1125    , 0.1125    , 0.1125    ,
-       0.1125    , 0.1125    , 0.1125    , 0.1125    , 0.15416667,
-       0.15416667, 0.15416667, 0.15416667, 0.15416667, 0.15416667,
-       0.15416667, 0.15416667, 0.15416667, 0.15416667, 0.15416667,
-       0.15416667, 0.15416667, 0.15416667, 0.15416667, 0.15416667,
-       0.15416667, 0.2375    , 0.2375    , 0.2375    , 0.2375    ,
-       0.2375    , 0.2375    , 0.2375    , 0.2375    , 0.2375    ,
-       0.2375    , 0.2375    , 0.2375    , 0.2375    , 0.2375    ,
-       0.2375    , 0.2375    , 0.2375    , 0.2375    , 0.2375    ,
-       0.2375    , 0.2375    , 0.2375    , 0.19583333, 0.19583333,
-       0.19583333, 0.19583333, 0.19583333, 0.19583333, 0.19583333,
-       0.19583333, 0.19583333, 0.19583333, 0.19583333, 0.19583333,
-       0.19583333, 0.19583333, 0.19583333, 0.19583333, 0.19583333,
-       0.19583333, 0.19583333, 0.09166667, 0.09166667, 0.09166667,
-       0.09166667, 0.09166667, 0.09166667, 0.09166667, 0.09166667,
-       0.09166667, 0.09166667, 0.09166667])
+#Beta fundet mellem 0.05 og 0.3 med 13 punkter (Tresholded)
+# beta = np.array([0.1125    , 0.1125    , 0.1125    , 0.1125    , 0.1125    ,
+#        0.1125    , 0.1125    , 0.1125    , 0.1125    , 0.1125    ,
+#        0.1125    , 0.1125    , 0.1125    , 0.1125    , 0.1125    ,
+#        0.1125    , 0.1125    , 0.1125    , 0.1125    , 0.1125    ,
+#        0.1125    , 0.1125    , 0.1125    , 0.1125    , 0.1125    ,
+#        0.1125    , 0.1125    , 0.1125    , 0.1125    , 0.15416667,
+#        0.15416667, 0.15416667, 0.15416667, 0.15416667, 0.15416667,
+#        0.15416667, 0.15416667, 0.15416667, 0.15416667, 0.15416667,
+#        0.15416667, 0.15416667, 0.15416667, 0.15416667, 0.15416667,
+#        0.15416667, 0.2375    , 0.2375    , 0.2375    , 0.2375    ,
+#        0.2375    , 0.2375    , 0.2375    , 0.2375    , 0.2375    ,
+#        0.2375    , 0.2375    , 0.2375    , 0.2375    , 0.2375    ,
+#        0.2375    , 0.2375    , 0.2375    , 0.2375    , 0.2375    ,
+#        0.2375    , 0.2375    , 0.2375    , 0.19583333, 0.19583333,
+#        0.19583333, 0.19583333, 0.19583333, 0.19583333, 0.19583333,
+#        0.19583333, 0.19583333, 0.19583333, 0.19583333, 0.19583333,
+#        0.19583333, 0.19583333, 0.19583333, 0.19583333, 0.19583333,
+#        0.19583333, 0.19583333, 0.09166667, 0.09166667, 0.09166667,
+#        0.09166667, 0.09166667, 0.09166667, 0.09166667, 0.09166667,
+#        0.09166667, 0.09166667, 0.09166667])
 
 #%% Models
 
@@ -236,10 +238,10 @@ names[0] = "København"; names[14] = "Lyngby-Taarbæk"
 
 
 plt.figure()
-plt.plot(range(int(ts/2)), S[0, 0:ts:2], color = '#00BFFF', label='S')
+#plt.plot(range(int(ts/2)), S[0, 0:ts:2], color = '#00BFFF', label='S')
 plt.plot(range(int(ts/2)), I[0, 0:ts:2], color = '#228B22', label='I')
 plt.plot(range(int(ts/2)), Q[0, 0:ts:2], color = '#FF8C00', label='Q')
-plt.plot(range(int(ts/2)), R[0, 0:ts:2], color = '#B22222', label='R')
+#plt.plot(range(int(ts/2)), R[0, 0:ts:2], color = '#B22222', label='R')
 plt.plot(range(int(ts/2)), I[0, 0:ts:2] + Q[0, 0:ts:2], label='I + Q')
 plt.ylabel("Antal mennesker")
 plt.xlabel("t [Dage]")
@@ -248,10 +250,10 @@ plt.title(r"Segmenteret SIQRS model med $\beta$={} i {}".format(beta,names[0]))
 plt.grid()
 
 plt.figure()
-plt.plot(range(int(ts/2)), S[14, 0:ts:2], color = '#00BFFF', label='S')
+#plt.plot(range(int(ts/2)), S[14, 0:ts:2], color = '#00BFFF', label='S')
 plt.plot(range(int(ts/2)), I[14, 0:ts:2], color = '#228B22', label='I')
 plt.plot(range(int(ts/2)), Q[14, 0:ts:2], color = '#FF8C00', label='Q')
-plt.plot(range(int(ts/2)), R[14, 0:ts:2], color = '#B22222', label='R')
+#plt.plot(range(int(ts/2)), R[14, 0:ts:2], color = '#B22222', label='R')
 plt.plot(range(int(ts/2)), I[14, 0:ts:2] + Q[14, 0:ts:2], label='I + Q')
 plt.ylabel("Antal mennesker")
 plt.xlabel("t [Dage]")
@@ -284,22 +286,23 @@ If = I_tot + Q_tot
 
 
 plt.figure()
+plt.plot(range(len(sick)), sick, color = '#B22222', label='Data')
 #plt.plot(range(int(ts/2)), S_tot[0:ts:2], color = '#00BFFF', label='S')
 plt.plot(range(int(ts/2)), I_tot[0:ts:2], color = '#228B22', label='I')
 plt.plot(range(int(ts/2)), Q_tot[0:ts:2], color = '#FF8C00', label='Q')
 #plt.plot(range(int(ts/2)), R_tot[0:ts:2], color = '#B22222', label='R')
 #plt.plot(range(int(ts/2)), P_tot[0:ts:2], label='Population')
 plt.plot(range(int(ts/2)), If[0:ts:2], label = 'I + Q')
-plt.plot(range(len(sick)), sick, color = '#B22222', label='Data')
 plt.ylabel("Antal mennesker")
 plt.xlabel("t [Dage]")
 plt.legend(loc='upper left')
-plt.title(r"Segmenteret SQIRS model på dansk data")
+plt.title("Segmenteret SIQRS model på dansk data med \n {}".format(r"$\beta = \{0.113, 0.092, 0.238, 0.154, 0.196 \}$"))
+#plt.title(r"Segmenteret SIQRS model på dansk data med $\beta$ = {}".format(beta))
 plt.grid()
 plt.show()
 
 
- # %%
+     # %%
 #Plot af hældning
 plt.figure()
 plt.plot(range(len(cases)), cases)
