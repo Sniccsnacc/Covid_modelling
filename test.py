@@ -64,15 +64,15 @@ def err_calc(c1):
                     #Q_tot = np.sum(Q,0)
                     #If = I_tot + Q_tot
                     
-                    #if max(If) >= m:
-                    temp_beta.append(beta2.copy())
-                    err_temp.append(sum((I_tot[0:ts:2] - sick) ** 2) /len(sick))
+                    if max(I_tot) >= m:
+                        temp_beta.append(beta2.copy())
+                        err_temp.append(sum((I_tot[0:ts:2] - sick) ** 2) /len(sick))
     
     return [temp_beta, err_temp]
 
 def main():
 
-    pool = mp.Pool(10)
+    pool = mp.Pool(7)
     results = pool.map(err_calc, betas)
 
     pool.close()
@@ -94,3 +94,4 @@ if __name__ == '__main__':
     ind = main()
     end = time.time()
     print("Time elapsed: {} [s]".format(end-start))
+ 

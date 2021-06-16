@@ -77,7 +77,7 @@ beta = 0.222 #Beta værdi fundet ved MMSE mellem 0.1 og 0.3 for SIQRS center
 #        0.23, 0.23, 0.23, 0.23, 0.23, 0.23, 0.23, 0.23, 0.23, 0.23, 0.23,
 #        0.23, 0.23, 0.23, 0.23, 0.23, 0.23, 0.23, 0.23, 0.23, 0.23])
 
-#Beta fundet mellem 0.05 og 0.3 med 13 punkter (Tresholded)
+#Beta fundet mellem 0.05 og 0.3 med 13 punkter (Tresholded) SIQRS
 # beta = np.array([0.1125    , 0.1125    , 0.1125    , 0.1125    , 0.1125    ,
 #        0.1125    , 0.1125    , 0.1125    , 0.1125    , 0.1125    ,
 #        0.1125    , 0.1125    , 0.1125    , 0.1125    , 0.1125    ,
@@ -98,6 +98,50 @@ beta = 0.222 #Beta værdi fundet ved MMSE mellem 0.1 og 0.3 for SIQRS center
 #        0.19583333, 0.19583333, 0.09166667, 0.09166667, 0.09166667,
 #        0.09166667, 0.09166667, 0.09166667, 0.09166667, 0.09166667,
 #        0.09166667, 0.09166667, 0.09166667])
+
+#Beta fundet mellem 0.05 og 0.3 med 13 punkter SIR
+# beta = np.array([0.13333333, 0.13333333, 0.13333333, 0.13333333, 0.13333333,
+#        0.13333333, 0.13333333, 0.13333333, 0.13333333, 0.13333333,
+#        0.13333333, 0.13333333, 0.13333333, 0.13333333, 0.13333333,
+#        0.13333333, 0.13333333, 0.13333333, 0.13333333, 0.13333333,
+#        0.13333333, 0.13333333, 0.13333333, 0.13333333, 0.13333333,
+#        0.13333333, 0.13333333, 0.13333333, 0.13333333, 0.21666667,
+#        0.21666667, 0.21666667, 0.21666667, 0.21666667, 0.21666667,
+#        0.21666667, 0.21666667, 0.21666667, 0.21666667, 0.21666667,
+#        0.21666667, 0.21666667, 0.21666667, 0.21666667, 0.21666667,
+#        0.21666667, 0.05      , 0.05      , 0.05      , 0.05      ,
+#        0.05      , 0.05      , 0.05      , 0.05      , 0.05      ,
+#        0.05      , 0.05      , 0.05      , 0.05      , 0.05      ,
+#        0.05      , 0.05      , 0.05      , 0.05      , 0.05      ,
+#        0.05      , 0.05      , 0.05      , 0.175     , 0.175     ,
+#        0.175     , 0.175     , 0.175     , 0.175     , 0.175     ,
+#        0.175     , 0.175     , 0.175     , 0.175     , 0.175     ,
+#        0.175     , 0.175     , 0.175     , 0.175     , 0.175     ,
+#        0.175     , 0.175     , 0.05      , 0.05      , 0.05      ,
+#        0.05      , 0.05      , 0.05      , 0.05      , 0.05      ,
+#        0.05      , 0.05      , 0.05      ])
+
+#Beta fundet mellem 0.05 og 0.3 med 13 punkter SIR (Thresholded)
+beta = np.array([0.13333333, 0.13333333, 0.13333333, 0.13333333, 0.13333333,
+       0.13333333, 0.13333333, 0.13333333, 0.13333333, 0.13333333,
+       0.13333333, 0.13333333, 0.13333333, 0.13333333, 0.13333333,
+       0.13333333, 0.13333333, 0.13333333, 0.13333333, 0.13333333,
+       0.13333333, 0.13333333, 0.13333333, 0.13333333, 0.13333333,
+       0.13333333, 0.13333333, 0.13333333, 0.13333333, 0.21666667,
+       0.21666667, 0.21666667, 0.21666667, 0.21666667, 0.21666667,
+       0.21666667, 0.21666667, 0.21666667, 0.21666667, 0.21666667,
+       0.21666667, 0.21666667, 0.21666667, 0.21666667, 0.21666667,
+       0.21666667, 0.175     , 0.175     , 0.175     , 0.175     ,
+       0.175     , 0.175     , 0.175     , 0.175     , 0.175     ,
+       0.175     , 0.175     , 0.175     , 0.175     , 0.175     ,
+       0.175     , 0.175     , 0.175     , 0.175     , 0.175     ,
+       0.175     , 0.175     , 0.175     , 0.05      , 0.05      ,
+       0.05      , 0.05      , 0.05      , 0.05      , 0.05      ,
+       0.05      , 0.05      , 0.05      , 0.05      , 0.05      ,
+       0.05      , 0.05      , 0.05      , 0.05      , 0.05      ,
+       0.05      , 0.05      , 0.21666667, 0.21666667, 0.21666667,
+       0.21666667, 0.21666667, 0.21666667, 0.21666667, 0.21666667,
+       0.21666667, 0.21666667, 0.21666667])
 
 #%% Models
 
@@ -228,10 +272,10 @@ I0[0] = 23; I0[53] = 1; I0[78] = 25     #udtræk fra 09/03-2020
 Q0 = np.zeros(num_regions)
 R0 = np.zeros(num_regions)
 S0 = population - I0 - Q0 - R0 #np.ones(num_regions) * (N - 1)
-Z0 = np.transpose(np.array([S0, I0, Q0, R0]))
+Z0 = np.transpose(np.array([S0, I0, R0]))
 ts = t.size
 
-S, I, Q, R, P = SIQRS_SEG(Z0, t)
+S, I, R, P = SIR_SEG(Z0, t)
 
 
 #%% Plotting 3 first cities
@@ -242,9 +286,9 @@ names[0] = "København"; names[14] = "Lyngby-Taarbæk"
 plt.figure()
 #plt.plot(range(int(ts/2)), S[0, 0:ts:2], color = '#00BFFF', label='S')
 plt.plot(range(int(ts/2)), I[0, 0:ts:2], color = '#228B22', label='I')
-plt.plot(range(int(ts/2)), Q[0, 0:ts:2], color = '#FF8C00', label='Q')
+#plt.plot(range(int(ts/2)), Q[0, 0:ts:2], color = '#FF8C00', label='Q')
 #plt.plot(range(int(ts/2)), R[0, 0:ts:2], color = '#B22222', label='R')
-plt.plot(range(int(ts/2)), I[0, 0:ts:2] + Q[0, 0:ts:2], label='I + Q')
+#plt.plot(range(int(ts/2)), I[0, 0:ts:2] + Q[0, 0:ts:2], label='I + Q')
 plt.ylabel("Antal mennesker")
 plt.xlabel("t [Dage]")
 plt.legend(loc='right')
@@ -254,9 +298,9 @@ plt.grid()
 plt.figure()
 #plt.plot(range(int(ts/2)), S[14, 0:ts:2], color = '#00BFFF', label='S')
 plt.plot(range(int(ts/2)), I[14, 0:ts:2], color = '#228B22', label='I')
-plt.plot(range(int(ts/2)), Q[14, 0:ts:2], color = '#FF8C00', label='Q')
+#plt.plot(range(int(ts/2)), Q[14, 0:ts:2], color = '#FF8C00', label='Q')
 #plt.plot(range(int(ts/2)), R[14, 0:ts:2], color = '#B22222', label='R')
-plt.plot(range(int(ts/2)), I[14, 0:ts:2] + Q[14, 0:ts:2], label='I + Q')
+#plt.plot(range(int(ts/2)), I[14, 0:ts:2] + Q[14, 0:ts:2], label='I + Q')
 plt.ylabel("Antal mennesker")
 plt.xlabel("t [Dage]")
 plt.legend(loc='right')
@@ -281,25 +325,25 @@ plt.grid()
 
 S_tot = np.sum(S,0)
 I_tot = np.sum(I,0)
-Q_tot = np.sum(Q,0)
+#Q_tot = np.sum(Q,0)
 R_tot = np.sum(R,0)
 P_tot = np.sum(P,0)
-If = I_tot + Q_tot
+#If = I_tot + Q_tot
 
 
 plt.figure()
 plt.plot(range(len(sick)), sick, color = '#B22222', label='Data')
 #plt.plot(range(int(ts/2)), S_tot[0:ts:2], color = '#00BFFF', label='S')
 plt.plot(range(int(ts/2)), I_tot[0:ts:2], color = '#228B22', label='I')
-plt.plot(range(int(ts/2)), Q_tot[0:ts:2], color = '#FF8C00', label='Q')
+#plt.plot(range(int(ts/2)), Q_tot[0:ts:2], color = '#FF8C00', label='Q')
 #plt.plot(range(int(ts/2)), R_tot[0:ts:2], color = '#B22222', label='R')
 #plt.plot(range(int(ts/2)), P_tot[0:ts:2], label='Population')
-plt.plot(range(int(ts/2)), If[0:ts:2], label = 'I + Q')
+#plt.plot(range(int(ts/2)), If[0:ts:2], label = 'I + Q')
 plt.ylabel("Antal mennesker")
 plt.xlabel("t [Dage]")
 plt.legend(loc='upper left')
-#plt.title("Segmenteret SIR model på dansk data med \n {}".format(r"$\beta = \{0.113, 0.092, 0.238, 0.154, 0.196 \}$"))
-plt.title(r"Segmenteret SIQRS model på dansk data med $\beta$ = {}".format(beta))
+plt.title("Segmenteret SIR model på dansk data med \n {}".format(r"$\beta = \{0.133, 0.217, 0.175, 0.05, 0.217 \}$"))
+#plt.title(r"Segmenteret SIQRS model på dansk data med $\beta$ = {}".format(beta))
 plt.grid()
 plt.show()
 
