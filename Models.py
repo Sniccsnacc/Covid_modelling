@@ -22,7 +22,7 @@ def SIRBD(z, t):
 
 
 # region SIRS model
-def SIS(z, t, alpha=alpha):
+def SIS(z, t, alpha=alpha, beta=beta):
     dSdt = -beta * z[0] * z[1] / N + alpha * z[2]
     dIdt = beta*z[0]*z[1] / N - gamma * z[1]
     dRdt = gamma * z[1] - alpha * z[2]
@@ -30,7 +30,7 @@ def SIS(z, t, alpha=alpha):
 # endregion
 
 # region SIQRS model
-def SIQRS(z, t, alpha=alpha, mu=mu):
+def SIQRS(z, t, alpha=alpha, mu=mu, beta=beta):
     dSdt = -beta * z[0] * z[1] / N + alpha * z[3]
     dIdt = beta * z[0] * z[1] / N - (gamma + mu) * z[1]
     dQdt = mu * z[1] - gamma * z[2]
@@ -74,7 +74,7 @@ def mads(z, t):
     return [dSdt, dIdt, dQdt, dRdt]
 
 
-def co(z,t, alpha=alpha, r = r, beta = beta):
+def co(z, t, alpha=alpha, r = r, beta = beta):
     dSdt = - (beta * z[0] * z[2] / N) + alpha * z[3]
     dIqdt = beta * z[0] * z[2] * r / N - gamma * z[1]
     dIidt = beta * z[0] * z[2] * (1-r) / N - gamma * z[2]
