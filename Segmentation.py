@@ -219,6 +219,8 @@ def SIQRS_SEG(z, t, beta = beta):
     Qa = np.zeros((rows, rows))
     Ra = np.zeros((rows, rows))
 
+    Ny_smit = np.zeros((rows, l+1))
+
     S[:, 0] = z[:, 0]
     I[:, 0] = z[:, 1]
     Q[:, 0] = z[:, 2]
