@@ -12,7 +12,7 @@ m = max(sick)
 sind = np.where(sick == m)[0][0]
 
 for i in betas:
-    S, I, Q, R, P = SIQRS_SEG(Z0, t, beta = i)
+    S, I, Q, R, P, ny = SIQRS_SEG(Z0, t, beta = i)
     I_tot = np.sum(I,0)
     Q_tot = np.sum(Q,0)
     If = I_tot + Q_tot
