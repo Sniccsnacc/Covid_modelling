@@ -37,8 +37,8 @@ gamma = 1/6
 
 # new parameter, for how quickly you can become susceptible again
 # used in SIS model
-#alpha = 0.00020202020202020205
-#alpha = 0.0002356902356902357
+#alpha = 0.0006397306397306398 #første peak
+#alpha = 0.0010774410774410776 # andet peak
 alpha = 1/240
 
 # new parameter, for how many infected go to quarantine
